@@ -1,3 +1,10 @@
+<?php
+$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+$query = 'SELECT * FROM book';
+$statement = $pdo->query($query);
+$books = $statement->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,16 +21,19 @@
     <div class="container w-50">
         <?php  
             if (isset($_SESSION['login'])) {?>
-                <h1 class="text-center text-primary mt-5">Liste des livres</h1>
-                <div class="card text-center">
-                    <h6 class="p-2 mb-2 bg-primary text-white">Livre 1</h6>
-                </div>
-        <?php } else { ?>
+                <h1 class="text-center mt-5">Liste des livres</h1>
+                    <?php foreach($books as $book) { ?>
+                        <div class="card text-center mt-4">
+                            <h5 class="p-2 mb-1 bg-primary text-white"><?php echo $book['name'] ?></h5>
+                            <h5 class="p-2 text-primary"><?php echo $book['author'] ?></h5>
+                            <p class="p-1 mb-1 text-black"><?php echo $book['release_year'] ?></p>
+                        </div>
+        <?php }} else { ?>
                 <div class="text-center">
                     <h1 class="mt-5">The Library Factory</h1>
                     <h2>Welcome !!!</h2>
                     <h6 class="mt-3">Pour voir la liste des livres, authentifiez-vous</h6>
-                    <a class="btn btn-primary mt-2" href="login.php" role="button">Authentification</a>
+                    <a class="btn btn-primary mt-2" href="signin.php" role="button">Authentification</a>
                 </div>
         <?php } ?>
     </div>

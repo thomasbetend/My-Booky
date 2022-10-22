@@ -24,7 +24,10 @@ if(isset($_SESSION['login'])){
         <a class="nav-link text-capitalize" href="#">Bienvenue <?php echo $nameUser ?></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Logout</a>
+        <a class="nav-link" href="logout.php">Logout</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="signin.php">Signin</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="#">Panier</span></a>

@@ -11,15 +11,22 @@
 
     <?php include_once('nav-bar.php'); ?>
 
-    <h1>Page de déconnexion</h1>
+    <div class="container w-50 text-center">
+        <form method="post" class="mt-5">
+                <h1>Page de déconnexion</h1>
+                <button name='button1' class="btn btn-primary mt-2">Se déconnecter</button>
+            </div>
+        </form>
+    </div>
 
-<div class="container w-50">
-    <form method="post" class="mt-3">
-        <div>
-            <button type="submit" class="btn btn-primary mt-2">login</button>
-        </div>
-    </form>
-</div>
+    <?php 
+    if($_POST){
+        $_SESSION = array();
+        session_destroy();
+        unset($_SESSION);
+        header('location: index.php');
+    }
+    ?>
 
 </body>
 </html>
