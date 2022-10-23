@@ -1,9 +1,10 @@
 <?php 
 
 if($_POST){
+
     $errorMessage = '';
     
-    if(!empty($_POST['user_password']) && !empty($_POST['user_lastname'])){
+    if(!empty($_POST['user_password']) && !empty($_POST['user_lastname']) && !empty($_POST['user_firstname'])){
 
         function testInput($data){
             $data= trim($data);
@@ -12,13 +13,25 @@ if($_POST){
             return $data;
         }
     
-        $lastname = testInput($_POST["user_lastname"]);
+        $lastname = testInput($_POST['user_lastname']);
+        $firstname = testInput($_POST['user_firstname']);
+        $passUser = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+
+        $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+        $query = 'INSERT INTO user (lastname, firstname, pass_user) VALUES (:lastname, :firstname, :pass_user)';
+        $statement = $pdo->prepare($query);
+    
+        $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+        $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $statement->bindValue(':pass_user', $passUser, \PDO::PARAM_STR);
+
+        $statement->execute();
 
         session_start();
-
-        $_SESSION['login'] = $lastname;
+        $_SESSION['login'] = $firstname . ' ' . $lastname;
         header('location: index.php');
         exit();
+
     } else {
         $errorMessage = 'Remplissez tous les champs';
     }
@@ -44,10 +57,15 @@ if($_POST){
             <h3>Créez votre compte</h3>
             <form method="post" class="mt-3">
                 <div class="form-group mb-2">
-                    <label for="firstname">Nom</label>
+                    <label for="firstname">Prénom</label>
+                    <input type="text" id="firstname" name="user_firstname" class="form-control">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="lastname">Nom</label>
                     <input type="text" id="lastname" name="user_lastname" class="form-control">
+                </div>
                 <div class="form-group mb-2 mt-2">
-                    <label for="lastname">Mot de passe</label>
+                    <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="user_password" class="form-control">
                 </div>
                 <div>
