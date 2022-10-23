@@ -15,13 +15,28 @@ if($_POST){
     
         $lastname = testInput($_POST['user_lastname']);
         $firstname = testInput($_POST['user_firstname']);
-        $passUser = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+        $passUser = $_POST['user_password'];
 
-        session_start();
+        $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+        $query = 'SELECT * FROM user';
+        $statement = $pdo->query($query);
+        $users = $statement->fetchAll();
 
-        $_SESSION['login'] = $lastname;
-        header('location: index.php');
-        exit();
+        foreach ($users as $user) {
+            if (($user['lastname'] == $lastname) && ($user['firstname'] == $firstname) && (password_verify($passUser, $user['pass_user']))) {
+
+                session_start();
+    
+                $_SESSION['login'] = $firstname . ' ' . $lastname;
+                header('location: index.php');
+                exit();
+    
+            } else {
+                $errorMessage = 'Renseignements incorrects';
+            }
+        }
+
+
     } else {
         $errorMessage = 'Remplissez tous les champs';
     }
