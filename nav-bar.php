@@ -33,7 +33,12 @@ if(isset($_SESSION['login'])){
           <a class="nav-link" href="signout.php">Signout</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Panier</span></a>
+          <a class="nav-link" href="#">Panier 
+            <?php if(isset($_SESSION['cart_id'])){
+                $_SESSION['quantity']=0;
+                $_SESSION['quantity']++;
+                echo$ $_SESSION['quantity'];
+            } ?></span></a>
         </li>
       <?php } ?>
     </ul>

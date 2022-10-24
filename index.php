@@ -21,14 +21,20 @@ $books = $statement->fetchAll();
     <div class="container w-50">
         <?php  
             if (isset($_SESSION['login'])) {?>
-                <h1 class="text-center mt-5">Livres</h1>
+                <h1 class="text-center mt-5">The Library Factory</h1>
+                <h3 class="text-center mt-2 mb4 text-secondary">Liste des livres</h3>
                     <?php foreach($books as $book) { ?>
                         <div class="card text-center mt-4">
                             <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords($book['name']) ?></h5>
-                            <h5 class="p-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
-                            <p class="p-1 mb-0 text-black"><?php echo number_format($book['price_book'], 2, ',', ' ') . '€'?></p>
-                            <a href="book-info.php?id=<?php echo $book['id'] ?>">En savoir plus</a>
-                            <button type="button" class='btn btn-dark mt-2 mb-2' name='button-add-cart'>ajouter au panier</button>
+                            <h5 class="pt-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
+                            <a href="book-info.php?id=<?php echo $book['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
+                            <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
+                            <form action="" method="post"><button type="button" class='btn btn-dark mt-2 mb-3' name='button-add-cart' value="">ajouter au panier</button></form>
+                                <?php if($_POST){
+                                    $_SESSION['cart_id'] = $book['id'];
+                                    var_dump($_SESSION);
+                                    die();
+                                }?>
                         </div>
         <?php }} else { ?>
                 <div class="text-center">

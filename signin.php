@@ -4,7 +4,7 @@ if($_POST){
 
     $errorMessage = '';
     
-    if(!empty($_POST['user_password']) && !empty($_POST['user_lastname']) && $_POST['user_firstname']){
+    if(!empty($_POST['user_password']) && !empty($_POST['user_lastname']) && !empty($_POST['user_firstname']) && !empty($_POST['user_email'])){
 
         function testInput($data){
             $data= trim($data);
@@ -14,8 +14,8 @@ if($_POST){
         }
     
         $lastname = testInput($_POST['user_lastname']);
-        $email = testInput($_POST['user_email']);
         $firstname = testInput($_POST['user_firstname']);
+        $email = testInput($_POST['user_email']);
         $passUser = $_POST['user_password'];
 
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
@@ -24,7 +24,7 @@ if($_POST){
         $users = $statement->fetchAll();
 
         foreach ($users as $user) {
-            if (($user['lastname'] == $lastname) && ($user['firstname'] == $firstname) && (password_verify($passUser, $user['pass_user']))) {
+            if (($user['lastname'] == $lastname) && ($user['firstname'] == $firstname) && ($user['email_user'] == $email) && (password_verify($passUser, $user['pass_user']))){
 
                 session_start();
     
@@ -73,13 +73,10 @@ if($_POST){
                 <div class="form-group mb-2">
                     <label for="user_email">Email</label>
                     <input type="text" id="email" name="user_email" class="form-control">
-                    <p><?php if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {echo "Email incorrect, veuillez recommencer.";} ?></p>
                 </div>
                 <div class="form-group mb-2 mt-2">
                     <label for="user_password">Mot de passe</label>
                     <input type="password" id="password" name="user_password" class="form-control">
-                    <p>Le mot de passe doit contenir 8 caractères minimum, 1 majuscule, 1 minuscule et 1 chiffre</p>
-                    <p><?php if(!preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" ,$passUser)) {echo "Le mot de passe doit contenir  incorrect, veuillez recommencer.";} ?></p>
                 </div>
                 <div>
                     <?php if (!empty($errorMessage)) echo $errorMessage ;?>
