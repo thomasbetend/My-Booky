@@ -23,15 +23,19 @@ if(isset($_SESSION['login'])){
       <li class="nav-item">
         <a class="nav-link text-capitalize" href="#">Bienvenue <?php echo $nameUser ?></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="logout.php">Logout</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="signin.php">Signin</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Panier</span></a>
-      </li>
+      <?php if(!isset($_SESSION['login'])){ ?>
+        <li class="nav-item active">
+            <a class="nav-link" href="signin.php">Signin</span></a>
+        </li>
+      <?php } ?>
+      <?php if(isset($_SESSION['login'])){ ?>
+        <li class="nav-item">
+          <a class="nav-link" href="signout.php">Signout</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Panier</span></a>
+        </li>
+      <?php } ?>
     </ul>
 
   </div>

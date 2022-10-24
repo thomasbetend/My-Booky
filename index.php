@@ -1,6 +1,6 @@
 <?php
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT * FROM book';
+$query = 'SELECT firstname, lastname, release_year, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id';
 $statement = $pdo->query($query);
 $books = $statement->fetchAll();
 ?>
@@ -21,12 +21,14 @@ $books = $statement->fetchAll();
     <div class="container w-50">
         <?php  
             if (isset($_SESSION['login'])) {?>
-                <h1 class="text-center mt-5">Liste des livres</h1>
+                <h1 class="text-center mt-5">Livres</h1>
                     <?php foreach($books as $book) { ?>
                         <div class="card text-center mt-4">
-                            <h5 class="p-2 mb-1 bg-primary text-white"><?php echo $book['name'] ?></h5>
-                            <h5 class="p-2 text-primary"><?php echo $book['author'] ?></h5>
-                            <p class="p-1 mb-1 text-black"><?php echo $book['release_year'] ?></p>
+                            <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords($book['name']) ?></h5>
+                            <h5 class="p-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
+                            <p class="p-1 mb-0 text-black"><?php echo number_format($book['price_book'], 2, ',', ' ') . '€'?></p>
+                            <a href="book-info.php?id=<?php echo $book['id'] ?>">En savoir plus</a>
+                            <button type="button" class='btn btn-dark mt-2 mb-2' name='button-add-cart'>ajouter au panier</button>
                         </div>
         <?php }} else { ?>
                 <div class="text-center">
