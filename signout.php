@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,14 +7,15 @@
     <title>Signout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 
     <?php include_once('nav-bar.php'); ?>
 
     <div class="container w-50 text-center">
         <form method="post" class="mt-5">
-                <h1>Page de déconnexion</h1>
-                <button name='button1' class="btn btn-primary mt-2">Se déconnecter</button>
+                <h1>Merci de votre visite !</h1>
+                <h4>A bientôt</h4>
+                <button name='button1' class="btn btn-primary mt-2">Signout</button>
             </div>
         </form>
     </div>
@@ -27,6 +28,9 @@
         header('location: index.php');
     }
     ?>
+
+    <?php include_once('footer.php'); ?>
+
 
 </body>
 </html>

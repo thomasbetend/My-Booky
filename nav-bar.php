@@ -3,45 +3,44 @@
 session_start();
 
 if(isset($_SESSION['login'])){
-  $nameUser = $_SESSION['login'];
+  $nameUser = 'Session ' . $_SESSION['login'];
 } else {
   $nameUser = '';
 }
 
 ?>
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Tenth navbar example">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+        <ul class="navbar-nav">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
-  <a class="navbar-brand" href="index.php">The Library Factory</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item">
-        <a class="nav-link text-capitalize" href="#">Bienvenue <?php echo $nameUser ?></a>
-      </li>
-      <?php if(!isset($_SESSION['login'])){ ?>
-        <li class="nav-item active">
-            <a class="nav-link" href="signin.php">Signin</span></a>
-        </li>
-      <?php } ?>
-      <?php if(isset($_SESSION['login'])){ ?>
-        <li class="nav-item">
-          <a class="nav-link" href="signout.php">Signout</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Panier 
-            <?php if(isset($_SESSION['cart_id'])){
-                $_SESSION['quantity']=0;
-                $_SESSION['quantity']++;
-                echo$ $_SESSION['quantity'];
-            } ?></span></a>
-        </li>
-      <?php } ?>
-    </ul>
-
-  </div>
+          <?php if(!isset($_SESSION['login'])){ ?>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.php"> </a>
+            </li>
+        <?php } else { ?>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.php">The Library Factory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="add-book.php">Ajouter un livre</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="cart.php">Panier </span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="signout.php">Signout</a>
+            </li>
+          <?php } ?>
+        </ul>
+      </div>
+    </div>
 </nav>
+<p class="text-white text-capitalize text-center bg-secondary" href="#"><small><?php echo $nameUser ?></small></p>
+
+

@@ -6,12 +6,7 @@ if($_POST){
     
     if(!empty($_POST['user_password']) && !empty($_POST['user_lastname']) && !empty($_POST['user_firstname']) && !empty($_POST['user_email'])){
 
-        function testInput($data){
-            $data= trim($data);
-            $data= stripslashes($data);
-            $data= htmlspecialchars($data);
-            return $data;
-        }
+        include_once('functions.php');
     
         $lastname = testInput($_POST['user_lastname']);
         $firstname = testInput($_POST['user_firstname']);
@@ -29,6 +24,11 @@ if($_POST){
                 session_start();
     
                 $_SESSION['login'] = $firstname . ' ' . $lastname;
+                $_SESSION['cart']=array();
+                $_SESSION['cart']['book']=array();
+                $_SESSION['cart']['quantity']=array();
+                $_SESSION['cart']['price']=array();
+                
                 header('location: index.php');
                 exit();
     
@@ -46,7 +46,7 @@ if($_POST){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,7 +54,7 @@ if($_POST){
     <title>Signin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 
     <?php include_once('nav-bar.php'); ?>
 
@@ -72,7 +72,7 @@ if($_POST){
                 </div>
                 <div class="form-group mb-2">
                     <label for="user_email">Email</label>
-                    <input type="text" id="email" name="user_email" class="form-control">
+                    <input type="email" id="email" name="user_email" class="form-control">
                 </div>
                 <div class="form-group mb-2 mt-2">
                     <label for="user_password">Mot de passe</label>
@@ -88,6 +88,8 @@ if($_POST){
             <p class="mt-4 text-secondary"><a href="signup.php">Pas encore inscrit ? Créez un compte.</a></p>
         </div>
     </div>
+
+    <?php include_once('footer.php'); ?>
 
 </body>
 </html>

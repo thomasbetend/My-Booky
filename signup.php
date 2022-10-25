@@ -4,51 +4,55 @@ if($_POST){
 
     $errorMessage = '';
     
+    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+    $query = 'INSERT INTO user (lastname, firstname, pass_user, email_user) VALUES (:lastname, :firstname, :pass_user, :email_user)';
+    $query2 = 'SELECT * FROM user';
+    
     if(!empty($_POST['user_lastname']) && !empty($_POST['user_firstname']) && filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)){
-        
-        if (preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@&\"\'(§è!çà)-_?,.;\/:+=ù%£`$*#°]{8,50}$/", ($_POST['user_password']))) {
-            function testInput($data){
-                $data= trim($data);
-                $data= stripslashes($data);
-                $data= htmlspecialchars($data);
-                $data= strtolower($data);
-                return $data;
-            }
-        
-            $lastname = testInput($_POST['user_lastname']);
-            $firstname = testInput($_POST['user_firstname']);
-            $email = testInput($_POST['user_email']);
-            $passUser = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+                    
 
-        
-            $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-            $query = 'INSERT INTO user (lastname, firstname, pass_user, email_user) VALUES (:lastname, :firstname, :pass_user, :email_user)';
-            $statement = $pdo->prepare($query);
-        
-            $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-            $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-            $statement->bindValue(':pass_user', $passUser, \PDO::PARAM_STR);
-            $statement->bindValue(':email_user', $email, \PDO::PARAM_STR);
+                if (preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@&\"\'(§è!çà)-_?,.;\/:+=ù%£`$*#°]{8,50}$/", ($_POST['user_password']))) {
 
-            $statement->execute();
+                    include_once('functions.php');
 
-            session_start();
-            $_SESSION['login'] = $firstname . ' ' . $lastname;
-            header('location: index.php');
-            exit();
+                    $lastname = testInput($_POST['user_lastname']);
+                    $firstname = testInput($_POST['user_firstname']);
+                    $email = testInput($_POST['user_email']);
+                    $passUser = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
 
-        } else {
-            $errorMessage = 'Mot de passe incorrect';
-        }
+                    
+                    $statement = $pdo->prepare($query);
+                
+                    $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+                    $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+                    $statement->bindValue(':pass_user', $passUser, \PDO::PARAM_STR);
+                    $statement->bindValue(':email_user', $email, \PDO::PARAM_STR);
+
+                    $statement->execute();
+
+                    session_start();
+                    $_SESSION['login'] = $firstname . ' ' . $lastname;
+                    $SESSION['cart']=array();
+                    $_SESSION['cart']['book']=array();
+                    $_SESSION['cart']['quantity']=array();
+                    $_SESSION['cart']['price']=array();
+
+                    header('location: index.php');
+                    exit();
+
+                } else {
+                    $errorMessage = 'Mot de passe incorrect';
+                }
+            
     } else {
         $errorMessage = 'Remplissez tous les champs';
-    }
 } 
+}
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -56,7 +60,7 @@ if($_POST){
     <title>Signup</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 
     <?php include_once('nav-bar.php'); ?>
 
@@ -82,7 +86,7 @@ if($_POST){
                     <p class='text-secondary'>Le mot de passe doit contenir 8 caractères minimum dont : <br/> 1 majuscule, 1 minuscule et 1 chiffre</p>
                 </div>
                 <div>
-                    <?php if (!empty($errorMessage)) echo $errorMessage ;?>
+                    <?php if (!empty($errorMessage)) echo $errorMessage ; ?>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary mt-2">Signup</button>
