@@ -17,7 +17,9 @@ $books = $statement->fetchAll();
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
+    <?php include_once('nav-bar.php'); 
+    
+    ?>
 
     <main>
 
@@ -41,24 +43,24 @@ $books = $statement->fetchAll();
                             <div class="card shadow-sm">
 
                                 <div class="card-body text-center">
-                                    <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords($book['name']) ?></h5>
+                                    <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes($book['name'])) ?></h5>
                                     <h5 class="pt-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
                                     <a href="book-info.php?id=<?php echo $book['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
                                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                                    <form><a href="cart.php?id=<?php echo $book['id'] ?>" class='btn btn-dark mt-2 mb-3' name='button-add-cart'>ajouter au panier</button></a></form>
-                                    <?php $_SESSION['cart']['book'][$book['id']] = $book['id'] ?>
+                                    <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
+                                    <?php $_SESSION['cart']['price'][$book['id']] = $book['price_book']; ?>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                       
                     <?php } ?>  
-
                 </div>
             </div>
         </div>
 
-        <p class="mt-4 text-center"><a href="add-book.php" class="text-center">Pour vendre votre livre, ajoutez-le à la liste.</a></p>
+        <p class="mt-4 text-center"><a href="add-book.php" class="text-center">Pour vendre votre livre, ajoutez-le au catalogue.</a></p>
+        
         <?php include_once('footer.php');
+
             } else { ?>
                 <div class="text-center">
                     <h1 class="mt-5">The Library Factory</h1>
@@ -68,8 +70,6 @@ $books = $statement->fetchAll();
                 </div>
         <?php } ?>
         </div>
-    
-    </main>
-
+    </main> 
 </body>
 </html>

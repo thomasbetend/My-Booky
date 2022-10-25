@@ -13,7 +13,7 @@
 
     <div class="container w-50 text-center">
         <form method="post" class="mt-5">
-                <h1>Merci de votre visite !</h1>
+                <h2>Merci <?php echo(ucwords($_SESSION['login']));?> de votre visite !</h2>
                 <h4>A bientôt</h4>
                 <button name='button1' class="btn btn-primary mt-2">Signout</button>
             </div>

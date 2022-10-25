@@ -28,10 +28,10 @@ if(isset($_SESSION['login'])){
               <a class="nav-link active" aria-current="page" href="index.php">The Library Factory</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="add-book.php">Ajouter un livre</a>
+              <a class="nav-link" href="add-book.php">Vendre ses livres</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="cart.php">Panier </span></a>
+              <a class="nav-link" href="cart.php">Panier</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="signout.php">Signout</a>

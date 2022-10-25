@@ -24,10 +24,10 @@ include_once('nav-bar.php');
         if($book['id'] == $_GET['id']){ ?>
             <div class="container w-50">
                 <div class="card text-center mt-4">
-                    <h3 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords($book['name']) ?></h3>
+                    <h3 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes(($book['name']))) ?></h3>
                     <h5 class="p-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
                     <h4 class="p-2 text-black">Résumé</h4>
-                    <p class="p-4 mb-0 text-black"><?php echo $book['sumup'] ?></p>
+                    <p class="p-4 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])) ?></p>
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
                     <form action="" method="post"><button type="button" class='btn btn-dark mt-2 mb-2' name='button-add-cart' value="">ajouter au panier</button></form>
                         <?php if($_POST){

@@ -60,6 +60,7 @@ if($_POST){
 
     <div class="container w-50">
         <div class="mt-5"></div>
+            <h5 class="text-secondary">The Library Factory</h5>
             <h3>Identifiez-vous</h3>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
                 <div class="form-group mb-2">

@@ -12,8 +12,8 @@ if($_POST){
         $lastname = testInput($_POST['authorLastname']);
         $firstname = testInput($_POST['authorFirstname']);
         $bookName = testInput($_POST['bookName']);
-        $bookPrice = testInput($_POST['bookPrice']);
-        $bookSumup= testInput($_POST['bookSumup']);
+        $bookPrice = floatval(testInput($_POST['bookPrice']));
+        $bookSumup = testInput($_POST['bookSumup']);
 
 
         $statementAuthor = $pdo->prepare($queryAuthor);
@@ -27,12 +27,14 @@ if($_POST){
         $statementIdAuthor = $pdo->query($queryIdAuthor);
         $authorId = $statementIdAuthor->fetch();
 
-        $queryBook = 'INSERT INTO book (name, author_id, price_book) VALUES(:bookname, :bookauthorid, 12)';
+        $queryBook = 'INSERT INTO book (name, author_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookprice, :sumup)';
 
         $statementBook = $pdo->prepare($queryBook);
 
         $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
         $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
+        $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
+        $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
 
         $statementBook->execute();
 
@@ -57,29 +59,30 @@ if($_POST){
 
     <?php include_once('nav-bar.php'); ?>
 
-    <div class="container w-50">
+    <div class="container w-50 ">
         <div class="mt-5"></div>
-            <h3>Ajoutez votre livre à The Library Factory</h3>
+            <h3 class="text-center">Vendez votre livre sur The Library Factory</h3>
+            <h5 class="text-center">Ajoutez-le au catalogue</h5>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
                 <div class="form-group mb-2">
-                    <label for="bookName">Nom du livre</label>
+                    <label for="bookName">Titre du livre (obligatoire)</label>
                     <input type="text" id="bookName" name="bookName" class="form-control">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="authorFirstname">Prénom auteur</label>
-                    <input type="text" id="authorFirstname" name="authorFirstname" class="form-control">
+                    <label for="bookPrice">Prix (obligatoire)</label>
+                    <input type="text" id="bookPrice" name="bookPrice" class="form-control">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="authorLastname">Nom auteur</label>
-                    <input type="text" id="authorLastname" name="authorLastname" class="form-control">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="bookSumup">Résumé du livre</label>
+                    <label for="bookSumup">Résumé</label>
                     <textarea id="bookSumup" name="bookSumup" class="form-control"></textarea>
                 </div>
                 <div class="form-group mb-2">
-                    <label for="bookPrice">Prix</label>
-                    <input type="text" id="bookPrice" name="bookPrice" class="form-control">
+                    <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
+                    <input type="text" id="authorLastname" name="authorLastname" class="form-control">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="authorFirstname">Prénom de l'auteur</label>
+                    <input type="text" id="authorFirstname" name="authorFirstname" class="form-control">
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary mt-2">Add book</button>

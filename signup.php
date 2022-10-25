@@ -32,13 +32,12 @@ if($_POST){
 
                     session_start();
                     $_SESSION['login'] = $firstname . ' ' . $lastname;
-                    $SESSION['cart']=array();
+                    $_SESSION['cart']=array();
                     $_SESSION['cart']['book']=array();
                     $_SESSION['cart']['quantity']=array();
                     $_SESSION['cart']['price']=array();
 
-                    header('location: index.php');
-                    exit();
+                    $errorMessage = 'Livre ajouté ! <a href="index.php">retour à la liste des livres</a>';
 
                 } else {
                     $errorMessage = 'Mot de passe incorrect';
@@ -66,6 +65,7 @@ if($_POST){
 
     <div class="container w-50">
         <div class="mt-5"></div>
+            <h5 class="text-secondary">The Library Factory</h5>
             <h3>Créez votre compte</h3>
             <form method="post" class="mt-3">
                 <div class="form-group mb-2">
@@ -95,6 +95,8 @@ if($_POST){
             <p class="mt-4 text-secondary"><a href="signin.php">Déjà inscrit ? Connectez-vous.</a></p>
         </div>
     </div>
+    
+    <?php include_once('footer.php'); ?>
 
 </body>
 </html>
