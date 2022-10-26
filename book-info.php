@@ -1,6 +1,6 @@
 <?php
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT firstname, lastname, price_book, book.id id, birthdate bdate, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
+$query = 'SELECT firstname, lastname, price_book, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
 $statement = $pdo->query($query);
 $books = $statement->fetchAll();
 ?>

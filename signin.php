@@ -22,12 +22,13 @@ if($_POST){
             if (($user['lastname'] == $lastname) && ($user['firstname'] == $firstname) && ($user['email_user'] == $email) && (password_verify($passUser, $user['pass_user']))){
 
                 session_start();
-    
+                
+                $_SESSION['id'] = $user['id'];
                 $_SESSION['login'] = $firstname . ' ' . $lastname;
                 $_SESSION['cart']=array();
-                $cartBook = $_SESSION['cart']['book']=array();
-                $cartQuantity = $_SESSION['cart']['quantity']=array();
-                $cartPrice = $_SESSION['cart']['price']=array();
+                $_SESSION['cart']['book']=array();
+                $_SESSION['cart']['quantity']=array();
+                $_SESSION['cart']['price']=array();
 
                 for($i=0; $i<1000; $i++){
                     $_SESSION['cart']['quantity'][$i]=0;

@@ -17,5 +17,31 @@
                 </div>
 
     </main> 
-</body>
+    <?php 
+        
+    if(isset($_POST['buttonPayment'])){
+    
+    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+
+
+    $queryOrder = 'INSERT INTO orders (user_id, total_price, total_number) VALUES (:user_id, :total_price, :total_number)';
+    $statementOrder = $pdo->prepare($queryOrder);
+
+    $statementOrder->bindValue(':user_id', $_SESSION['id'], \PDO::PARAM_STR );
+    $statementOrder->bindValue(':total_price', array_sum($_SESSION['cart']['price']), \PDO::PARAM_STR );
+    $statementOrder->bindValue(':total_number', array_sum($_SESSION['cart']['quantity']), \PDO::PARAM_STR );
+
+    $statementOrder->execute();
+
+    $_SESSION['cart'] = array();
+    $_SESSION['cart']['book']=array();
+    $_SESSION['cart']['quantity']=array();
+    $_SESSION['cart']['price']=array();
+
+    for($i=0; $i<1000; $i++){
+        $_SESSION['cart']['quantity'][$i]=0;
+        $_SESSION['cart']['price'][$i]=0;
+    }
+
+    } ?></body>
 </html>

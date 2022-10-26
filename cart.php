@@ -1,9 +1,10 @@
 <?php
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id';
-$statement = $pdo->query($query);
-$books = $statement->fetchAll();
+
+$queryBook = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id';
+$statementBook = $pdo->query($queryBook);
+$books = $statementBook->fetchAll();
 
 ?>
 
@@ -27,7 +28,9 @@ $books = $statement->fetchAll();
 
 
   if(!empty($_POST['buttonCart'])) {
+
       $buttonCart = $_POST['buttonCart'];
+
       $_SESSION['cart']['quantity'][$buttonCart]+=1;
       foreach($books as $book){
         if($buttonCart == $book['id']){
@@ -81,7 +84,7 @@ $books = $statement->fetchAll();
                         <div style="width: 80px;">
                           <h6 class="mb-0"><?php echo number_format($book['price_book'], 2, ',', ' ') .' €'; ?></h5>
                         </div>
-                        <a href="cart.php?<?php echo $book['id']?>" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                          <a href="cart.php?<?php echo $book['id']?>" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
                         <?php  
                         if(!empty($_GET[$book['id']])){echo 'pouh';} ?>
                       </div>
@@ -116,10 +119,6 @@ $books = $statement->fetchAll();
                             <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
                       </div>-->
                     </form>
-                    <?php if(!empty($_POST['buttonPayment'])){
-                        $_SESSION['cart']['quantity']=array();
-                        unset($_SESSION['cart']);
-                    } ?>
 
                   </div>
                 </div>
