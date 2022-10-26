@@ -31,6 +31,7 @@ if($_POST){
                     $statement->execute();
 
                     session_start();
+                    $_SESSION['id'];
                     $_SESSION['login'] = $firstname . ' ' . $lastname;
                     $_SESSION['cart']=array();
                     $_SESSION['cart']['book']=array();

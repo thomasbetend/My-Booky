@@ -4,6 +4,7 @@ if($_POST){
 
     if(!empty(($_POST['authorLastname'])) && (!empty($_POST['bookName'])) && (!empty($_POST['bookPrice']))){
 
+
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
         $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
 
@@ -38,6 +39,9 @@ if($_POST){
 
         $statementBook->execute();
 
+        $queryExistingAuthor = 'SELECT firstname, lastname, author_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
+        $statementExistingAuthor = $pdo->query($queryExistingAuthor);
+        $author = $statementExistingAuthor->fetchAll();
         header('location: index.php');
         exit();
 
@@ -77,6 +81,15 @@ if($_POST){
                     <label for="bookSumup">Résumé</label>
                     <textarea id="bookSumup" name="bookSumup" class="form-control"></textarea>
                 </div>
+                <div class="form-group mb-2">
+                    <label for="authorLastname">Auteur existant</label>
+                    <select name="author_id" class="form-control">
+                        <?php foreach($authors as $author){ ?> 
+                            <option value="<?php echo $author['author_id'] ;?>"><?php echo $author['firstname'] . ' ' . $author['lastname'] ;?></option> 
+                            <?php } ?>
+                    </select>
+                </div>
+                <p>ou</p>
                 <div class="form-group mb-2">
                     <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
                     <input type="text" id="authorLastname" name="authorLastname" class="form-control">
