@@ -21,6 +21,7 @@
     </div>
 
     <?php 
+
     if($_POST){
         $_SESSION = array();
         session_destroy();

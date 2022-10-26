@@ -16,12 +16,9 @@ $books = $statement->fetchAll();
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); 
-    
-    ?>
+    <?php include_once('nav-bar.php'); ?>
 
     <main>
-
         <section class="py-5 text-center container">
             <div class="row py-lg-1">
                 <div class="col-lg-6 col-md-8 mx-auto">
@@ -47,7 +44,7 @@ $books = $statement->fetchAll();
                                     <a href="book-info.php?id=<?php echo $book['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
                                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
                                     <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
-                                    <?php $_SESSION['cart']['price'][$book['id']] = $book['price_book']; ?>
+                                    
                                 </div>
                             </div>
                         </div>                       
@@ -64,11 +61,11 @@ $books = $statement->fetchAll();
                 <div class="text-center">
                     <h1 class="mt-5">The Library Factory</h1>
                     <h2>Welcome !!!</h2>
-                    <h6 class="mt-3">Pour voir la liste des livres, authentifiez-vous</h6>
+                    <h6 class="mt-3">Pour vendre ou acheter des livres, authentifiez-vous</h6>
                     <a class="btn btn-primary mt-2" href="signin.php" role="button">Signin</a>
                 </div>
         <?php } ?>
-        </div>
+
     </main> 
 </body>
 </html>

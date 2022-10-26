@@ -39,6 +39,7 @@ if($_POST){
         $statementBook->execute();
 
         header('location: index.php');
+        exit();
 
 } else { 
         $errorMessage = 'Renseignez au moins le nom du livre et de l\'auteur, et le prix du livre';

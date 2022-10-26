@@ -33,12 +33,14 @@ if($_POST){
                     session_start();
                     $_SESSION['login'] = $firstname . ' ' . $lastname;
                     $_SESSION['cart']=array();
-                    $_SESSION['cart']['book']=array();
-                    $_SESSION['cart']['quantity']=array();
+                    $cartBook = $_SESSION['cart']['book']=array();
+                    $cartQuantity = $_SESSION['cart']['quantity']=array();
+                    $cartPrice = $_SESSION['cart']['price']=array();
+
                     for($i=0; $i<1000; $i++){
-                        $_SESSION['cart']['quantity'][$i]=0;
+                        $cartQuantity[$i]=0;
+                        $cartPrice[$i]=0;
                     }
-                    $_SESSION['cart']['price']=array();
 
                     header('location: index.php');
                     exit();
