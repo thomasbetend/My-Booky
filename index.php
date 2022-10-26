@@ -36,6 +36,7 @@ $books = $statement->fetchAll();
                     Prix Max <input type="text" name="maxPrice">
                 </div> 
                 <select name="author_id" id="">
+                    <option value=""></option>
                     <?php foreach($books as $book) { ?>
                     <option value="<?php echo $book['a_id']?>"><?php echo $book['lastname']?></option>
                     <?php } ?>

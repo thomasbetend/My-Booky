@@ -3,21 +3,46 @@
         $errorMessage = '';
 
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-
-        if($_SERVER['REQUEST_METHOD']=== 'POST'){
-            $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname';
-            $queryUdateBook = 'UPDATE book SET name = :name, sumup = :sumup, price_book = :price_book';
-
-            $stmtupdateAuthor= $pdo->prepare($queryUdateAuthor);
-            $stmtupdateAuthor->execute([$_POST['authorLastname'], $_POST['authorFirstname']]);
-
-            $stmtUpdateBook= $pdo->prepare($queryUdateBook);
-            $stmtUpdateBook->execute([$_POST['bookName'], $_POST['bookSumup'], $_POST['bookPrice']]);
-        }
-
         $querySelect = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY id DESC';
         $statement = $pdo->query($querySelect);
         $books = $statement->fetchAll();
+
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+/*             var_dump($_GET); die();
+ */
+            include_once('functions.php');
+
+            $lastname = testInput($_POST['authorLastname']);
+            $firstname = testInput($_POST['authorFirstname']);
+            $bookName = testInput($_POST['bookName']);
+            $bookPrice = floatval(testInput($_POST['bookPrice']));
+            $bookSumup = testInput($_POST['bookSumup']);
+
+            $querySelect = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY id DESC';
+            $statement = $pdo->query($querySelect);
+            $books = $statement->fetchAll();
+            foreach($books as $book){
+                if($book['id'] == $_GET['id']){
+
+                    $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname WHERE id = ' . $book['a_id'];
+
+                    $stmtUpdateAuthor= $pdo->prepare($queryUdateAuthor);
+                    $stmtUpdateAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+                    $stmtUpdateAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+                    $stmtUpdateAuthor->execute();
+
+                    $queryUdateBook = 'UPDATE book SET name = :name, sumup = :sumup, price_book = :price_book WHERE id = ' . $book['id'];
+
+                    $stmtUpdateBook= $pdo->prepare($queryUdateBook);
+                    $stmtUpdateBook->bindValue(':name', $bookName, \PDO::PARAM_STR);
+                    $stmtUpdateBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+                    $stmtUpdateBook->bindValue(':price_book', $bookPrice, \PDO::PARAM_STR);
+
+                    $stmtUpdateBook->execute();      
+            
+        }}}
 
         
 
@@ -43,40 +68,40 @@
     <?php foreach($books as $book) {
         if($book['id'] == $_GET['id']){ ?>
 
-    <div class="container w-50 ">
-        <div class="mt-5"></div>
-            <h3 class="text-center">Modifiez le livre</h3>
-            <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
-                <div class="form-group mb-2">
-                    <label for="bookName">Titre du livre (obligatoire)</label>
-                    <input type="text" id="bookName" name="bookName" value="<?php echo ucwords($book['name']) ?>" class="form-control">
+            <div class="container w-50 ">
+                <div class="mt-5"></div>
+                    <h3 class="text-center">Modifiez le livre</h3>
+                    <form action="" method="post" class="mt-3">
+                        <div class="form-group mb-2">
+                            <label for="bookName">Titre du livre (obligatoire)</label>
+                            <input type="text" id="bookName" name="bookName" value="<?php echo ucwords($book['name']) ?>" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="bookPrice" >Prix (obligatoire)</label>
+                            <input type="text" id="bookPrice" name="bookPrice" class="form-control" value="<?php echo number_format($book['price_book'], 2, ',', ' ') ?>">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="bookSumup">Résumé</label>
+                            <textarea id="bookSumup" name="bookSumup" class="form-control" value="<?php echo ucfirst($book['sumup']) ?>"></textarea>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
+                            <input type="text" id="authorLastname" name="authorLastname" class="form-control" value="<?php echo ucwords($book['lastname']) ?>">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="authorFirstname">Prénom de l'auteur</label>
+                            <input type="text" id="authorFirstname" name="authorFirstname" class="form-control" value="<?php echo ucwords($book['firstname']) ?>">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2" value="">Modifiez le livre</button>
+                        </div>
+                    </form>
+                <?php }}?>
+                    <div>
+                        <?php if (!empty($errorMessage)) echo $errorMessage ; ?>
+                    </div>
                 </div>
-                <div class="form-group mb-2">
-                    <label for="bookPrice" >Prix (obligatoire)</label>
-                    <input type="text" id="bookPrice" name="bookPrice" class="form-control" value="<?php echo number_format($book['price_book'], 2, ',', ' ') ?>">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="bookSumup">Résumé</label>
-                    <textarea id="bookSumup" name="bookSumup" class="form-control" value="<?php echo ucfirst($book['sumup']) ?>"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
-                    <input type="text" id="authorLastname" name="authorLastname" class="form-control" value="<?php echo ucwords($book['lastname']) ?>">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="authorFirstname">Prénom de l'auteur</label>
-                    <input type="text" id="authorFirstname" name="authorFirstname" class="form-control" value="<?php echo ucwords($book['firstname']) ?>">
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary mt-2">Modifiez le livre</button>
-                </div>
-            </form>
-        <?php }}?>
-            <div>
-                <?php if (!empty($errorMessage)) echo $errorMessage ; ?>
             </div>
-        </div>
-    </div>
 
     <?php include_once('footer.php'); ?>
 
