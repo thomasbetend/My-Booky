@@ -3,7 +3,6 @@ $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 $query = 'SELECT firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY id DESC';
 $statement = $pdo->query($query);
 $books = $statement->fetchAll();
-
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +28,7 @@ $books = $statement->fetchAll();
                 <?php if (isset($_SESSION['login'])) {?>
 
                     <h1 class="fw-light">The Library Factory</h1>
-                    <h5 class="text-center mt-2 mb4 text-secondary">Les livres au meilleur prix</h5>
+                    <h5 class="text-center mt-2 mb4 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
                 </div>
             </div>
         </section>

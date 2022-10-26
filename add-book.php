@@ -62,7 +62,7 @@ if($_POST){
     <div class="container w-50 ">
         <div class="mt-5"></div>
             <h3 class="text-center">Vendez votre livre sur The Library Factory</h3>
-            <h5 class="text-center">Ajoutez-le au catalogue</h5>
+            <h5 class="text-center text-secondary">Ajoutez-le au catalogue</h5>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
                 <div class="form-group mb-2">
                     <label for="bookName">Titre du livre (obligatoire)</label>

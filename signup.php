@@ -35,10 +35,13 @@ if($_POST){
                     $_SESSION['cart']=array();
                     $_SESSION['cart']['book']=array();
                     $_SESSION['cart']['quantity']=array();
+                    for($i=0; $i<1000; $i++){
+                        $_SESSION['cart']['quantity'][$i]=0;
+                    }
                     $_SESSION['cart']['price']=array();
 
-                    $errorMessage = 'Livre ajouté ! <a href="index.php">retour à la liste des livres</a>';
-
+                    header('location: index.php');
+                    exit();
                 } else {
                     $errorMessage = 'Mot de passe incorrect';
                 }

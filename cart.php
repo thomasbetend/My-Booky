@@ -1,5 +1,9 @@
 <?php
 
+$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+$query = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id';
+$statement = $pdo->query($query);
+$books = $statement->fetchAll();
 
 ?>
 
@@ -16,24 +20,36 @@
 
     <?php 
 
-    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-    $query = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id';
-    $statement = $pdo->query($query);
-    $books = $statement->fetchAll();
 
     include_once('nav-bar.php'); 
     include_once('functions.php');
 
-    if($_POST) {
+
+    if(!empty($_POST)) {
+
+
         $buttonCart = $_POST['buttonCart'];
         echo $buttonCart  . '   ';
-        if(isset($_SESSION['cart']['quantity'])){
-        $quantity = $_SESSION['cart']['quantity'][$buttonCart]+=1;}
+        array_push($_SESSION['cart']['quantity'],[$buttonCart]);
+        $_SESSION['cart']['quantity'][$buttonCart]=1;
 
+
+        
         echo array_sum($_SESSION['cart']['quantity']);
+
+
     }
+
+    foreach($books as $book){
+      if($buttonCart == $book['id']){
+        if(!empty($_SESSION['cart']['quantity']))
+        echo '    ' . $_SESSION['cart']['quantity'][$book['id']];
+      }
+    } 
         
     ?>
+
+    
 
     <div class="container w-50 text-center">
 
@@ -66,6 +82,7 @@
                         class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
                   </div>
                 </div>
+
 
                 <div class="card mb-3">
                   <div class="card-body">
@@ -182,8 +199,6 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                       <h5 class="mb-0">Card details</h5>
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                        class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
                     </div>
 
                     <p class="small mb-2">Card type</p>
@@ -195,61 +210,10 @@
                         class="fab fa-cc-amex fa-2x me-2"></i></a>
                     <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
 
-                    <form class="mt-4">
-                      <div class="form-outline form-white mb-4">
-                        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
-                          placeholder="Cardholder's Name" />
-                        <label class="form-label" for="typeName">Cardholder's Name</label>
-                      </div>
 
-                      <div class="form-outline form-white mb-4">
-                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
-                          placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-                        <label class="form-label" for="typeText">Card Number</label>
-                      </div>
 
-                      <div class="row mb-4">
-                        <div class="col-md-6">
-                          <div class="form-outline form-white">
-                            <input type="text" id="typeExp" class="form-control form-control-lg"
-                              placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
-                            <label class="form-label" for="typeExp">Expiration</label>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-outline form-white">
-                            <input type="password" id="typeText" class="form-control form-control-lg"
-                              placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
-                            <label class="form-label" for="typeText">Cvv</label>
-                          </div>
-                        </div>
-                      </div>
 
-                    </form>
 
-                    <hr class="my-4">
-
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-2">Subtotal</p>
-                      <p class="mb-2">$4798.00</p>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-2">Shipping</p>
-                      <p class="mb-2">$20.00</p>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-4">
-                      <p class="mb-2">Total(Incl. taxes)</p>
-                      <p class="mb-2">$4818.00</p>
-                    </div>
-
-                    <button type="button" class="btn btn-info btn-block btn-lg">
-                      <div class="d-flex justify-content-between">
-                        <span>$4818.00</span>
-                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                      </div>
-                    </button>
 
                   </div>
                 </div>
