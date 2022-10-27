@@ -1,4 +1,11 @@
 <?php
+
+$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+
+$queryExistingAuthors = 'SELECT firstname, lastname, author_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
+$statementExistingAuthors = $pdo->query($queryExistingAuthors);
+$authors = $statementExistingAuthors->fetchAll(); 
+
 if($_POST){
     $errorMessage = '';
 
@@ -39,9 +46,6 @@ if($_POST){
 
         $statementBook->execute();
 
-        $queryExistingAuthor = 'SELECT firstname, lastname, author_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
-        $statementExistingAuthor = $pdo->query($queryExistingAuthor);
-        $author = $statementExistingAuthor->fetchAll();
         header('location: index.php');
         exit();
 
@@ -82,11 +86,13 @@ if($_POST){
                     <textarea id="bookSumup" name="bookSumup" class="form-control"></textarea>
                 </div>
                 <div class="form-group mb-2">
-                    <label for="authorLastname">Auteur existant</label>
-                    <select name="author_id" class="form-control">
-                        <?php foreach($authors as $author){ ?> 
-                            <option value="<?php echo $author['author_id'] ;?>"><?php echo $author['firstname'] . ' ' . $author['lastname'] ;?></option> 
-                            <?php } ?>
+                    <label for="authorLastname"></label>
+                    <select name="author_id" class="form-select">
+                        <option value="">Auteur existant</option>
+                        <?php
+                            foreach($authors as $author){ ?> 
+                            <option value="<?php echo $author['author_id'] ;?>"><?php echo ucwords($author['firstname'] . ' ' . $author['lastname']) ;?></option> 
+                         <?php } ?>
                     </select>
                 </div>
                 <p>ou</p>

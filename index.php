@@ -22,10 +22,10 @@ $books = $statement->fetchAll();
         <section class="py-5 text-center container">
             <div class="row py-lg-1">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                <?php if (isset($_SESSION['login'])) {?>
+                    <?php if (isset($_SESSION['login'])) {?>
 
-                    <h1 class="fw-light">The Library Factory</h1>
-                    <h5 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
+                        <h1 class="mt-0">The Library Factory</h1>
+                        <h5 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
                 </div>
             </div>
 
@@ -34,64 +34,47 @@ $books = $statement->fetchAll();
                 <div>   
                     Prix Min <input type="text" name="minPrice">
                     Prix Max <input type="text" name="maxPrice">
+                    <select name="author_id" id="">
+                        <option value="">Nom de l'auteur</option>
+                        <?php foreach($books as $book) { ?>
+                        <option value="<?php echo $book['a_id']?>"><?php echo ucfirst($book['lastname'])?></option>
+                        <?php } ?>
+                    </select>
+                    <button type="submit" class="btn btn-secondary small mt-2 mb-2">Recherchez</button>
                 </div> 
-                <select name="author_id" id="">
-                    <option value=""></option>
-                    <?php foreach($books as $book) { ?>
-                    <option value="<?php echo $book['a_id']?>"><?php echo $book['lastname']?></option>
-                    <?php } ?>
-                </select>
-                <button type="submit" class="btn btn-secondary small mt-2 mb-2">search</button>
             </form>
             <a href="index.php">Réactualiser la recherche</a>
 
             <?php 
-                if(empty($_POST['minPrice'])){$_POST['minPrice'] = 0;}
-                if(empty($_POST['maxPrice'])){$_POST['maxPrice'] = 100000000;}
-                if((!empty($_POST['minPrice'])) || (!empty($_POST['maxPrice']))){
-                        $queryPriceBetween = 'SELECT firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' ORDER BY id DESC';
-                        $statementPriceBetween = $pdo->query($queryPriceBetween);
-                        $betweenPrices = $statementPriceBetween->fetchAll(); ?>
-            
-            <?php if(!empty($_POST['author_id'])){ 
-                    foreach($books as $book) { 
-                        if($book['id'] === $_POST['author_id']){ ?>
-                    <div class="album bg-light">
-                    <div class="container">
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                                <div class="col">
-                                    <div class="card shadow-sm">
+                if(empty($_POST['minPrice'])){$_POST['minPrice'] = 0;};
+                if(empty($_POST['maxPrice'])){$_POST['maxPrice'] = 100000000;};
+                if($_SERVER['REQUEST_METHOD'] === 'POST'){
+                    if(!empty($_POST['author_id'])){
+                    $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' AND author_id = '. $_POST['author_id'] . ' ORDER BY id DESC';
+                    } else {
+                    $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' ORDER BY id DESC';
+                    }
+                    $statementSearchBook = $pdo->query($querySearchBook);
+                    $searchBooks = $statementSearchBook->fetchAll();
+                    ?>
 
-                                        <div class="card-body text-center">
-                                            <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes($book['name'])) ?></h5>
-                                            <h5 class="pt-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
-                                            <a href="book-info.php?id=<?php echo $book['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
-                                            <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                                            <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
-                                        </div>
-                                    </div>
-                                </div>                       
-                             <?php } ?>
-                        </div>
-                    </div>
-                </div>
-                <?php }} ?>
+                
          </section>
 
                     <div class="album bg-light">
                         <div class="container">
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            <?php foreach($betweenPrices as $betweenPrice){ ?>
+                            <?php foreach($searchBooks as $searchBook){ ?>
                                     <div class="col">
                                         <div class="card shadow-sm">
 
                                             <div class="card-body text-center">
-                                                <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes($betweenPrice['name'])) ?></h5>
-                                                <h5 class="pt-2 text-primary"><?php echo ucwords($betweenPrice['firstname']) . ' ' . ucwords($betweenPrice['lastname']) ?></h5>
-                                                <a href="book-info.php?id=<?php echo $betweenPrice['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
-                                                <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($betweenPrice['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                                                <form name="<?php echo $betweenPrice['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $betweenPrice['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
-                                                <a href="book-modif.php?id=<?php echo $betweenPrice['id']?>" class="text-secondary">Modifier livre</a>
+                                                <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes($searchBook['name'])) ?></h5>
+                                                <h5 class="pt-2 text-primary"><?php echo ucwords($searchBook['firstname']) . ' ' . ucwords($searchBook['lastname']) ?></h5>
+                                                <a href="book-info.php?id=<?php echo $searchBook['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
+                                                <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($searchBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
+                                                <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
+                                                <a href="book-modif.php?id=<?php echo $searchBook['id']?>" class="text-secondary">Modifier livre</a>
                                                 
                                             </div>
                                         </div>

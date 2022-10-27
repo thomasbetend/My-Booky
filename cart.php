@@ -63,7 +63,7 @@ $books = $statementBook->fetchAll();
                 </div>
                 <!-- displays each book -->
                 <?php foreach($books as $book){
-                if($_SESSION['cart']['quantity'][$book['id']]>0){ ?>
+                if($_SESSION['cart']['quantity'][$book['id']]>0){  ?>
 
                 <div class="card mb-3">
                   <div class="card-body">
@@ -78,21 +78,25 @@ $books = $statementBook->fetchAll();
                         </div>
                       </div>
                       <div class="d-flex flex-row align-items-center">
-                        <div style="width: 50px;">
-                          <h6 class="fw-normal mb-0"><?php echo $_SESSION['cart']['quantity'][$book['id']] ?></h5>
-                        </div>
                         <div style="width: 80px;">
                           <h6 class="mb-0"><?php echo number_format($book['price_book'], 2, ',', ' ') .' €'; ?></h5>
                         </div>
-                          <a href="cart.php?<?php echo $book['id']?>" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
-                        <?php  
-                        if(!empty($_GET[$book['id']])){echo 'pouh';} ?>
+                        <div style="width: 50px;">
+                          <h6 class="fw-normal mb-0"><?php echo $_SESSION['cart']['quantity'][$book['id']] ?></h5>
+                        </div>
+                        <div>
+                          <a href="cart-delete.php?id=<?php echo $book['id']?>" style="color: #7F7F7F;"><i class="fas fa-trash-alt"></i></a>
+                          <a href="cart-add.php?id=<?php echo $book['id']?>" style="color: #7F7F7F;"><i class="fas fa-plus"></i></a>
+                          <a href="cart-less.php?id=<?php echo $book['id']?>" style="color: #7F7F7F;"><i class="fas fa-minus"></i></a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                  <?php 
-                   }} ?>
+                <?php 
+                  }} ?>
+
+
 
               </div>
               <div class="col-lg-5">
@@ -130,6 +134,7 @@ $books = $statementBook->fetchAll();
     </div>
   </div>
 </section>
+
 
 <?php include_once('footer.php'); ?>
 

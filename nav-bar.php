@@ -28,7 +28,7 @@ if(isset($_SESSION['login'])){
               <a class="nav-link active" aria-current="page" href="index.php">The Library Factory</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="add-book.php">Vendre ses livres</a>
+              <a class="nav-link" href="add-book.php">Ajouter un livre</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="cart.php">Panier</span></a>

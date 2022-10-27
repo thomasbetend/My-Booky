@@ -29,11 +29,8 @@ include_once('nav-bar.php');
                     <h4 class="p-2 text-black">Résumé</h4>
                     <p class="p-4 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])) ?></p>
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                    <form action="" method="post"><button type="button" class='btn btn-dark mt-2 mb-2' name='button-add-cart' value="">ajouter au panier</button></form>
-                        <?php if($_POST){
-                            $_SESSION['cart']['book']['book_c_id'] = $book['id'];
-                        }?>
-                                        <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
+                    <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
+                    <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
 
                 </div>
             </div>

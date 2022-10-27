@@ -10,8 +10,6 @@
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-/*             var_dump($_GET); die();
- */
             include_once('functions.php');
 
             $lastname = testInput($_POST['authorLastname']);
@@ -20,11 +18,11 @@
             $bookPrice = floatval(testInput($_POST['bookPrice']));
             $bookSumup = testInput($_POST['bookSumup']);
 
-            $querySelect = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY id DESC';
+            $querySelect = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id where book.id = ' . $_GET['id'];
             $statement = $pdo->query($querySelect);
-            $books = $statement->fetchAll();
-            foreach($books as $book){
-                if($book['id'] == $_GET['id']){
+            $book = $statement->fetch();
+
+                if($book){
 
                     $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname WHERE id = ' . $book['a_id'];
 
@@ -39,16 +37,12 @@
                     $stmtUpdateBook->bindValue(':name', $bookName, \PDO::PARAM_STR);
                     $stmtUpdateBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
                     $stmtUpdateBook->bindValue(':price_book', $bookPrice, \PDO::PARAM_STR);
-
-                    $stmtUpdateBook->execute();      
-            
-        }}}
-
-        
-
-/*         header('location: index.php');
-        exit(); */
-
+                    $stmtUpdateBook->execute();  
+                    
+                    header('location: index.php');
+                    exit();
+                                
+        }}
 
 ?>
 
