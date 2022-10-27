@@ -6,50 +6,76 @@ $queryExistingAuthors = 'SELECT firstname, lastname, author_id, book.id id, name
 $statementExistingAuthors = $pdo->query($queryExistingAuthors);
 $authors = $statementExistingAuthors->fetchAll(); 
 
-if($_POST){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $errorMessage = '';
 
-    if(!empty(($_POST['authorLastname'])) && (!empty($_POST['bookName'])) && (!empty($_POST['bookPrice']))){
-
+    if(!empty(($_POST['bookName'])) && (!empty($_POST['bookPrice'])) && (((!empty($_POST['authorLastname']))) || !empty($_POST['author_id']))){
 
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-        $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
+    
+        if(!empty($_POST['authorLastname']) && empty($_POST['author_id'])){
+    
+            $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
+    
+            include_once('functions.php');
+    
+            $lastname = testInput($_POST['authorLastname']);
+            $firstname = testInput($_POST['authorFirstname']);
+            $bookName = testInput($_POST['bookName']);
+            $bookPrice = floatval(testInput($_POST['bookPrice']));
+            $bookSumup = testInput($_POST['bookSumup']);
+    
+            $statementAuthor = $pdo->prepare($queryAuthor);
+    
+            $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+            $statementAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+    
+            $statementAuthor->execute();
+    
+            $queryIdAuthor = 'SELECT id FROM author ORDER BY id DESC';
+            $statementIdAuthor = $pdo->query($queryIdAuthor);
+            $authorId = $statementIdAuthor->fetch();
+    
+            $queryBook = 'INSERT INTO book (name, author_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookprice, :sumup)';
+    
+            $statementBook = $pdo->prepare($queryBook);
+    
+            $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
+            $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
+            $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
+            $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+    
+            $statementBook->execute();
+    
+        }
+    
+        if(!empty($_POST['author_id']) && empty($_POST['authorLastname'])){
+    
+            $queryBook = 'INSERT INTO book (name, author_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookprice, :sumup)';
+            
+            include_once('functions.php');
 
-        include_once('functions.php');
+            $bookName = testInput($_POST['bookName']);
+            $bookPrice = floatval(testInput($_POST['bookPrice']));
+            $bookSumup = testInput($_POST['bookSumup']);
 
-        $lastname = testInput($_POST['authorLastname']);
-        $firstname = testInput($_POST['authorFirstname']);
-        $bookName = testInput($_POST['bookName']);
-        $bookPrice = floatval(testInput($_POST['bookPrice']));
-        $bookSumup = testInput($_POST['bookSumup']);
-
-
-        $statementAuthor = $pdo->prepare($queryAuthor);
-
-        $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-        $statementAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-
-        $statementAuthor->execute();
-
-        $queryIdAuthor = 'SELECT id FROM author ORDER BY id DESC';
-        $statementIdAuthor = $pdo->query($queryIdAuthor);
-        $authorId = $statementIdAuthor->fetch();
-
-        $queryBook = 'INSERT INTO book (name, author_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookprice, :sumup)';
-
-        $statementBook = $pdo->prepare($queryBook);
-
-        $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
-        $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
-        $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
-        $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
-
-        $statementBook->execute();
+            $statementBook = $pdo->prepare($queryBook);
+    
+            $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
+            $statementBook->bindValue(':bookauthorid', $_POST['author_id'], \PDO::PARAM_STR);
+            $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
+            $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+    
+            $statementBook->execute();
+            
+            header('location: index.php');
+            exit();
+        }
 
         header('location: index.php');
         exit();
-
-} else { 
+    
+    } else { 
         $errorMessage = 'Renseignez au moins le nom du livre et de l\'auteur, et le prix du livre';
 }}
 
@@ -97,11 +123,11 @@ if($_POST){
                 </div>
                 <p>ou</p>
                 <div class="form-group mb-2">
-                    <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
+                    <label for="authorLastname">Nom du nouvel auteur (obligatoire)</label>
                     <input type="text" id="authorLastname" name="authorLastname" class="form-control">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="authorFirstname">Prénom de l'auteur</label>
+                    <label for="authorFirstname">Prénom du nouvel auteur</label>
                     <input type="text" id="authorFirstname" name="authorFirstname" class="form-control">
                 </div>
                 <div>

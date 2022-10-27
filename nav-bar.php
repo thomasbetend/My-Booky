@@ -3,7 +3,7 @@
 session_start();
 
 if(isset($_SESSION['login'])){
-  $nameUser = 'Session ' . $_SESSION['login'];
+  $nameUser = $_SESSION['login'];
 } else {
   $nameUser = '';
 }
@@ -28,19 +28,19 @@ if(isset($_SESSION['login'])){
               <a class="nav-link active" aria-current="page" href="index.php">The Library Factory</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="add-book.php">Ajouter un livre</a>
+              <a class="nav-link" href="add-book.php">Vendre un livre</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="cart.php">Panier</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="signout.php">Signout</a>
+              <a class="nav-link" href="signout.php">Déconnexion</a>
             </li>
           <?php } ?>
         </ul>
       </div>
     </div>
 </nav>
-<p class="text-white text-capitalize text-center bg-secondary" href="#"><small><?php echo $nameUser ?></small></p>
+<p class="text-white text-capitalize text-center bg-primary" href="#"><small><?php echo 'Bienvenue ' . $nameUser ?></small></p>
 
 
