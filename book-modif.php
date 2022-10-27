@@ -90,6 +90,7 @@
                             <button type="submit" class="btn btn-primary mt-2" value="">Modifiez le livre</button>
                         </div>
                     </form>
+                    <a href="book-delete.php?id=<?php echo $book['id'] ?>">Suprrimer le livre</a>
                 <?php }}?>
                     <div>
                         <?php if (!empty($errorMessage)) echo $errorMessage ; ?>

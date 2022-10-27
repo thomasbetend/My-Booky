@@ -5,11 +5,19 @@ if($_POST){
     $errorMessage = '';
     
     $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+
     $query = 'INSERT INTO user (lastname, firstname, pass_user, email_user) VALUES (:lastname, :firstname, :pass_user, :email_user)';
-    $query2 = 'SELECT * FROM user';
+    
     
     if(!empty($_POST['user_lastname']) && !empty($_POST['user_firstname']) && filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)){
-                    
+                
+                $queryUserExisting = 'SELECT * FROM user WHERE email_user = \'' . $_POST['user_email'] . '\'';
+                $statementUserExisting = $pdo->query($queryUserExisting);
+                $userExisting = $statementUserExisting->fetch();
+
+                if ($userExisting) {
+                    $errorMessage = 'Mail déjà utilisé';
+                } else {
 
                 if (preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@&\"\'(§è!çà)-_?,.;\/:+=ù%£`$*#°]{8,50}$/", ($_POST['user_password']))) {
 
@@ -47,7 +55,7 @@ if($_POST){
                     exit();
                 } else {
                     $errorMessage = 'Mot de passe incorrect';
-                }
+                }}
             
     } else {
         $errorMessage = 'Remplissez tous les champs';

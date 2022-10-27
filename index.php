@@ -1,8 +1,9 @@
 <?php
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT author_id a_id,firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY id DESC';
-$statement = $pdo->query($query);
+$queryTotal = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY lastname';
+$statement = $pdo->query($queryTotal);
 $books = $statement->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -36,8 +37,13 @@ $books = $statement->fetchAll();
                     Prix Max <input type="text" name="maxPrice" class="form-group">
                     <select name="author_id" id="">
                         <option value="">Nom de l'auteur</option>
-                        <?php foreach($books as $book) { ?>
-                        <option value="<?php echo $book['a_id']?>"><?php echo ucfirst($book['lastname'])?></option>
+                        <?php 
+                        $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
+                        $statementAuthor = $pdo->query($queryAuthor);
+                        $authors = $statementAuthor->fetchAll();
+                        
+                        foreach($authors as $author) { ?>
+                        <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
                         <?php } ?>
                     </select>
                     <button type="submit" class="btn btn-primary small mt-2 mb-2 pl-4">Rechercher</button>
@@ -88,7 +94,7 @@ $books = $statement->fetchAll();
         </section>
 
         <?php
-        $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id';
+        $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY book.id DESC';
         $statementSearchBook = $pdo->query($querySearchBook);
         $searchBooks = $statementSearchBook->fetchAll();
         ?>
@@ -120,7 +126,7 @@ $books = $statement->fetchAll();
 
 <!-- SECTION TEST -->
 
-        <p class="mt-4 text-center"><a href="add-book.php" class="text-center btn btn-secondary">Vendre un livre</a></p>
+        <p class="mt-4 text-center"><a href="book-add.php" class="text-center btn btn-secondary">Vendre un livre</a></p>
         
 
         <?php } else { ?>
