@@ -5,10 +5,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
-$query = 'DELETE FROM book WHERE id= ' . $_GET['id'];
-$stmt= $pdo->prepare($query);
+/* delete books */
+
+$querySuppBook = 'DELETE FROM book WHERE id= ' . $_GET['id'];
+$stmt= $pdo->prepare($querySuppBook);
 $stmt->execute();
 
+/* delete authors without books */
+
+$querySuppAuthorWithoutBook = 'SELECT author.id a_id, book.author_id b_id, firstname, lastname FROM author LEFT JOIN book ON author.id=book.author_id WHERE book.author_id IS NULL';
+$stmt= $pdo->query($querySuppAuthorWithoutBook);
+$authorWithoutBook = $stmt->fetchAll();
+
+foreach($authorWithoutBook as $author){
+    $querySuppAuthor = 'DELETE FROM author WHERE id = ' . $author['a_id'];
+    $stmt= $pdo->prepare($querySuppAuthor);
+    $stmt->execute();
+}
 
 header('location: index.php');
 exit();

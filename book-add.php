@@ -2,9 +2,9 @@
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
-$queryExistingAuthors = 'SELECT firstname, lastname, author_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
+/* $queryExistingAuthors = 'SELECT firstname, lastname, author_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
 $statementExistingAuthors = $pdo->query($queryExistingAuthors);
-$authors = $statementExistingAuthors->fetchAll(); 
+$authors = $statementExistingAuthors->fetchAll();  */
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $errorMessage = '';
@@ -116,8 +116,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <select name="author_id" class="form-select">
                         <option value="">Auteur existant</option>
                         <?php
+                            $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
+                            $statementAuthor = $pdo->query($queryAuthor);
+                            $authors = $statementAuthor->fetchAll();
+                                                    
                             foreach($authors as $author){ ?> 
-                            <option value="<?php echo $author['author_id'] ;?>"><?php echo ucwords($author['firstname'] . ' ' . $author['lastname']) ;?></option> 
+                            <option value="<?php echo $author['id'] ;?>"><?php echo ucwords($author['firstname'] . ' ' . $author['lastname']) ;?></option> 
                          <?php } ?>
                     </select>
                 </div>

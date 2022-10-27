@@ -36,11 +36,12 @@ if(isset($_SESSION['login'])){
             <li class="nav-item">
               <a class="nav-link" href="signout.php">Déconnexion</a>
             </li>
+
           <?php } ?>
         </ul>
       </div>
     </div>
 </nav>
-<p class="text-white text-capitalize text-center bg-primary" href="#"><small><?php echo 'Bienvenue ' . $nameUser ?></small></p>
+<?php if(isset($_SESSION['login'])){ ?><p class="text-white text-capitalize text-center bg-primary" href="#"><small><?php echo 'Bienvenue ' . $nameUser ?></small></p><?php } ?>
 
 

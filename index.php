@@ -75,7 +75,7 @@ $books = $statement->fetchAll();
                                         <div class="card shadow-sm">
 
                                             <div class="card-body text-center">
-                                                <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes($searchBook['name'])) ?></h5>
+                                                <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucfirst(stripslashes($searchBook['name'])) ?></h5>
                                                 <h5 class="pt-2 text-primary"><?php echo ucwords($searchBook['firstname']) . ' ' . ucwords($searchBook['lastname']) ?></h5>
                                                 <a href="book-info.php?id=<?php echo $searchBook['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
                                                 <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($searchBook['price_book'], 2, ',', ' ') . '€'?></strong></p>

@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group mb-2">
                             <label for="bookSumup">Résumé</label>
-                            <textarea id="bookSumup" name="bookSumup" class="form-control" value="<?php echo ucfirst($book['sumup']) ?>"></textarea>
+                            <textarea id="bookSumup" name="bookSumup" class="form-control"><?php echo ucfirst($book['sumup']) ?></textarea>
                         </div>
                         <div class="form-group mb-2">
                             <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
@@ -90,7 +90,7 @@
                             <button type="submit" class="btn btn-primary mt-2" value="">Modifiez le livre</button>
                         </div>
                     </form>
-                    <a href="book-delete.php?id=<?php echo $book['id'] ?>">Suprrimer le livre</a>
+                    <div class="pt-2"><a href="book-delete.php?id=<?php echo $book['id'] ?>" >Suprrimer le livre</a></div>
                 <?php }}?>
                     <div>
                         <?php if (!empty($errorMessage)) echo $errorMessage ; ?>

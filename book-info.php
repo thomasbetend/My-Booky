@@ -31,7 +31,7 @@ include_once('nav-bar.php');
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
                     <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
                     <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
-
+                    <a href="book-modif.php?id=<?php echo $book['id']?>" class="text-secondary mb-3">Modifier livre</a>
                 </div>
             </div>
         <?php }
