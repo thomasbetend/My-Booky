@@ -55,7 +55,7 @@ if($_POST){
                     $_SESSION['cart']['book']=array();
                     $_SESSION['cart']['quantity']=array();
                     $_SESSION['cart']['price']=array();
-                    
+
                     for($i=0; $i<1000; $i++){
                         $_SESSION['cart']['quantity'][$i]=0;
                         $_SESSION['cart']['price'][$i]=0;
@@ -80,7 +80,7 @@ if($_POST){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>BookyMe - Inscription</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100">
@@ -89,31 +89,31 @@ if($_POST){
 
     <div class="container w-50">
         <div class="mt-5"></div>
-            <h5 class="text-secondary">The Library Factory</h5>
+            <h5 class="text-secondary">BookyMe</h5>
             <h3>Créez votre compte</h3>
             <form method="post" class="mt-3">
-                <div class="form-group mb-2">
-                    <label for="firstname">Prénom</label>
-                    <input type="text" id="firstname" name="user_firstname" class="form-control">
+                <div class="form-group2">
+                    <label for="user_firstname"></label> 
+                    <input type="text" id="firstname" name="user_firstname" class="form-control" placeholder="Prénom">
                 </div>
-                <div class="form-group mb-2">
-                    <label for="lastname">Nom</label>
-                    <input type="text" id="lastname" name="user_lastname" class="form-control">
+                <div class="form-group">
+                    <label for="user_lastname"></label>
+                    <input type="text" id="lastname" name="user_lastname" class="form-control" placeholder="Nom">
                 </div>
-                <div class="form-group mb-2">
-                    <label for="user_email">Email</label>
-                    <input type="email" id="email" name="user_email" class="form-control">
+                <div class="form-group">
+                    <label for="user_email"></label>
+                    <input type="email" id="email" name="user_email" class="form-control" placeholder="Email">
                 </div>
-                <div class="form-group mb-2 mt-2">
-                    <label for="user_password">Mot de passe</label>
-                    <input type="password" id="password" name="user_password" class="form-control">
-                    <p class='text-secondary'>Le mot de passe doit contenir 8 caractères minimum dont : <br/> 1 majuscule, 1 minuscule et 1 chiffre</p>
+                <div class="form-group mb-2 mt-1">
+                    <label for="user_password"></label>
+                    <input type="password" id="password" name="user_password" class="form-control" placeholder="Mot de passe">
+                    <p class='text-secondary mt-3'>Le mot de passe doit contenir 8 caractères minimum dont : <br/> 1 majuscule, 1 minuscule et 1 chiffre</p>
                 </div>
                 <div>
                     <?php if (!empty($errorMessage)) echo $errorMessage ; ?>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary mt-2">Signup</button>
+                    <button type="submit" class="btn btn-primary mt-2">Créez votre compte</button>
                 </div>
             </form>
             <p class="mt-4 text-secondary"><a href="signin.php">Déjà inscrit ? Connectez-vous.</a></p>

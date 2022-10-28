@@ -1,0 +1,15 @@
+#formSearch {
+    display: none;
+}
+
+#initSearch {
+    display: none;
+}
+
+#closeSearch {
+    display: none;
+}
+
+#buttonSearch {
+    display: block;
+}

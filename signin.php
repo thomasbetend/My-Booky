@@ -67,7 +67,7 @@ if($_POST){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signin</title>
+    <title>BookyMe - Connexion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100">
@@ -76,30 +76,30 @@ if($_POST){
 
     <div class="container w-50">
         <div class="mt-5"></div>
-            <h5 class="text-secondary">The Library Factory</h5>
+            <h5 class="text-secondary">BookyMe</h5>
             <h3>Identifiez-vous</h3>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
-                <div class="form-group mb-2">
-                    <label for="user_firstname">Prénom</label>
-                    <input type="text" id="firstname" name="user_firstname" class="form-control">
+                <div class="form-group2">
+                    <label for="user_firstname"></label> 
+                    <input type="text" id="firstname" name="user_firstname" class="form-control" placeholder="Prénom">
                 </div>
-                <div class="form-group mb-2">
-                    <label for="user_lastname">Nom</label>
-                    <input type="text" id="lastname" name="user_lastname" class="form-control">
+                <div class="form-group">
+                    <label for="user_lastname"></label>
+                    <input type="text" id="lastname" name="user_lastname" class="form-control" placeholder="Nom">
                 </div>
-                <div class="form-group mb-2">
-                    <label for="user_email">Email</label>
-                    <input type="email" id="email" name="user_email" class="form-control">
+                <div class="form-group">
+                    <label for="user_email"></label>
+                    <input type="email" id="email" name="user_email" class="form-control" placeholder="Email">
                 </div>
-                <div class="form-group mb-2 mt-2">
-                    <label for="user_password">Mot de passe</label>
-                    <input type="password" id="password" name="user_password" class="form-control">
+                <div class="form-group mb-2 mt-1">
+                    <label for="user_password"></label>
+                    <input type="password" id="password" name="user_password" class="form-control" placeholder="Mot de passe">
                 </div>
                 <div>
                     <?php if (!empty($errorMessage)) echo $errorMessage ;?>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary mt-2">Signin</button>
+                    <button type="submit" class="btn btn-primary mt-2">Connexion</button>
                 </div>
             </form>
             <p class="mt-4 text-secondary"><a href="signup.php">Pas encore inscrit ? Créez un compte.</a></p>

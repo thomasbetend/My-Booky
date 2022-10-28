@@ -11,7 +11,7 @@ $books = $statement->fetchAll();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Library Factory</title>
+    <title>BookyMe - Info sur le livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100">
@@ -31,7 +31,6 @@ include_once('nav-bar.php');
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
                     <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
                     <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
-                    <a href="book-modif.php?id=<?php echo $book['id']?>" class="text-secondary mb-3">Modifier livre</a>
                 </div>
             </div>
         <?php }

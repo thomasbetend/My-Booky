@@ -15,7 +15,7 @@ $books = $statementBook->fetchAll();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Library Factory</title>
+    <title>BookyMe - Panier</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
 </head>
@@ -58,7 +58,7 @@ $books = $statementBook->fetchAll();
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                   <div>
-                    <p class="mb-0">Vous avez <?php echo array_sum($_SESSION['cart']['quantity']);?> livres dans votre panier</p>
+                    <p class="mb-0 text-primary">Vous avez <?php echo array_sum($_SESSION['cart']['quantity']);?> livres dans votre panier</p>
                   </div>
                 </div>
                 <!-- display each book -->

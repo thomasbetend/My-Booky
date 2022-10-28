@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Library Factory</title>
+    <title>BookyMe - Ajouter un livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100">
@@ -65,9 +65,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
         if(!empty($_POST['author_id']) && empty($_POST['authorLastname'])){
     
-            $queryBook = 'INSERT INTO book (name, author_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookprice, :sumup)';
+            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
             
             include_once('functions.php');
+
+            $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
+            $statementIdUser = $pdo->query($queryIdUser);
+            $userId = $statementIdUser->fetch();
 
             $bookName = testInput($_POST['bookName']);
             $bookPrice = floatval(testInput($_POST['bookPrice']));
@@ -77,6 +81,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
             $statementBook->bindValue(':bookauthorid', $_POST['author_id'], \PDO::PARAM_STR);
+            $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
             $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
     
@@ -122,7 +127,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $authors = $statementAuthor->fetchAll();
                                                     
                             foreach($authors as $author){ ?> 
-                            <option value="<?php echo $author['id'] ;?>"><?php echo ucwords($author['firstname'] . ' ' . $author['lastname']) ;?></option> 
+                            <option value="<?php echo $author['id'] ;?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname']) ;?></option> 
                          <?php } ?>
                     </select>
                 </div>
