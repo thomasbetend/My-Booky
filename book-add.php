@@ -1,10 +1,19 @@
-<?php
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Library Factory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column h-100">
+
+    <?php include_once('nav-bar.php'); ?>
+    <?php
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
-/* $queryExistingAuthors = 'SELECT firstname, lastname, author_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
-$statementExistingAuthors = $pdo->query($queryExistingAuthors);
-$authors = $statementExistingAuthors->fetchAll();  */
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $errorMessage = '';
@@ -32,16 +41,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
             $statementAuthor->execute();
     
+            $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
+            $statementIdUser = $pdo->query($queryIdUser);
+            $userId = $statementIdUser->fetch();
+
             $queryIdAuthor = 'SELECT id FROM author ORDER BY id DESC';
             $statementIdAuthor = $pdo->query($queryIdAuthor);
             $authorId = $statementIdAuthor->fetch();
     
-            $queryBook = 'INSERT INTO book (name, author_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookprice, :sumup)';
-    
+            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+
             $statementBook = $pdo->prepare($queryBook);
     
             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
             $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
+            $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
             $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
     
@@ -68,11 +82,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
             $statementBook->execute();
             
-            header('location: index.php');
+            header('location: book-personal-space.php');
             exit();
         }
 
-        header('location: index.php');
+        header('location: book-personal-space.php');
         exit();
     
     } else { 
@@ -80,19 +94,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }}
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Library Factory</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="d-flex flex-column h-100">
-
-    <?php include_once('nav-bar.php'); ?>
 
     <div class="container w-50 ">
         <div class="mt-5"></div>

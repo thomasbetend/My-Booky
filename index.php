@@ -23,8 +23,10 @@ $books = $statement->fetchAll();
         <section class="py-5 text-center container">
             <div class="row py-lg-1">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <?php if (isset($_SESSION['login'])) {?>
 
+            <!-- with login session -->
+
+                    <?php if (isset($_SESSION['login'])) {?>
                         <h1 class="mt-0">The Library Factory</h1>
                         <h5 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
                 </div>
@@ -56,15 +58,16 @@ $books = $statement->fetchAll();
                 if(empty($_POST['maxPrice'])){$_POST['maxPrice'] = 100000000;};
                 if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     if(!empty($_POST['author_id'])){
-                    $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' AND author_id = '. $_POST['author_id'] . ' ORDER BY id DESC';
+                        $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' AND author_id = '. $_POST['author_id'] . ' ORDER BY id DESC';
                     } else {
-                    $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' ORDER BY id DESC';
+                        $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' ORDER BY id DESC';
                     }
                     $statementSearchBook = $pdo->query($querySearchBook);
                     $searchBooks = $statementSearchBook->fetchAll();
                     ?>
 
-                
+            <!-- display search -->
+      
          </section>
 
                     <div class="album bg-light">
@@ -80,7 +83,6 @@ $books = $statement->fetchAll();
                                                 <a href="book-info.php?id=<?php echo $searchBook['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
                                                 <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($searchBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
                                                 <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
-                                                <a href="book-modif.php?id=<?php echo $searchBook['id']?>" class="text-secondary">Modifier livre</a>
                                                 
                                             </div>
                                         </div>
@@ -93,8 +95,10 @@ $books = $statement->fetchAll();
                                
         </section>
 
+            <!-- display all -->
+
         <?php
-        $querySearchBook = 'SELECT author_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY book.id DESC';
+        $querySearchBook = 'SELECT author_id, user_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY book.id DESC';
         $statementSearchBook = $pdo->query($querySearchBook);
         $searchBooks = $statementSearchBook->fetchAll();
         ?>
@@ -111,9 +115,11 @@ $books = $statement->fetchAll();
                                      <h5 class="pt-2 text-primary"><?php echo ucwords($searchBook['firstname']) . ' ' . ucwords($searchBook['lastname']) ?></h5>
                                      <a href="book-info.php?id=<?php echo $searchBook['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
                                      <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($searchBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                                     <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
-                                     <a href="book-modif.php?id=<?php echo $searchBook['id']?>" class="text-secondary">Modifier livre</a>
-                                     
+                                     <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
+                                                <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
+                                                <?php }  else { ?>
+                                                <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-info mt-2 mb-3'>Mon espace</button></form>
+                                            <?php } ?> 
                                  </div>
                              </div>
                          </div>                       
@@ -122,12 +128,8 @@ $books = $statement->fetchAll();
              </div>
          </div>
         <?php } ?>
-                    
-
-<!-- SECTION TEST -->
-
-        <p class="mt-4 text-center"><a href="book-add.php" class="text-center btn btn-secondary">Vendre un livre</a></p>
         
+            <!-- without login session -->
 
         <?php } else { ?>
                 <div class="text-center">
@@ -137,9 +139,9 @@ $books = $statement->fetchAll();
                     <a class="btn btn-primary mt-2" href="signin.php" role="button">Signin</a>
                 </div>
         <?php } ?>
-    
 
     </main> 
+
     <?php include_once('footer.php'); ?>
 
 </body>

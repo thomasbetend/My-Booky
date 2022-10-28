@@ -61,7 +61,7 @@ $books = $statementBook->fetchAll();
                     <p class="mb-0">Vous avez <?php echo array_sum($_SESSION['cart']['quantity']);?> livres dans votre panier</p>
                   </div>
                 </div>
-                <!-- displays each book -->
+                <!-- display each book -->
                 <?php foreach($books as $book){
                 if($_SESSION['cart']['quantity'][$book['id']]>0){  ?>
 
@@ -106,22 +106,13 @@ $books = $statementBook->fetchAll();
                     <div class="d-flex justify-content-between align-items-center mb-4">
                       <h5 class="mb-0">Prix Total</h5>
                     </div>
-                    <!-- displays total -->
+                    <!-- display total price -->
                     <h4 class="mb-2"><?php  
                           echo number_format(array_sum($_SESSION['cart']['price']), 2, ',', ' ') . ' €'?></h4>
 
                     <form method="post" name="payment-form" action="payment-success.php">
                       <button type="submit" name="buttonPayment" class="btn btn-info mt-2 mb-2">Payer</button>
-                      <!--<div>
-                      Payment icons                      
-                            <a href="#!" type="submit" class="text-white"><i
-                              class="fab fa-cc-mastercard fa-2x me-2"></i></a>
-                            <a href="#!" type="submit" class="text-white"><i
-                                class="fab fa-cc-visa fa-2x me-2"></i></a>
-                            <a href="#!" type="submit" class="text-white"><i
-                                class="fab fa-cc-amex fa-2x me-2"></i></a> 
-                            <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
-                      </div>-->
+
                     </form>
 
                   </div>

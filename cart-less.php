@@ -2,6 +2,12 @@
 
 session_start();
 
+if(empty($_SESSION['login'])){
+
+    header('location: index.php');
+
+} else {
+
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
 $queryBook = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id = ' .$_GET['id'];
@@ -13,3 +19,5 @@ if($_SESSION['cart']['price'][$_GET['id']] > 0){$_SESSION['cart']['price'][$_GET
 
 header('location: cart.php');
 exit();
+
+}

@@ -39,7 +39,7 @@
                     $stmtUpdateBook->bindValue(':price_book', $bookPrice, \PDO::PARAM_STR);
                     $stmtUpdateBook->execute();  
                     
-                    header('location: index.php');
+                    header('location: book-personal-space.php');
                     exit();
                                 
         }}

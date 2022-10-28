@@ -39,13 +39,23 @@ if($_POST){
                     $statement->execute();
 
                     session_start();
-                    $_SESSION['id'];
                     $_SESSION['login'] = $firstname . ' ' . $lastname;
+
+                    /* creating variable session id */                
+
+                    $queryUserId = 'SELECT id FROM user WHERE email_user = \'' . $_POST['user_email'] . '\'';
+                    $statementUserId = $pdo->query($queryUserId);
+                    $userId = $statementUserId->fetch();
+
+                    $_SESSION['id']= $userId['id'];
+
+                    /* initializing cart */ 
+                    
                     $_SESSION['cart']=array();
                     $_SESSION['cart']['book']=array();
                     $_SESSION['cart']['quantity']=array();
                     $_SESSION['cart']['price']=array();
-    
+                    
                     for($i=0; $i<1000; $i++){
                         $_SESSION['cart']['quantity'][$i]=0;
                         $_SESSION['cart']['price'][$i]=0;
