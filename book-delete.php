@@ -23,7 +23,7 @@ foreach($authorWithoutBook as $author){
     $stmt->execute();
 }
 
-header('location: index.php');
+header('location: book-personal-space.php');
 exit();
 }
 

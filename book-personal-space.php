@@ -29,6 +29,7 @@ $userBooks = $statementUserBook->fetchAll();
                         <h1 class="mt-0">Votre espace</h1>
                         <h5 class="text-center mt-2 mb6 text-secondary">Gérez vos livres</h5>
                         <p class="mt-4 text-center"><a href="book-add.php" class="text-center btn btn-secondary">Ajouter un livre</a></p>
+                        <a href="index.php" class = "text-secondary small" id="closeSearch">Retour au catalogue</a>
                 </div>
             </div>
             <div class="album bg-light">

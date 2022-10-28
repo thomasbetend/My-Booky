@@ -14,7 +14,7 @@ $books = $statement->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookyMe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
 
 <!-- <link rel="shortcut icon" type="image/jpg" href="Favicon_Image_Location"/> -->
 </head>
@@ -32,7 +32,9 @@ $books = $statement->fetchAll();
                     <?php if (isset($_SESSION['login'])) {?>
                         <h1 class="mt-0">BookyMe</h1>
                         <h5 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
-                        <button type="submit" class=" text-center btn btn-primary small mt-2 mb-2 pl-4" style="display: block;" id="buttonSearch">Recherche</button>
+                        <div class="button-search">
+                            <a type="submit" class="text-center btn btn-outline-primary small mt-2 mb-2 pl-4" style="display: block;" id="buttonSearch">Recherchez un livre</a>
+                        </div>
                 </div>
             </div>
 
@@ -41,7 +43,7 @@ $books = $statement->fetchAll();
                 <div class="form-group">  
                     <input type="text" name="minPrice" class="form-line" placeholder="Prix Min">
                     <input type="text" name="maxPrice" class="form-group" placeholder="Prix Max">
-                    <select name="author_id" id="">
+                    <select name="author_id" id="select-search">
                         <option value="">Nom de l'auteur</option>
                         <?php 
                         $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
@@ -52,11 +54,15 @@ $books = $statement->fetchAll();
                         <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
                         <?php } ?>
                     </select>
-                    <button type="submit" class="btn btn-primary small mt-2 mb-2 pl-4">Rechercher</button>
                 </div> 
+                <div class="button-search-hidden">
+                    <button type="submit" class="btn btn-primary small mt-3 mb-3 pl-4" id="buttonSearchHidden">Rechercher</button>
+                </div>
             </form>
             <a href="index.php" id="initSearch">Réinitialiser la recherche</a><br/>
-            <a href="index.php" class = "text-secondary" style="display: none;" id="closeSearch">Fermer la recherche</a>
+            <a href="index.php" class = "text-secondary small" style="display: none;" id="closeSearch">Fermer la recherche</a>
+
+            <!-- conditions for search -->
 
             <?php 
                 if(empty($_POST['minPrice'])){$_POST['minPrice'] = 0;};
@@ -90,7 +96,7 @@ $books = $statement->fetchAll();
                                         <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
                                                     <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                     <?php }  else { ?>
-                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-primary mt-2 mb-3'>Mon espace</button></form>
+                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon espace</button></form>
                                                 <?php } ?>                                         
                                     </div>
                                 </div>
@@ -126,7 +132,7 @@ $books = $statement->fetchAll();
                                         <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
                                                     <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                     <?php }  else { ?>
-                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-primary mt-2 mb-3'>Mon espace</button></form>
+                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon espace</button></form>
                                                 <?php } ?> 
                                     </div>
                                 </div>

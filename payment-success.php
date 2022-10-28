@@ -11,37 +11,69 @@
     <main class="text-center">
             <?php include_once('nav-bar.php'); ?>
 
-                <h1 class="mt-5">Paiement réussi !</h1>
-                    <h2>Merci d'avoir acheté chez nous.</h2>
-                    <a class="btn btn-primary mt-2" href="index.php" role="button">Retourner au catalogue</a>
+                <h2 class="mt-5">Paiement réussi !</h2>
+                <h3 class="text-secondary">Merci d'avoir acheté chez nous.</h3>
+
+                <?php if(isset($_POST['buttonPayment'])){
+                        
+                        $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+                    
+                        /* insert infos into orders */
+
+                        $queryOrder = 'INSERT INTO orders (user_id, total_price, total_number) VALUES (:user_id, :total_price, :total_number)';
+                        $statementOrder = $pdo->prepare($queryOrder);
+                    
+                        $statementOrder->bindValue(':user_id', $_SESSION['id'], \PDO::PARAM_STR );
+                        $statementOrder->bindValue(':total_price', array_sum($_SESSION['cart']['price']), \PDO::PARAM_STR );
+                        $statementOrder->bindValue(':total_number', array_sum($_SESSION['cart']['quantity']), \PDO::PARAM_STR );
+                    
+                        $statementOrder->execute();
+                        
+                        /* get info from orders */
+
+                        $getOrder = 'SELECT * FROM orders WHERE user_id = ' . $_SESSION['id'] . ' ORDER by id DESC';
+                        $statementGetOrder = $pdo->query($getOrder);
+                        $lastOrder = $statementGetOrder->fetch();
+
+                        } 
+                ?>  
+
+                <div class="album bg-light">
+                    <div class="container w-50 mt-5 p-5">
+                                <div class="card shadow-sm p-3">
+
+                                    <div class="card-body text-center">
+                                        <h5 class="p-2 mb-1 bg-primary text-white">Commande n°<?php echo ($lastOrder['id']) ?></h5>
+                                        <h5 class="pt-2 text-primary"> Prix total : <?php echo number_format($lastOrder['total_price'], 2, ',', ' ') . '€' ?></h5>
+                                    </div>
+                                </div>
+                    </div>
                 </div>
 
-    </main> 
-    <?php 
+                <?php 
+
+/* var_dump($_SESSION['cart']['quantity']); 
+var_dump($_SESSION['cart']['price']); */
+var_dump(($_SESSION['cart']['book'])); die; 
+
+                /* reinitialize carter */
+
+                $_SESSION['cart'] = array();
+                $_SESSION['cart']['book']=array();
+                $_SESSION['cart']['quantity']=array();
+                $_SESSION['cart']['price']=array();
+            
+                for($i=0; $i<1000; $i++){
+                    $_SESSION['cart']['quantity'][$i]=0;
+                    $_SESSION['cart']['price'][$i]=0;
+                }
+                ?>
         
-    if(isset($_POST['buttonPayment'])){
-    
-    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+    <div>
+        <a class="btn btn-primary mt-2" href="index.php" role="button">Retourner au catalogue</a>
+    </div>
+    </main> 
+    <?php include_once('footer.php'); ?>
 
-
-    $queryOrder = 'INSERT INTO orders (user_id, total_price, total_number) VALUES (:user_id, :total_price, :total_number)';
-    $statementOrder = $pdo->prepare($queryOrder);
-
-    $statementOrder->bindValue(':user_id', $_SESSION['id'], \PDO::PARAM_STR );
-    $statementOrder->bindValue(':total_price', array_sum($_SESSION['cart']['price']), \PDO::PARAM_STR );
-    $statementOrder->bindValue(':total_number', array_sum($_SESSION['cart']['quantity']), \PDO::PARAM_STR );
-
-    $statementOrder->execute();
-
-    $_SESSION['cart'] = array();
-    $_SESSION['cart']['book']=array();
-    $_SESSION['cart']['quantity']=array();
-    $_SESSION['cart']['price']=array();
-
-    for($i=0; $i<1000; $i++){
-        $_SESSION['cart']['quantity'][$i]=0;
-        $_SESSION['cart']['price'][$i]=0;
-    }
-
-    } ?></body>
+</body>
 </html>
