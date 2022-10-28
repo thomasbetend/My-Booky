@@ -1,52 +1,3 @@
-<?php
-include_once('functions.php');
-
-$id = testInput($_GET['id']);
-
-$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-
-$querySelect = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id where book.id = ' . $id;
-$statement = $pdo->query($querySelect);
-$book = $statement->fetch();
-
-if($book){
-
-        $errorMessage = '';
-
-        $querySelect = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY id DESC';
-        $statement = $pdo->query($querySelect);
-        $books = $statement->fetchAll();
-
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
-            $lastname = testInput($_POST['authorLastname']);
-            $firstname = testInput($_POST['authorFirstname']);
-            $bookName = testInput($_POST['bookName']);
-            $bookPrice = floatval(testInput($_POST['bookPrice']));
-            $bookSumup = testInput($_POST['bookSumup']);
-
-            $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname WHERE id = ' . $book['a_id'];
-
-            $stmtUpdateAuthor= $pdo->prepare($queryUdateAuthor);
-            $stmtUpdateAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-            $stmtUpdateAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-            $stmtUpdateAuthor->execute();
-
-            $queryUdateBook = 'UPDATE book SET name = :name, sumup = :sumup, price_book = :price_book WHERE id = ' . $book['id'];
-
-            $stmtUpdateBook= $pdo->prepare($queryUdateBook);
-            $stmtUpdateBook->bindValue(':name', $bookName, \PDO::PARAM_STR);
-            $stmtUpdateBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
-            $stmtUpdateBook->bindValue(':price_book', $bookPrice, \PDO::PARAM_STR);
-            $stmtUpdateBook->execute();  
-            
-            header('location: book-personal-space.php');
-            exit();
-                                
-        }
-
-?>
-
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
@@ -59,6 +10,57 @@ if($book){
 <body class="d-flex flex-column h-100">
 
     <?php include_once('nav-bar.php'); ?>
+
+    <?php
+    include_once('functions.php');
+
+    $id = testInput($_GET['id']);
+
+    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+    
+    /* binding and securizing id */
+    $querySelect = 'SELECT author_id a_id, user_id, firstname, lastname, price_book, book.id id, sumup, name FROM book LEFT JOIN author ON author.id=book.author_id where book.id = :id';
+    $statement = $pdo->prepare($querySelect);
+    $statement->bindValue(':id', $id, PDO::PARAM_INT);
+    $statement->execute();
+    $book = $statement->fetch();
+
+    if($book){
+
+            if($book['user_id'] === $_SESSION['id']){
+
+            $errorMessage = '';
+
+            if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+                /* insertion modifications */
+                $lastname = testInput($_POST['authorLastname']);
+                $firstname = testInput($_POST['authorFirstname']);
+                $bookName = testInput($_POST['bookName']);
+                $bookPrice = floatval(testInput($_POST['bookPrice']));
+                $bookSumup = testInput($_POST['bookSumup']);
+
+                $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname WHERE id = ' . $book['a_id'];
+
+                $stmtUpdateAuthor= $pdo->prepare($queryUdateAuthor);
+                $stmtUpdateAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+                $stmtUpdateAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+                $stmtUpdateAuthor->execute();
+
+                $queryUdateBook = 'UPDATE book SET name = :name, sumup = :sumup, price_book = :price_book WHERE id = ' . $book['id'];
+
+                $stmtUpdateBook= $pdo->prepare($queryUdateBook);
+                $stmtUpdateBook->bindValue(':name', $bookName, \PDO::PARAM_STR);
+                $stmtUpdateBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+                $stmtUpdateBook->bindValue(':price_book', $bookPrice, \PDO::PARAM_STR);
+                $stmtUpdateBook->execute();  
+                
+                header('location: book-personal-space.php');
+                exit();
+                                    
+            }
+
+    ?>
 
             <div class="container w-50 ">
                 <div class="mt-5"></div>
@@ -99,7 +101,12 @@ if($book){
 </body>
 </html>
 
-<?php } else {?>
+<?php 
+} else {
+echo '<div class="text-center"><h3 class="text-primary mt-5"> Vous n\'avez pas les droits pour modifier ce livre</h3><a href="book-personal-space.php">Retour à votre espace</a></div>';
+}
+
+} else {?>
     
 <!DOCTYPE html>
 <html lang="en" class="h-100">
@@ -114,10 +121,9 @@ if($book){
 
     <?php include_once('nav-bar.php'); ?>
 
-            <div class="container w-50">
-                <div class="card text-center mt-4">
-                    <h3 class="p-2 mb-1 bg-primary text-white">Page inexistante</h3>
-                </div>
+            <div class="container w-50 text-center">
+                <h3 class="text-center text-primary mt-5">Page inexistante</h3>
+                <a href="book-personal-space.php" class="text-center">Retour à votre espace</a>
             </div>
             <?php } ?>
 <?php include_once('footer.php'); ?>

@@ -17,133 +17,142 @@ $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    
+    if((!empty($_POST['author_id'])) && (!empty($_POST['authorLastname']) || !empty($_POST['authorFirstname']))){
 
-    $errorMessage = '';
+        /* Verify choice between existing and new author in formular */
 
-    include_once('functions.php');
-    /* verifying ahtor in database */
-
-    /* Verify author in list */
-    $queryAuthorInDB = 'SELECT author.id FROM author JOIN book ON author.id=book.author_id WHERE author_id = \'' . testInput($_POST['author_id']) . '\'';
-    $statementAuthorInDB = $pdo->query($queryAuthorInDB);
-    $authorInDB = $statementAuthorInDB->fetchAll();
-
-
-    if(empty($authorInDB) && $_POST['author_id']!=='0') {
-
-    $errorMessage = 'L\'auteur n\'existe pas dans la base';
-
-    } else {
-        
-    /* verify existing book and author */
-
-    $queryAuthorLastname = 'SELECT lastname FROM author WHERE lastname = \'' . testInput($_POST['authorLastname']) . '\'';
-    $statementAuthorLastname = $pdo->query($queryAuthorLastname);
-    $authorLastnameMatch = $statementAuthorLastname->fetch();
-
-    $queryTitleBook = 'SELECT name FROM book WHERE name = \'' . testInput($_POST['bookName']) . '\'';
-    $statementTitleBook = $pdo->query($queryTitleBook);
-    $titleBookMatch = $statementTitleBook->fetch();
-
-
-    if($authorLastnameMatch || $titleBookMatch) {
-
-        $errorMessage = 'Livre ou auteur déjà existant';
+        $errorMessage = 'Choisissez : nouvel auteur ou auteur existant';
 
     } else {
 
-        if(!empty(($_POST['bookName'])) && (!empty($_POST['bookPrice'])) && (((!empty($_POST['authorLastname']))) || !empty($_POST['author_id']))){
+        $errorMessage = '';
 
-            $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-        
-            if(!empty($_POST['authorLastname']) && (empty($_POST['author_id']))){
+        include_once('functions.php');
+
+        /* Verify author in database */
+        $queryAuthorInDB = 'SELECT author.id FROM author JOIN book ON author.id=book.author_id WHERE author_id = \'' . testInput($_POST['author_id']) . '\'';
+        $statementAuthorInDB = $pdo->query($queryAuthorInDB);
+        $authorInDB = $statementAuthorInDB->fetchAll();
+
+
+        if(empty($authorInDB) && $_POST['author_id']!=='0' /* when  different from select default choice value = string 0 */) {
+
+        $errorMessage = 'L\'auteur n\'existe pas dans la base';
+
+        } else {
                 
+            /* verify existing book and author */
 
-                    /* insert informations */
-                    $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
-            
-                    include_once('functions.php');
-            
-                    $lastname = testInput($_POST['authorLastname']);
-                    $firstname = testInput($_POST['authorFirstname']);
-                    $bookName = testInput($_POST['bookName']);
-                    $bookPrice = floatval(testInput($_POST['bookPrice']));
-                    $bookSumup = testInput($_POST['bookSumup']);
-            
-                    $statementAuthor = $pdo->prepare($queryAuthor);
-            
-                    $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-                    $statementAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-            
-                    $statementAuthor->execute();
-            
-                    $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
-                    $statementIdUser = $pdo->query($queryIdUser);
-                    $userId = $statementIdUser->fetch();
+            $queryAuthorLastname = 'SELECT lastname FROM author WHERE lastname = \'' . testInput($_POST['authorLastname']) . '\'';
+            $statementAuthorLastname = $pdo->query($queryAuthorLastname);
+            $authorLastnameMatch = $statementAuthorLastname->fetch();
 
-                    $queryIdAuthor = 'SELECT id FROM author ORDER BY id DESC';
-                    $statementIdAuthor = $pdo->query($queryIdAuthor);
-                    $authorId = $statementIdAuthor->fetch();
-            
-                    $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+            $queryTitleBook = 'SELECT name FROM book WHERE name = \'' . testInput($_POST['bookName']) . '\'';
+            $statementTitleBook = $pdo->query($queryTitleBook);
+            $titleBookMatch = $statementTitleBook->fetch();
 
-                    $statementBook = $pdo->prepare($queryBook);
-            
-                    $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
-                    $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
-                    $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
-                    $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
-                    $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
-            
-                    $statementBook->execute();
+
+            if($authorLastnameMatch || $titleBookMatch) {
+
+                $errorMessage = 'Livre ou auteur déjà existant';
+
+            } else {
+
+                if(!empty(($_POST['bookName'])) && (!empty($_POST['bookPrice'])) && (((!empty($_POST['authorLastname']))) || !empty($_POST['author_id']))){
+
+                    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+                
+                    if(!empty($_POST['authorLastname']) && (empty($_POST['author_id']))){
+                        
+
+                            /* insert informations whith new author */
+
+                            $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
+                    
+                            include_once('functions.php');
+                    
+                            $lastname = testInput($_POST['authorLastname']);
+                            $firstname = testInput($_POST['authorFirstname']);
+                            $bookName = testInput($_POST['bookName']);
+                            $bookPrice = floatval(testInput($_POST['bookPrice']));
+                            $bookSumup = testInput($_POST['bookSumup']);
+                    
+                            $statementAuthor = $pdo->prepare($queryAuthor);
+                    
+                            $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+                            $statementAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+                    
+                            $statementAuthor->execute();
+                    
+                            $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
+                            $statementIdUser = $pdo->query($queryIdUser);
+                            $userId = $statementIdUser->fetch();
+
+                            $queryIdAuthor = 'SELECT id FROM author ORDER BY id DESC';
+                            $statementIdAuthor = $pdo->query($queryIdAuthor);
+                            $authorId = $statementIdAuthor->fetch();
+
+                            /* insert new author_id in book */
+                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+
+                            $statementBook = $pdo->prepare($queryBook);
+                    
+                            $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
+                            $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
+                            $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
+                            $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
+                            $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+                    
+                            $statementBook->execute();
+
+                            header('location: book-personal-space.php');
+                            exit();
+                
+                    }
+                
+                    if((!empty($_POST['author_id'])) && (empty($_POST['authorLastname']))){
+                        
+                            /* insert informations with existing author */
+
+                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+                            
+                            include_once('functions.php');
+
+                            $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
+                            $statementIdUser = $pdo->query($queryIdUser);
+                            $userId = $statementIdUser->fetch();
+
+                            $bookName = testInput($_POST['bookName']);
+                            $bookPrice = floatval(testInput($_POST['bookPrice']));
+                            $bookSumup = testInput($_POST['bookSumup']);
+
+                            $statementBook = $pdo->prepare($queryBook);
+                    
+                            $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
+                            $statementBook->bindValue(':bookauthorid', $_POST['author_id'], \PDO::PARAM_STR);
+                            $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
+                            $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
+                            $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+                    
+                            $statementBook->execute();
+                            
+                            header('location: book-personal-space.php');
+                            exit();
+                    }
 
                     header('location: book-personal-space.php');
                     exit();
-        
-            }
-        
-            if((!empty($_POST['author_id'])) && (empty($_POST['authorLastname']))){
                 
-                    /* insert informations */
-
-                    $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+                } else { 
                     
-                    include_once('functions.php');
+                    $errorMessage = 'Renseignez au moins le nom du livre, son prix et le nom de l\'auteur';
+        }}}
 
-                    $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
-                    $statementIdUser = $pdo->query($queryIdUser);
-                    $userId = $statementIdUser->fetch();
-
-                    $bookName = testInput($_POST['bookName']);
-                    $bookPrice = floatval(testInput($_POST['bookPrice']));
-                    $bookSumup = testInput($_POST['bookSumup']);
-
-                    $statementBook = $pdo->prepare($queryBook);
-            
-                    $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
-                    $statementBook->bindValue(':bookauthorid', $_POST['author_id'], \PDO::PARAM_STR);
-                    $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
-                    $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
-                    $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
-            
-                    $statementBook->execute();
-                    
-                    header('location: book-personal-space.php');
-                    exit();
-            }
-
-            header('location: book-personal-space.php');
-            exit();
-        
-        } else { 
-            $errorMessage = 'Renseignez au moins le nom du livre, son prix et le nom de l\'auteur';
-    }}}
-
+    }
 }
 
-
 ?>
-
     <div class="container w-50 ">
         <div class="mt-5"></div>
             <h3 class="text-center">Vendez votre livre sur BookyMe</h3>

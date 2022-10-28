@@ -1,4 +1,5 @@
 <?php
+
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 $queryTotal = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY lastname';
 $statement = $pdo->query($queryTotal);
@@ -62,6 +63,8 @@ $books = $statement->fetchAll();
             <a href="index.php" id="initSearch">Réinitialiser la recherche</a><br/>
             <a href="index.php" class = "text-secondary small" style="display: none;" id="closeSearch">Fermer la recherche</a>
 
+            </section>
+
             <!-- conditions for search -->
 
             <?php 
@@ -87,8 +90,6 @@ $books = $statement->fetchAll();
 
             <!-- display search -->
       
-         </section>
-
             <div class="album bg-light">
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">

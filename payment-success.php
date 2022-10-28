@@ -43,10 +43,10 @@
                                 <div class="card shadow-sm p-3">
 
                                     <div class="card-body text-center">
-                                        <h5 class="p-2 mb-1 bg-primary text-white">Votre commande n°<?php echo ($lastOrder['id']) ?></h5>
+                                        <h5 class="p-2 mb-1 bg-primary text-white">Commande n°<?php echo ($lastOrder['id']) ?></h5>
                                         <h5 class="pt-2 text-primary mb-3"> Prix total : <?php echo number_format($lastOrder['total_price'], 2, ',', ' ') . '€' ?></h5>
                                         <?php foreach ($_SESSION['cart']['book'] as $key=>$book){ ?>
-                                            <p> <?php echo $_SESSION['cart']['quantity'][$key] . ' --- ' . $_SESSION['cart']['book'][$key] . ' de ' . $_SESSION['cart']['author'][$key]; ?></p>
+                                            <h6> <?php echo $_SESSION['cart']['book'][$key] . '  //  ' . $_SESSION['cart']['author'][$key] . '       // Qté : ' . $_SESSION['cart']['quantity'][$key]; ?></h6>
                                             <?php } ?>
                                     </div>
                                 </div>
