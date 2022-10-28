@@ -35,7 +35,7 @@
                         $statementGetOrder = $pdo->query($getOrder);
                         $lastOrder = $statementGetOrder->fetch();
 
-                        } 
+
                 ?>  
 
                 <div class="album bg-light">
@@ -43,8 +43,11 @@
                                 <div class="card shadow-sm p-3">
 
                                     <div class="card-body text-center">
-                                        <h5 class="p-2 mb-1 bg-primary text-white">Commande n°<?php echo ($lastOrder['id']) ?></h5>
-                                        <h5 class="pt-2 text-primary"> Prix total : <?php echo number_format($lastOrder['total_price'], 2, ',', ' ') . '€' ?></h5>
+                                        <h5 class="p-2 mb-1 bg-primary text-white">Votre commande n°<?php echo ($lastOrder['id']) ?></h5>
+                                        <h5 class="pt-2 text-primary mb-3"> Prix total : <?php echo number_format($lastOrder['total_price'], 2, ',', ' ') . '€' ?></h5>
+                                        <?php foreach ($_SESSION['cart']['book'] as $key=>$book){ ?>
+                                            <p> <?php echo $_SESSION['cart']['quantity'][$key] . ' --- ' . $_SESSION['cart']['book'][$key] . ' de ' . $_SESSION['cart']['author'][$key]; ?></p>
+                                            <?php } ?>
                                     </div>
                                 </div>
                     </div>
@@ -52,14 +55,11 @@
 
                 <?php 
 
-/* var_dump($_SESSION['cart']['quantity']); 
-var_dump($_SESSION['cart']['price']); */
-var_dump(($_SESSION['cart']['book'])); die; 
-
                 /* reinitialize carter */
 
                 $_SESSION['cart'] = array();
                 $_SESSION['cart']['book']=array();
+                $_SESSION['cart']['author']=array();
                 $_SESSION['cart']['quantity']=array();
                 $_SESSION['cart']['price']=array();
             
@@ -67,6 +67,8 @@ var_dump(($_SESSION['cart']['book'])); die;
                     $_SESSION['cart']['quantity'][$i]=0;
                     $_SESSION['cart']['price'][$i]=0;
                 }
+
+            }
                 ?>
         
     <div>

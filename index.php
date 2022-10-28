@@ -41,8 +41,8 @@ $books = $statement->fetchAll();
             <!-- search -->
             <form method="POST" action="index.php" class="text-center mt-2 small" id="formSearch">
                 <div class="form-group">  
-                    <input type="text" name="minPrice" class="form-line" placeholder="Prix Min">
-                    <input type="text" name="maxPrice" class="form-group" placeholder="Prix Max">
+                    <input type="number" name="minPrice" class="form-line" placeholder="Prix Min" value="">
+                    <input type="number" name="maxPrice" class="form-group" placeholder="Prix Max" value="">
                     <select name="author_id" id="select-search">
                         <option value="">Nom de l'auteur</option>
                         <?php 
@@ -65,13 +65,21 @@ $books = $statement->fetchAll();
             <!-- conditions for search -->
 
             <?php 
-                if(empty($_POST['minPrice'])){$_POST['minPrice'] = 0;};
-                if(empty($_POST['maxPrice'])){$_POST['maxPrice'] = 100000000;};
+
                 if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+                    include_once('functions.php');
+                    $minPrice = intval(testInput($_POST['minPrice']));
+                    $maxPrice = intval(testInput($_POST['maxPrice']));
+                    $authorId = testInput($_POST['author_id']); 
+
+                    if(empty($minPrice)){$minPrice = 0;};
+                    if(empty($maxPrice)){$maxPrice = 100000000;};
+
                     if(!empty($_POST['author_id'])){
-                        $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' AND author_id = '. $_POST['author_id'] . ' ORDER BY price_book';
+                        $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $minPrice . ' AND price_book <= ' . $maxPrice . ' AND author_id = '. $authorId . ' ORDER BY price_book';
                     } else {
-                        $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $_POST['minPrice'] . ' AND price_book <= ' . $_POST['maxPrice'] . ' ORDER BY price_book';
+                        $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $minPrice . ' AND price_book <= ' . $maxPrice . ' ORDER BY price_book';
                     }
                     $statementSearchBook = $pdo->query($querySearchBook);
                     $searchBooks = $statementSearchBook->fetchAll();
@@ -96,7 +104,7 @@ $books = $statement->fetchAll();
                                         <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
                                                     <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                     <?php }  else { ?>
-                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon espace</button></form>
+                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
                                                 <?php } ?>                                         
                                     </div>
                                 </div>
@@ -132,7 +140,7 @@ $books = $statement->fetchAll();
                                         <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
                                                     <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                     <?php }  else { ?>
-                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon espace</button></form>
+                                                    <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
                                                 <?php } ?> 
                                     </div>
                                 </div>

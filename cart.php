@@ -63,7 +63,9 @@ $books = $statementBook->fetchAll();
                 <!-- display each book -->
                 <?php foreach($books as $book){
                 if($_SESSION['cart']['quantity'][$book['id']]>0){  
-                  $_SESSION['cart']['book'][$book['id']] = $book['name']; ?>
+                  $_SESSION['cart']['book'][$book['id']] = ucfirst($book['name']);
+                  $_SESSION['cart']['author'][$book['id']] = ucwords($book['firstname'] . ' ' . $book['lastname']);
+                  ?>
 
 
                   <div class="card mb-3">

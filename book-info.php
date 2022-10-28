@@ -1,8 +1,8 @@
 <?php
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT firstname, lastname, price_book, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id';
+$query = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $_GET['id'];
 $statement = $pdo->query($query);
-$books = $statement->fetchAll();
+$book = $statement->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +20,8 @@ $books = $statement->fetchAll();
 
 include_once('nav-bar.php');
 
-    foreach($books as $book){
-        if($book['id'] == $_GET['id']){ ?>
+
+        if($book){ ?>
             <div class="container w-50">
                 <div class="card text-center mt-4">
                     <h3 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes(($book['name']))) ?></h3>
@@ -29,12 +29,20 @@ include_once('nav-bar.php');
                     <h4 class="p-2 text-black">Résumé</h4>
                     <p class="p-4 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])) ?></p>
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                    <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>ajouter au panier</button></form>
+                    <?php if($book['user_id'] !== $_SESSION['id']) {?>
+                        <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
+                    <?php } ?>                     
                     <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
                 </div>
             </div>
-        <?php }
-        } ?>
+            <?php } else { ?>
+            <div class="container w-50">
+                <div class="card text-center mt-4">
+                    <h3 class="p-2 mb-1 bg-primary text-white">Page inexistante</h3>
+                </div>
+            </div>
+            <?php } ?>
+
 
     <?php include_once('footer.php'); ?>
 

@@ -28,18 +28,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $statementAuthorInDB = $pdo->query($queryAuthorInDB);
     $authorInDB = $statementAuthorInDB->fetchAll();
 
-
-    if(empty($authorInDB) && $_POST['author_id']!=='0') {
+    if(empty($authorInDB)) {
 
     $errorMessage = 'L\'auteur n\'existe pas dans la base';
 
     } else {
         
-    /* verify existing book and author */
+    /* verify existing book and author*/
 
     $queryAuthorLastname = 'SELECT lastname FROM author WHERE lastname = \'' . testInput($_POST['authorLastname']) . '\'';
     $statementAuthorLastname = $pdo->query($queryAuthorLastname);
     $authorLastnameMatch = $statementAuthorLastname->fetch();
+
+    $queryAuthorFirstname = 'SELECT firstname FROM author WHERE firstname = \'' . testInput($_POST['authorFirstname']) . '\'';
+    $statementAuthorFirstname = $pdo->query($queryAuthorFirstname);
+    $authorFirstnameMatch = $statementAuthorFirstname->fetch();
 
     $queryTitleBook = 'SELECT name FROM book WHERE name = \'' . testInput($_POST['bookName']) . '\'';
     $statementTitleBook = $pdo->query($queryTitleBook);
@@ -164,7 +167,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <div class="form-group mb-2">
                     <label for="authorLastname"></label>
                     <select name="author_id" class="form-select select-add">
-                        <option value="0">Auteur existant</option>
+                        <option value="">Auteur existant</option>
                         <?php
                             $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
                             $statementAuthor = $pdo->query($queryAuthor);

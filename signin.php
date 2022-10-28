@@ -37,6 +37,7 @@ if($_POST){
                 
                 $_SESSION['cart']=array();
                 $_SESSION['cart']['book']=array();
+                $_SESSION['cart']['author']=array();
                 $_SESSION['cart']['quantity']=array();
                 $_SESSION['cart']['price']=array();
                 
