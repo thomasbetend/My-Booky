@@ -1,12 +1,3 @@
-<?php
-
-$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$queryTotal = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY lastname';
-$statement = $pdo->query($queryTotal);
-$books = $statement->fetchAll();
-
-?>
-
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
@@ -21,7 +12,13 @@ $books = $statement->fetchAll();
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
+    <?php include_once('nav-bar.php'); 
+    
+    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+    $queryTotal = 'SELECT author_id a_id, firstname, lastname, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id ORDER BY lastname';
+    $statement = $pdo->query($queryTotal);
+    $books = $statement->fetchAll();
+    ?>
 
     <main>
         <section class="py-5 text-center container">
@@ -89,34 +86,33 @@ $books = $statement->fetchAll();
 
                     /* verifying answer to search */
 
-                    if(!empty($searchBooks)){
-                    ?>
+                    if(!empty($searchBooks)){ ?>
                     <!-- display search -->
             
-                    <div class="album bg-light">
-                        <div class="container">
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            <?php foreach($searchBooks as $searchBook){ ?>
-                                    <div class="col">
-                                        <div class="card shadow-sm">
+                        <div class="album bg-light">
+                            <div class="container">
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                                <?php foreach($searchBooks as $searchBook){ ?>
+                                        <div class="col">
+                                            <div class="card shadow-sm">
 
-                                            <div class="card-body text-center">
-                                                <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucfirst(stripslashes($searchBook['name'])) ?></h5>
-                                                <h5 class="pt-2 text-primary"><?php echo ucwords($searchBook['firstname']) . ' ' . ucwords($searchBook['lastname']) ?></h5>
-                                                <a href="book-info.php?id=<?php echo $searchBook['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
-                                                <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($searchBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
-                                                <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
-                                                            <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
-                                                            <?php }  else { ?>
-                                                            <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
-                                                        <?php } ?>                                         
+                                                <div class="card-body text-center">
+                                                    <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucfirst(stripslashes($searchBook['name'])) ?></h5>
+                                                    <h5 class="pt-2 text-primary"><?php echo ucwords($searchBook['firstname']) . ' ' . ucwords($searchBook['lastname']) ?></h5>
+                                                    <a href="book-info.php?id=<?php echo $searchBook['id'] ?>" class="mt-0 mb-2">En savoir plus</a>
+                                                    <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($searchBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
+                                                    <?php if($searchBook['user_id'] !== $_SESSION['id']) {?>
+                                                                <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
+                                                                <?php }  else { ?>
+                                                                <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
+                                                            <?php } ?>                                         
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>                       
-                                    <?php } ?>
+                                        </div>                       
+                                        <?php } ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <?php } else { ?>
                         
                         <div class="text-center">
@@ -125,7 +121,7 @@ $books = $statement->fetchAll();
                         </div>
 
 
-                    <?php }} else { ?>
+                <?php }} else { ?>
                                
         </section>
 
@@ -163,16 +159,16 @@ $books = $statement->fetchAll();
                     </div>
                     <?php } ?>
                 
-                    <!-- without login session -->
+                <!-- without login session -->
 
-                    <?php } else { ?>
+                <?php } else { ?>
                     <div class="text-center">
                         <h1 class="mt-5">BookyMe</h1>
                         <h2>Welcome !!!</h2>
                         <h6 class="mt-3">Pour vendre ou acheter des livres, authentifiez-vous</h6>
                         <a class="btn btn-primary mt-2" href="signin.php" role="button">Connexion</a>
                     </div>
-                    <?php } ?>
+                <?php } ?>
 
     </main> 
 

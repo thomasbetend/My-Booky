@@ -42,10 +42,9 @@ $book = $statement->fetch();
                 </div>
             </div>
             <?php } else { ?>
-            <div class="container w-50">
-                <div class="card text-center mt-4">
-                    <h3 class="p-2 mb-1 bg-primary text-white">Page inexistante</h3>
-                </div>
+            <div class="container w-50 text-center">
+                <h3 class="text-center text-primary mt-5">Page inexistante</h3>
+                <a href="index.php" class="text-center">Retour au catalogue</a>
             </div>
             <?php } ?>
 
