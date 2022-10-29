@@ -27,7 +27,7 @@ if(empty($_SESSION)){
     $statementInsertThumbup->bindValue(':like_book', $getThumbup['like_book'], \PDO::PARAM_STR);
     $statementInsertThumbup->execute();
     
-    header('location: book-info.php?id=' . $id);
+    header('location: index.php');
     exit();
 }
 

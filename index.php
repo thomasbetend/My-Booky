@@ -7,6 +7,7 @@
     <title>BookyMe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
 
 </head>
 <body class="d-flex flex-column h-100">
@@ -54,7 +55,19 @@
                                                         <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                         <?php }  else { ?>
                                                         <form name="<?php echo $book['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
-                                                    <?php } ?> 
+                                            <?php } ?> 
+
+                                            <!-- number of likes -->
+
+                                            <p><?php 
+                    
+                                            $queryThumbup = 'SELECT like_book FROM book WHERE book.id = ' .$book['id'];
+                                            $statementThumbup = $pdo->query($queryThumbup);
+                                            $thumbup = $statementThumbup->fetch();
+                                            
+                                            echo $thumbup['like_book']?><a href="index-thumb-up.php?id=<?php echo $book['id']?>"><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a>
+                                            
+                                            </p>
                                         </div>
                                     </div>
                                 </div>                       

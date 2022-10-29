@@ -51,7 +51,7 @@ $userBooks = $statementUserBook->fetchAll();
                                 <div class="card-body text-center">
                                     <h5 class="p-2 mb-1 bg-primary text-white"><?php echo ucfirst(stripslashes($userBook['name'])) ?></h5>
                                     <h5 class="pt-2 text-primary"><?php echo ucwords($userBook['firstname']) . ' ' . ucwords($userBook['lastname']) ?></h5>
-                                    <a href="book-info.php?id=<?php echo $userBook['b_id'] ?>" class="mt-0 mb-2">En savoir plus</a>
+                                    <a href="book-info.php?id=<?php echo $userBook['b_id'] ?>" class="mt-0 mb-2">Détails</a>
                                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($userBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
                                     <a href="book-modif.php?id=<?php echo $userBook['b_id']?>" class="text-secondary">Modifier livre</a>
                                     

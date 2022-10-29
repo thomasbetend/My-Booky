@@ -8,8 +8,12 @@ if(empty($_SESSION)){
 
 } else {
 
-$_SESSION['cart']['quantity'][$_GET['id']]=0;
-$_SESSION['cart']['price'][$_GET['id']]=0;
+include_once('functions.php');
+
+$id= testInput($_GET['id']);
+
+$_SESSION['cart']['quantity'][$id]=0;
+$_SESSION['cart']['price'][$id]=0;
 
 header('location: cart.php');
 exit();

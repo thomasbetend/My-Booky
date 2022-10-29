@@ -38,7 +38,16 @@ $book = $statement->fetch();
                         <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                     <?php } ?>                     
                     <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
-                    <p><?php echo $book['like_book']?><a href="book-info-thumb-up.php?id="><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
+
+                    <!-- number of likes -->
+
+                    <p><?php 
+                    
+                    $queryThumbup = 'SELECT like_book FROM book WHERE book.id = ' .$book['id'];
+                    $statementThumbup = $pdo->query($queryThumbup);
+                    $thumbup = $statementThumbup->fetch();
+                    
+                    echo $thumbup['like_book']?><a href="book-info-thumb-up.php?id=<?php echo $book['id']?>"><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
                 </div>
             </div>
             <?php } else { ?>

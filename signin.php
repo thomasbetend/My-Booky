@@ -41,9 +41,10 @@
                     $_SESSION['cart']['quantity']=array();
                     $_SESSION['cart']['price']=array();
                     
-                    for($i=0; $i<1000; $i++){
+                    for($i=0; $i<10000; $i++){
                         $_SESSION['cart']['quantity'][$i]=0;
                         $_SESSION['cart']['price'][$i]=0;
+                        $_SESSION['thumbup']['book'][$i]=0;
                     }
                     
                     header('location: index.php');
