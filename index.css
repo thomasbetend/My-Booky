@@ -1,36 +1,11 @@
-#formSearch {
-    display: none;
-}
-
-#initSearch {
-    display: none;
-}
-
-#closeSearch {
-    display: none;
-}
-
-#buttonSearchHidden {
-    display: none;
-}
-
 .button-search-hidden {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#buttonSearch {
-    display: block;
-}
 
 .button-search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.button-search-hidden {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,8 +18,6 @@ select {
     min-height: 27px;
 }
 
-.button-search-hidden {
-}
 
 .bg-primary {
     background-color: #1263c4;
@@ -53,4 +26,19 @@ select {
 .h5, h5 {
 
     font-size: 1.15rem;
+}
+
+#minPrice{
+    width: 100px;
+    margin-right: 5px;
+}
+
+#maxPrice{
+    width: 100px;
+    margin-right: 5px;
+    margin-left: 10px;
+}
+
+#select-search{
+    margin-left: 10px;
 }

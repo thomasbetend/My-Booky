@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookyMe - Info sur le livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
 </head>
 <body class="d-flex flex-column h-100">
 
@@ -21,11 +22,9 @@ include_once('functions.php');
 $id = testInput($_GET['id']);
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $id;
+$query = 'SELECT firstname, lastname, price_book, user_id, like_book, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $id;
 $statement = $pdo->query($query);
 $book = $statement->fetch();
-
-
 
         if($book){ ?>
             <div class="container w-50">
@@ -39,6 +38,7 @@ $book = $statement->fetch();
                         <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                     <?php } ?>                     
                     <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
+                    <p><?php echo $book['like_book']?><a href="book-info-thumb-up.php?id="><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
                 </div>
             </div>
             <?php } else { ?>

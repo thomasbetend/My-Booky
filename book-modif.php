@@ -124,7 +124,7 @@ echo '<div class="text-center"><h3 class="text-primary mt-5"> Vous n\'avez pas l
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
+<?php include_once('nav-bar.php'); ?>
 
             <div class="container w-50 text-center">
                 <h3 class="text-center text-primary mt-5">Page inexistante</h3>
