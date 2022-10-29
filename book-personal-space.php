@@ -14,7 +14,12 @@
 
 <?php include_once('nav-bar.php'); ?>
 
+
 <?php
+
+if(empty($_SESSION)) { 
+    header('location: index.php');
+} else {
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
@@ -64,3 +69,5 @@ $userBooks = $statementUserBook->fetchAll();
 
 <body>
 </html>
+
+<?php } ?>

@@ -9,7 +9,13 @@
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
+    <?php include_once('nav-bar.php'); 
+
+    if(empty($_SESSION)){
+
+    header('location: index.php');
+
+    } else { ?>
 
     <div class="container w-50 text-center">
         <form method="post" class="mt-5">
@@ -22,7 +28,7 @@
 
     <?php 
 
-    if($_POST){
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $_SESSION = array();
         session_destroy();
         unset($_SESSION);
@@ -35,3 +41,5 @@
 
 </body>
 </html>
+
+<?php } ?>

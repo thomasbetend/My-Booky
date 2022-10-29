@@ -9,9 +9,11 @@
 </head>
 <body class="d-flex flex-column h-100">
 
-<?php include_once('nav-bar.php'); ?>
+<?php include_once('nav-bar.php');
 
-<?php
+if(empty($_SESSION)){
+    header('location:index.php');
+} else {
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
@@ -74,5 +76,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 </body>
 </html>
+
+<?php } ?>
 
 

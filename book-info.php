@@ -1,10 +1,3 @@
-<?php
-$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-$query = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $_GET['id'];
-$statement = $pdo->query($query);
-$book = $statement->fetch();
-?>
-
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
@@ -19,6 +12,19 @@ $book = $statement->fetch();
 <?php 
 
 include_once('nav-bar.php');
+
+if(empty($_SESSION)){
+    header('location:index.php');
+} else {
+
+include_once('functions.php');
+$id = testInput($_GET['id']);
+
+$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+$query = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $id;
+$statement = $pdo->query($query);
+$book = $statement->fetch();
+
 
 
         if($book){ ?>
@@ -49,3 +55,5 @@ include_once('nav-bar.php');
 
 </body>
 </html>
+
+<?php } ?>

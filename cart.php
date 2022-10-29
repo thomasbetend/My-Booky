@@ -1,10 +1,6 @@
 <?php
 
-$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
-$queryBook = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id';
-$statementBook = $pdo->query($queryBook);
-$books = $statementBook->fetchAll();
 
 ?>
 
@@ -24,6 +20,16 @@ $books = $statementBook->fetchAll();
 <?php 
 
   include_once('nav-bar.php'); 
+
+  if(empty($_SESSION)){
+    header('location:index.php');
+  } else {
+
+  $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+
+  $queryBook = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id';
+  $statementBook = $pdo->query($queryBook);
+  $books = $statementBook->fetchAll();
   include_once('functions.php');
 
 
@@ -82,7 +88,7 @@ $books = $statementBook->fetchAll();
                         </div>
                         <div class="d-flex flex-row align-items-center">
                           <div style="width: 80px;">
-                            <h6 class="mb-0"><?php echo number_format($book['price_book'], 2, ',', ' ') .' €'; ?></h5>
+                            <h6 class="mb-0"><?php echo number_format($_SESSION['cart']['price'][$book['id']], 2, ',', ' ') .' €'; ?></h5>
                           </div>
                           <div style="width: 50px;">
                             <h6 class="fw-normal mb-0"><?php echo $_SESSION['cart']['quantity'][$book['id']] ?></h5>
@@ -132,3 +138,5 @@ $books = $statementBook->fetchAll();
 
 </body>
 </html>
+
+<?php } ?>

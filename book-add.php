@@ -10,8 +10,12 @@
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
-    <?php
+<?php include_once('nav-bar.php'); 
+
+if(empty($_SESSION)){
+    header('location:index.php');
+} else {
+
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
@@ -207,3 +211,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 </body>
 </html>
+
+<?php } ?>

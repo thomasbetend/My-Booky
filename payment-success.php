@@ -9,7 +9,15 @@
 </head>
 <body class="d-flex flex-column h-100">
     <main class="text-center">
-            <?php include_once('nav-bar.php'); ?>
+            <?php include_once('nav-bar.php'); 
+
+            if(empty($_SESSION)){
+
+                header('location: index.php');
+
+            } else {
+            
+            ?>
 
                 <h2 class="mt-5">Paiement réussi !</h2>
                 <h3 class="text-secondary">Merci d'avoir acheté chez nous.</h3>
@@ -44,6 +52,7 @@
 
                                     <div class="card-body text-center">
                                         <h5 class="p-2 mb-1 bg-primary text-white">Commande n°<?php echo ($lastOrder['id']) ?></h5>
+                                        <h5 class="mt-2"><?php echo $_SESSION['login'] ?></h5>
                                         <h5 class="pt-2 text-primary mb-3"> Prix total : <?php echo number_format($lastOrder['total_price'], 2, ',', ' ') . '€' ?></h5>
                                         <?php foreach ($_SESSION['cart']['book'] as $key=>$book){ ?>
                                             <h6> <?php echo $_SESSION['cart']['book'][$key] . '  //  ' . $_SESSION['cart']['author'][$key] . '       // Qté : ' . $_SESSION['cart']['quantity'][$key]; ?></h6>
@@ -79,3 +88,5 @@
 
 </body>
 </html>
+
+<?php } ?>

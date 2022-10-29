@@ -9,7 +9,11 @@
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
+    <?php include_once('nav-bar.php'); 
+
+    if(empty($_SESSION)){
+        header('location:index.php');
+    } else { ?>
 
             <div class="container w-50 text-center">
                 <h3 class="text-center text-primary mt-5">Vous ne pouvez supprimer ce livre</h3>
@@ -21,3 +25,5 @@
 
 </body>
 </html>
+
+    <?php } ?>

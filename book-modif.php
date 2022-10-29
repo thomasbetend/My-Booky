@@ -9,9 +9,14 @@
 </head>
 <body class="d-flex flex-column h-100">
 
-    <?php include_once('nav-bar.php'); ?>
+    <?php 
+    
+    include_once('nav-bar.php'); 
+    
+    if(empty($_SESSION)){
+        header('location:index.php');
+    } else {
 
-    <?php
     include_once('functions.php');
 
     $id = testInput($_GET['id']);
@@ -132,3 +137,4 @@ echo '<div class="text-center"><h3 class="text-primary mt-5"> Vous n\'avez pas l
 </body>
 </html>
 
+<?php } ?>

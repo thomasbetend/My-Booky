@@ -119,7 +119,11 @@ $books = $statement->fetchAll();
                     </div>
                     <?php } else { ?>
                         
-                        <h5 class="text-center text-primary">Pas de résultat</h5>
+                        <div class="text-center">
+                            <h4 class="text-center text-primary">Pas de résultat</h4>
+                            <a href="index.php" id="initSearch2">Réinitialiser la recherche</a><br/>
+                        </div>
+
 
                     <?php }} else { ?>
                                

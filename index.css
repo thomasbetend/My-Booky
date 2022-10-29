@@ -45,3 +45,12 @@ select {
 
 .button-search-hidden {
 }
+
+.bg-primary {
+    background-color: #1263c4;
+}
+
+.h5, h5 {
+
+    font-size: 1.15rem;
+}

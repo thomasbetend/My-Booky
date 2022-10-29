@@ -2,7 +2,7 @@
 
 session_start();
 
-if(empty($_SESSION['login'])){
+if(empty($_SESSION)){
 
     header('location: index.php');
 
