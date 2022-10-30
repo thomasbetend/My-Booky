@@ -169,7 +169,20 @@
                                                             <form name="<?php echo $searchBook['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                             <?php }  else { ?>
                                                             <form name="<?php echo $searchBook['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $searchBook['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
-                                                        <?php } ?> 
+                                                <?php } ?> 
+                                                <p>
+                                                <!-- number of likes -->
+                                                <p><?php 
+                    
+                                                $queryThumbup = 'SELECT total FROM likes WHERE book_id = ' .$searchBook['id'];
+
+                                                $statementThumbup = $pdo->query($queryThumbup);
+                                                $thumbup = $statementThumbup->fetch();
+
+                                                
+                                                echo $thumbup['total']?><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i>
+                                                
+                                                </p>
                                             </div>
                                         </div>
                                     </div>                       

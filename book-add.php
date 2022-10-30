@@ -70,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     if(!empty($_POST['authorLastname']) && (empty($_POST['author_id']))){
                         
 
-                            /* insert informations whith new author */
+                            /* insert informations with new author */
 
                             $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
                     
@@ -83,10 +83,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $bookSumup = testInput($_POST['bookSumup']);
                     
                             $statementAuthor = $pdo->prepare($queryAuthor);
-                    
                             $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
                             $statementAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-                    
                             $statementAuthor->execute();
                     
                             $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
@@ -98,17 +96,27 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $authorId = $statementIdAuthor->fetch();
 
                             /* insert new author_id in book */
-                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
 
+                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
                             $statementBook = $pdo->prepare($queryBook);
-                    
                             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
                             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
-                    
                             $statementBook->execute();
+
+                            /* insert new book_id in likes */
+
+                            $queryIdBook = 'SELECT id FROM book ORDER BY id DESC';
+                            $statementIdBook = $pdo->query($queryIdBook);
+                            $bookId = $statementIdBook->fetch();
+
+                            $queryLikes = 'INSERT INTO likes (book_id, total) VALUES(:bookid, :total)';
+                            $statementLikes = $pdo->prepare($queryLikes);
+                            $statementLikes->bindValue(':bookid', $bookId[0], \PDO::PARAM_INT);
+                            $statementLikes->bindValue(':total', 0, \PDO::PARAM_INT);
+                            $statementLikes->execute();
 
                             header('location: book-personal-space.php');
                             exit();
@@ -132,15 +140,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $bookSumup = testInput($_POST['bookSumup']);
 
                             $statementBook = $pdo->prepare($queryBook);
-                    
                             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookauthorid', $_POST['author_id'], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
                             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
-                    
                             $statementBook->execute();
-                            
+
+                            /* insert new book_id in likes */
+
+                            $queryIdBook = 'SELECT id FROM book ORDER BY id DESC';
+                            $statementIdBook = $pdo->query($queryIdBook);
+                            $bookId = $statementIdBook->fetch();
+
+                            $queryLikes = 'INSERT INTO likes (book_id, total) VALUES(:bookid, :total)';
+                            $statementLikes = $pdo->prepare($queryLikes);
+                            $statementLikes->bindValue(':bookid', $bookId[0], \PDO::PARAM_INT);
+                            $statementLikes->bindValue(':total', 0, \PDO::PARAM_INT);
+                            $statementLikes->execute();
+
                             header('location: book-personal-space.php');
                             exit();
                     }
