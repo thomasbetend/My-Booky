@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookyMe - Espace personnel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -54,7 +55,16 @@ $userBooks = $statementUserBook->fetchAll();
                                     <a href="book-info.php?id=<?php echo $userBook['b_id'] ?>" class="mt-0 mb-2">Détails</a>
                                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($userBook['price_book'], 2, ',', ' ') . '€'?></strong></p>
                                     <a href="book-modif.php?id=<?php echo $userBook['b_id']?>" class="text-secondary">Modifier livre</a>
-                                    
+
+                                    <!-- number of likes -->
+                                    <p><?php 
+                                    $queryThumbup = 'SELECT total FROM likes WHERE book_id = ' .$userBook['b_id'];
+                                    $statementThumbup = $pdo->query($queryThumbup);
+                                    $thumbup = $statementThumbup->fetch();
+
+                                    echo $thumbup['total']?><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i>
+                                    </p>
+
                                 </div>
                             </div>
                         </div>                       

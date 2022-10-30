@@ -10,6 +10,13 @@
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
 
 </head>
+<style>
+    .thumb-in-black a {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
 <body class="d-flex flex-column h-100">
 
     <?php include_once('nav-bar.php'); 
@@ -55,18 +62,32 @@
                                                         <form name="<?php echo $book['id']?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
                                                         <?php }  else { ?>
                                                         <form name="<?php echo $book['id']?>" method="post" action="book-personal-space.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-outline-secondary mt-2 mb-3'>Mon livre</button></form>
-                                            <?php } ?> 
+                                            <?php }
 
-                                            <!-- number of likes -->
+                                            /* number of likes */
 
-                                            <p><?php 
-                    
+                                            
+
+                                            /* get total likes */
+
                                             $queryThumbup = 'SELECT total FROM likes WHERE book_id = ' .$book['id'];
                                             $statementThumbup = $pdo->query($queryThumbup);
                                             $thumbup = $statementThumbup->fetch();
-                                            
-                                            echo $thumbup['total']?><a href="index-thumb-up.php?id=<?php echo $book['id']?>"><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
-                                            
+
+                                            /* get total per likes && user : 0 or 1  */
+
+                                            $queryVerifyLikesUser = 'SELECT book_id, likes_id, likes_user.total l_u_t, user_id, likes.total FROM likes_user LEFT JOIN likes ON likes.id = likes_user.likes_id WHERE book_id = ' . $book['id'] . ' AND user_id = ' . $_SESSION['id'];
+                                            $statementVerifyLikesUser = $pdo->query($queryVerifyLikesUser);
+                                            $verifyLikesUser= $statementVerifyLikesUser->fetch();
+
+                                            /* if 0 color the thumb in black, if 1 color thumb in blue */
+
+                                            if($verifyLikesUser['l_u_t'] === 0){ ?>
+                                                <p class="thumb-in-black"><?php echo $thumbup['total']?><a href="index-thumb-up.php?id=<?php echo $book['id']?>"><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
+                                            <?php } else if (($verifyLikesUser['l_u_t'] === 1)){
+                                                echo $thumbup['total']?><a href="index-thumb-up.php?id=<?php echo $book['id']?>"><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
+                                            <?php } ?>
+
                                             </p>
                                         </div>
                                     </div>

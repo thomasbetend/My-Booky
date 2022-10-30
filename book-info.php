@@ -40,14 +40,13 @@ $book = $statement->fetch();
                     <a href="index.php" class = "btn2 mb-4 mt-2 text-center">Retour à la liste</a>
 
                     <!-- number of likes -->
-
                     <p><?php 
-                    
                     $queryThumbup = 'SELECT total FROM likes WHERE book_id = ' .$book['id'];
                     $statementThumbup = $pdo->query($queryThumbup);
                     $thumbup = $statementThumbup->fetch();
-                    
-                    echo $thumbup['total']?><a href="book-info-thumb-up.php?id=<?php echo $book['id']?>"><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i></a></p>
+
+                    echo $thumbup['total']?><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i>
+                    </p>
                 </div>
             </div>
             <?php } else { ?>
