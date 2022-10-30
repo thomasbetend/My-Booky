@@ -7,6 +7,11 @@
     <title>BookyMe - Validation suppression</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 300;
+    }
+</style>
 <body class="d-flex flex-column h-100">
 
 <?php include_once('nav-bar.php');
@@ -34,6 +39,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         /* delete books */
 
+        $queryDeleteBookId = 'SELECT  SET book_id = NULL WHERE book_id =' . $id;
         $queryDeleteBookId = 'UPDATE likes SET book_id = NULL WHERE book_id =' . $id;
         $stmtDeleteBookId= $pdo->prepare($queryDeleteBookId);
         $stmtDeleteBookId->execute();

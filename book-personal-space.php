@@ -10,6 +10,26 @@
 
 </head>
 
+<style>
+    .thumb-in-grey i {
+        color: grey;
+    }
+    .thumb-in-grey {
+        color: grey;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 300;
+    }
+
+    h1 {
+        font-size: 2.7rem;
+    }
+    h5 {
+        font-size: 1.5em;
+    }
+</style>
+
 <body class="d-flex flex-column h-100">
 
 
@@ -37,7 +57,7 @@ $userBooks = $statementUserBook->fetchAll();
             <div class="col-lg-6 col-md-8 mx-auto">
                     <h1 class="mt-0">Mon espace</h1>
                     <h5 class="text-center mt-2 mb6 text-secondary">Gérez vos livres</h5>
-                    <p class="mt-4 text-center"><a href="book-add.php" class="text-center btn btn-secondary">Ajouter un livre</a></p>
+                    <p class="mt-4 text-center"><a href="book-add.php" class="text-center btn btn-secondary">Vendre un livre</a></p>
                     <a href="index.php" class = "text-secondary small pb-2" id="closeSearch">Retour au catalogue</a>
             </div>
         </div>
@@ -57,8 +77,8 @@ $userBooks = $statementUserBook->fetchAll();
                                     <a href="book-modif.php?id=<?php echo $userBook['b_id']?>" class="text-secondary">Modifier livre</a>
 
                                     <!-- number of likes -->
-                                    <p><?php 
-                                    $queryThumbup = 'SELECT total FROM likes WHERE book_id = ' .$userBook['b_id'];
+                                    <p class="thumb-in-grey mt-2"><?php 
+                                    $queryThumbup = 'SELECT total FROM likes WHERE book_id = ' . $userBook['b_id'];
                                     $statementThumbup = $pdo->query($queryThumbup);
                                     $thumbup = $statementThumbup->fetch();
 

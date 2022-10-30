@@ -7,3 +7,10 @@ function testInput($data){
     $data= strtolower($data);
     return $data;
 }
+
+function testInputNotLowerCase($data){
+    $data= trim($data);
+    $data= stripslashes($data);
+    $data= htmlspecialchars($data);
+    return $data;
+}

@@ -15,6 +15,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
 </head>
+<style>
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 300;
+    }
+
+    h1 {
+        font-size: 2.7rem;
+    }
+    h5 {
+        font-size: 1.5em;
+    }
+</style>
 <body class="d-flex flex-column h-100">
 
 <?php 

@@ -7,6 +7,11 @@
     <title>BookyMe - Modifier le livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 300;
+    }
+</style>
 <body class="d-flex flex-column h-100">
 
     <?php 
@@ -43,7 +48,7 @@
                 $firstname = testInput($_POST['authorFirstname']);
                 $bookName = testInput($_POST['bookName']);
                 $bookPrice = floatval(testInput($_POST['bookPrice']));
-                $bookSumup = testInput($_POST['bookSumup']);
+                $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
 
                 $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname WHERE id = ' . $book['a_id'];
 
@@ -69,26 +74,26 @@
 
             <div class="container w-50 ">
                 <div class="mt-5"></div>
-                    <h3 class="text-center">Modifiez le livre</h3>
+                    <h2 class="text-center">Modifiez le livre</h2>
                     <form action="" method="post" class="mt-3">
                         <div class="form-group mb-2">
-                            <label for="bookName">Titre du livre (obligatoire)</label>
+                            <label for="bookName" class="text-secondary">Titre du livre (obligatoire)</label>
                             <input type="text" id="bookName" name="bookName" value="<?php echo ucwords($book['name']) ?>" class="form-control">
                         </div>
                         <div class="form-group mb-2">
-                            <label for="bookPrice" >Prix (obligatoire)</label>
+                            <label for="bookPrice" class="text-secondary">Prix (obligatoire)</label>
                             <input type="text" id="bookPrice" name="bookPrice" class="form-control" value="<?php echo number_format($book['price_book'], 2, ',', ' ') ?>">
                         </div>
                         <div class="form-group mb-2">
-                            <label for="bookSumup">Résumé</label>
+                            <label for="bookSumup" class="text-secondary">Résumé</label>
                             <textarea id="bookSumup" name="bookSumup" class="form-control"><?php echo ucfirst($book['sumup']) ?></textarea>
                         </div>
                         <div class="form-group mb-2">
-                            <label for="authorLastname">Nom de l'auteur (obligatoire)</label>
+                            <label for="authorLastname" class="text-secondary">Nom de l'auteur (obligatoire)</label>
                             <input type="text" id="authorLastname" name="authorLastname" class="form-control" value="<?php echo ucwords($book['lastname']) ?>">
                         </div>
                         <div class="form-group mb-2">
-                            <label for="authorFirstname">Prénom de l'auteur</label>
+                            <label for="authorFirstname" class="text-secondary">Prénom de l'auteur</label>
                             <input type="text" id="authorFirstname" name="authorFirstname" class="form-control" value="<?php echo ucwords($book['firstname']) ?>">
                         </div>
                         <div>

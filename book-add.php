@@ -8,6 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="book-add.css" rel="stylesheet">
 </head>
+<style>
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 300;
+    }
+</style>
 <body class="d-flex flex-column h-100">
 
 <?php include_once('nav-bar.php'); 
@@ -80,7 +85,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $firstname = testInput($_POST['authorFirstname']);
                             $bookName = testInput($_POST['bookName']);
                             $bookPrice = floatval(testInput($_POST['bookPrice']));
-                            $bookSumup = testInput($_POST['bookSumup']);
+                            $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
                     
                             $statementAuthor = $pdo->prepare($queryAuthor);
                             $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
@@ -112,11 +117,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $statementIdBook = $pdo->query($queryIdBook);
                             $bookId = $statementIdBook->fetch();
 
+                            /* initializing total of likes */
+
                             $queryLikes = 'INSERT INTO likes (book_id, total) VALUES(:bookid, :total)';
                             $statementLikes = $pdo->prepare($queryLikes);
                             $statementLikes->bindValue(':bookid', $bookId[0], \PDO::PARAM_INT);
                             $statementLikes->bindValue(':total', 0, \PDO::PARAM_INT);
                             $statementLikes->execute();
+
+                            /* initializing total in likes_user */
+
+                            $queryLikesUser = 'INSERT INTO likes_user (likes_id, user_id, total) VALUES(:likesid, :userid, :total)';
+                            $statementLikesUser = $pdo->prepare($queryLikesUser);
+                            $statementLikesUser->bindValue(':likesid', $bookId[0], \PDO::PARAM_INT);
+                            $statementLikesUser->bindValue(':userid', $_SESSION['id'], \PDO::PARAM_INT);
+                            $statementLikesUser->bindValue(':total', 0, \PDO::PARAM_INT);
+                            $statementLikesUser->execute();
 
                             header('location: book-personal-space.php');
                             exit();
@@ -137,7 +153,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                             $bookName = testInput($_POST['bookName']);
                             $bookPrice = floatval(testInput($_POST['bookPrice']));
-                            $bookSumup = testInput($_POST['bookSumup']);
+                            $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
 
                             $statementBook = $pdo->prepare($queryBook);
                             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
@@ -147,17 +163,28 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
                             $statementBook->execute();
 
-                            /* insert new book_id in likes */
+                            /* insert new book_id in likes */ 
 
                             $queryIdBook = 'SELECT id FROM book ORDER BY id DESC';
                             $statementIdBook = $pdo->query($queryIdBook);
                             $bookId = $statementIdBook->fetch();
+
+                            /* initializing total of likes */
 
                             $queryLikes = 'INSERT INTO likes (book_id, total) VALUES(:bookid, :total)';
                             $statementLikes = $pdo->prepare($queryLikes);
                             $statementLikes->bindValue(':bookid', $bookId[0], \PDO::PARAM_INT);
                             $statementLikes->bindValue(':total', 0, \PDO::PARAM_INT);
                             $statementLikes->execute();
+
+                            /* initializing total in likes_user */
+
+                            $queryLikesUser = 'INSERT INTO likes_user (likes_id, user_id, total) VALUES(:likesid, :userid, :total)';
+                            $statementLikesUser = $pdo->prepare($queryLikesUser);
+                            $statementLikesUser->bindValue(':likesid', $bookId[0], \PDO::PARAM_INT);
+                            $statementLikesUser->bindValue(':userid', $_SESSION['id'], \PDO::PARAM_INT);
+                            $statementLikesUser->bindValue(':total', 0, \PDO::PARAM_INT);
+                            $statementLikesUser->execute();
 
                             header('location: book-personal-space.php');
                             exit();
@@ -177,19 +204,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 ?>
     <div class="container w-50 ">
         <div class="mt-5"></div>
-            <h3 class="text-center">Vendez votre livre sur BookyMe</h3>
+            <h2 class="text-center">Vendez votre livre sur BookyMe</h2>
             <h5 class="text-center text-secondary">Ajoutez-le au catalogue</h5>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
                 <div class="form-group mb-2">
-                    <label for="bookName">Titre du livre (obligatoire)</label>
+                    <label for="bookName" class="text-secondary">Titre du livre (obligatoire)</label>
                     <input type="text" id="bookName" name="bookName" class="form-control">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="bookPrice">Prix (obligatoire)</label>
+                    <label for="bookPrice" class="text-secondary">Prix (obligatoire)</label>
                     <input type="text" id="bookPrice" name="bookPrice" class="form-control">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="bookSumup">Résumé</label>
+                    <label for="bookSumup" class="text-secondary">Résumé</label>
                     <textarea id="bookSumup" name="bookSumup" class="form-control"></textarea>
                 </div>
                 <div class="form-group mb-2">
@@ -208,11 +235,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 </div>
                 <p class="text-primary mt-2">ou</p>
                 <div class="form-group mb-2">
-                    <label for="authorLastname">Nom du nouvel auteur (obligatoire)</label>
+                    <label for="authorLastname" class="text-secondary">Nom du nouvel auteur (obligatoire)</label>
                     <input type="text" id="authorLastname" name="authorLastname" class="form-control">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="authorFirstname">Prénom du nouvel auteur</label>
+                    <label for="authorFirstname" class="text-secondary">Prénom du nouvel auteur</label>
                     <input type="text" id="authorFirstname" name="authorFirstname" class="form-control">
                 </div>
                 <div class="mt-2 text-primary">
