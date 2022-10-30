@@ -34,11 +34,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         /* delete books */
 
-        $queryUdateBookId = 'UPDATE likes SET book_id = :book_id WHERE book_id = ' . $book['a_id'];
-
-        $stmtUpdateBookId= $pdo->prepare($queryUdateBookId);
-        $stmtUpdateBookId->bindValue(':book_id', NULL, \PDO::PARAM_STR);
-        $stmtUpdateBookId->execute();
+        $queryDeleteBookId = 'UPDATE likes SET book_id = NULL WHERE book_id =' . $id;
+        $stmtDeleteBookId= $pdo->prepare($queryDeleteBookId);
+        $stmtDeleteBookId->execute();
 
         $querySuppBook = 'DELETE FROM book WHERE id= ' . $id;
         $stmt= $pdo->prepare($querySuppBook);
