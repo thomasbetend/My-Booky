@@ -36,13 +36,31 @@
                         $statementOrder->bindValue(':total_number', array_sum($_SESSION['cart']['quantity']), \PDO::PARAM_STR );
                     
                         $statementOrder->execute();
-                        
+
                         /* get info from orders */
 
                         $getOrder = 'SELECT * FROM orders WHERE user_id = ' . $_SESSION['id'] . ' ORDER by id DESC';
                         $statementGetOrder = $pdo->query($getOrder);
                         $lastOrder = $statementGetOrder->fetch();
 
+                        /* insert info into orders_book */
+
+                        foreach ($_SESSION['cart']['book'] as $key=>$book){
+
+                            /* get info from book */
+
+                            $getBook = 'SELECT id, price_book FROM book WHERE name = \'' . $_SESSION['cart']['book'][$key] . '\' ORDER by id DESC';
+                            $statementGetBook = $pdo->query($getBook);
+                            $lastBook = $statementGetBook->fetch();
+
+                            $queryOrdersBook = 'INSERT INTO orders_book (orders_id, book_id, total_price, total_number) VALUES (:orders_id, :book_id, :total_price, :total_number)';
+                            $statementOrdersBook = $pdo->prepare($queryOrdersBook);
+                            $statementOrdersBook->bindValue(':orders_id', $lastOrder['id'], \PDO::PARAM_INT );
+                            $statementOrdersBook->bindValue(':book_id', $lastBook['id'], \PDO::PARAM_INT );
+                            $statementOrdersBook->bindValue(':total_price', ($_SESSION['cart']['quantity'][$lastBook['id']] * $lastBook['price_book']), \PDO::PARAM_STR );
+                            $statementOrdersBook->bindValue(':total_number', $_SESSION['cart']['quantity'][$lastBook['id']], \PDO::PARAM_INT );
+                            $statementOrdersBook->execute();
+                    }
 
                 ?>  
 
@@ -60,6 +78,7 @@
                                     </div>
                                 </div>
                     </div>
+                    
                 </div>
 
                 <?php 

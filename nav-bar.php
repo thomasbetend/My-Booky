@@ -31,8 +31,11 @@ if(isset($_SESSION['login'])){
             <li class="nav-item">
               <a class="nav-link" href="book-personal-space.php">Mon espace</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="orders.php">Mes commandes</a>
+            </li>
             <li class="nav-item active">
-              <a class="nav-link" href="cart.php">Panier</span></a>
+              <a class="nav-link" href="cart.php">Mon panier</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="signout.php">Déconnexion</a>

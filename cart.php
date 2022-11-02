@@ -60,7 +60,7 @@
 ?>
 
 <div class="container w-50 text-center">
-  <h1 class="text-center mt-5">Votre panier</h1>
+  <h1 class="text-center mt-5">Mon panier</h1>
 </div>
 
 <section class="h-100 h-custom" style="background-color: #eee;">
