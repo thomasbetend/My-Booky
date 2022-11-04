@@ -213,7 +213,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 </div>
                 <div class="form-group mb-2">
                     <label for="bookPrice" class="text-secondary">Prix (obligatoire)</label>
-                    <input type="text" id="bookPrice" name="bookPrice" class="form-control">
+                    <input type="number" step="0.01" id="bookPrice" name="bookPrice" class="form-control">
                 </div>
                 <div class="form-group mb-2">
                     <label for="bookSumup" class="text-secondary">Résumé</label>

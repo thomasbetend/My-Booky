@@ -31,12 +31,12 @@
   } else {
 
   $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-
-  $queryOrders = 'SELECT o.user_id, o.id, o.total_price, book_id, orders_id, name FROM orders_book as ob JOIN book as b ON b.id=ob.book_id RIGHT JOIN orders as o ON o.id=ob.orders_id WHERE o.user_id = ' . $_SESSION['id'];
-  $statementOrders = $pdo->query($queryOrders);
-  $orders = $statementOrders->fetchAll();
-
   
+  /* all orders */
+  $queryAllOrders = 'SELECT id, user_id FROM orders WHERE user_id = '  . $_SESSION['id'] . ' ORDER BY id DESC';
+  $statementAllOrders = $pdo->query($queryAllOrders);
+  $allOrders = $statementAllOrders->fetchAll();
+
 ?>
 
 <div class="container w-50 text-center">
@@ -50,36 +50,41 @@
         <div class="card">
           <div class="card-body p-4">
             <div class="row">
-              <div class="col-lg-7">
+              <div class="col-lg-12">
                 <hr>
-                <!-- display each order -->
+                <!-- displays each order -->
                 <?php 
-                  if($orders){
-                  foreach($orders as $order){ ?>
-
+                  if($allOrders){
+                  foreach($allOrders as $allOrder){ ?>
                   <div class="card mb-3">
                     <div class="card-body">
-                      <a href="" class="">
                         <div class="d-flex justify-content-between">
                           <div class="d-flex flex-row align-items-center">
                             <div>
                               <i class="fa-sharp fa-solid fa-book"></i>
                             </div>
                             <div class="ms-3">
-                              <h5>Commande n° <?php echo $order['id']; ?></h5>
+                              <h5>Commande n° <?php echo $allOrder['id']; ?></h5>
+
+                              <?php 
+                              
+                              /* all books from order */
+
+                              $queryAllBooks = 'SELECT o.user_id, o.id, o.total_price, ob.orders_id, ob.name_book name, ob.author author, ob.total_number total_number FROM orders_book as ob JOIN orders as o ON o.id=ob.orders_id WHERE o.id = ' . $allOrder['id'] . ' ORDER BY name ASC';
+                              $statementallBooks = $pdo->query($queryAllBooks);
+                              $allBooks = $statementallBooks->fetchAll();
+
+                              foreach($allBooks as $allBook){ ?>
+                                <p class="small mb-0"><?php echo ucfirst($allBook['name'] . '   //   ' . $allBook['author'] . '   //   Qté : ' . $allBook['total_number']);?></p>
+                              <?php } ?>
                             </div>
                           </div>
                           <div class="d-flex flex-row align-items-center">
                             <div style="width: 80px;">
-                              <h6 class="mb-0"><?php echo $order['total_price'].' €'; ?></h5>
-                            </div>
-                            <div style="width: 50px;">
-                            </div>
-                            <div>
+                              <h6 class="mb-0"><?php echo number_format($allBook['total_price'], 2, ',', ' ').' €'; ?></h5>
                             </div>
                           </div>
                         </div>
-                      </a>
                     </div>
                   </div>
                   <?php 
