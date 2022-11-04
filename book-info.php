@@ -24,6 +24,7 @@
         font-size: 0.6rem;
         text-align: right;
         padding-right: 15px;
+        padding-left: 15px;
     }
 
     .delete-comment {
@@ -53,7 +54,7 @@
     }
 
     h5 {
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
 
     .release-year {
@@ -86,15 +87,17 @@
         if ($book) { ?>
             <div class="container w-50">
                 <div class="card text-center mt-4">
-                    <h3 class="p-2 mb-1 bg-primary text-white">
+                    <h3 class="p-2 mb-2 bg-primary text-white">
                         <?php echo ucwords(stripslashes(($book['name']))) ?>
                         <?php if($book['release_year']) { 
                             echo '<br><span class="release-year">paru en ' . $book['release_year']; ?></span>
-                            <?php } ?>
+                        <?php } ?>
                     </h3>
                     <h5 class="p-2 text-primary">
-                        <?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']);
+                        <?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname'] . ' ');
                         if($book['birthyear'] || $book['birthyear']) { 
+                            if(empty($book['birthyear'])){$book['birthyear']='';}
+                            if(empty($book['deathyear'])){$book['deathyear']='';}
                             echo "(" . $book['birthyear'] . " - " . $book['deathyear'] . ")";
                         }?>
                     </h5>

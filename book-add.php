@@ -93,6 +93,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             } else {
 
+                if($_POST['birthyear'] >= $_POST['deathyear']){
+                    $errorMessage = "L'année de naissance doit être inférieure à l'année de mort.";
+                } else {
+
                 if(!empty(($_POST['bookName'])) && (!empty($_POST['bookPrice'])) && (((!empty($_POST['authorLastname']))) || !empty($_POST['author_id']))){
 
                     $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
@@ -230,7 +234,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 } else { 
                     
                     $errorMessage = 'Renseignez au moins le nom du livre, son prix et le nom de l\'auteur';
-        }}}
+        }}}}
 
     }
 }

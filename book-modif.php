@@ -117,7 +117,7 @@
                         </div>
                         <div class="form-group mb-2">
                             <label for="release_year" class="text-secondary">Date de parution</label>
-                            <input type="text" id="release_year" name="release_year" class="form-control">
+                            <input type="text" id="release_year" name="release_year" class="form-control" value="<?php echo $book['release_year']?>">
                         </div>
                         <div class="form-group mb-2">
                             <label for="bookSumup" class="text-secondary">Résumé</label>
@@ -132,8 +132,8 @@
                             <input type="text" id="authorFirstname" name="authorFirstname" class="form-control" value="<?php echo ucwords($book['firstname']) ?>">
                         </div>
                         <div class="author-years">
-                            Année de naissance <input type="text" id="birthyear" name="birthyear" class="author-birth-year"></input>
-                            Année de mort <input type="text" id="deathyear" name="deathyear" class="author-death-year"></input>
+                            Année de naissance <input type="text" id="birthyear" name="birthyear" class="author-birth-year" value="<?php echo $book['birthyear']?>"></input>
+                            Année de mort <input type="text" id="deathyear" name="deathyear" class="author-death-year" value="<?php echo $book['deathyear']?>"></input>
                         </div>
                         <div>
                             <button type="submit" class="btn btn-primary mt-2" value="">Modifiez le livre</button>
