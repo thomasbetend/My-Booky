@@ -55,6 +55,10 @@
     h5 {
         font-size: 1.5em;
     }
+
+    .release-year {
+        font-size: 0.9rem;
+    }
 </style>
 
 <body class="d-flex flex-column h-100">
@@ -71,7 +75,7 @@
         $id = testInput($_GET['id']);
 
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory', 'root', '');
-        $queryBook = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $id;
+        $queryBook = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup, release_year, birthyear, deathyear FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $id;
         $statementBook = $pdo->query($queryBook);
         $book = $statementBook->fetch();
 
@@ -82,8 +86,18 @@
         if ($book) { ?>
             <div class="container w-50">
                 <div class="card text-center mt-4">
-                    <h3 class="p-2 mb-1 bg-primary text-white"><?php echo ucwords(stripslashes(($book['name']))) ?></h3>
-                    <h5 class="p-2 text-primary"><?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']) ?></h5>
+                    <h3 class="p-2 mb-1 bg-primary text-white">
+                        <?php echo ucwords(stripslashes(($book['name']))) ?>
+                        <?php if($book['release_year']) { 
+                            echo '<br><span class="release-year">paru en ' . $book['release_year']; ?></span>
+                            <?php } ?>
+                    </h3>
+                    <h5 class="p-2 text-primary">
+                        <?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname']);
+                        if($book['birthyear'] || $book['birthyear']) { 
+                            echo "(" . $book['birthyear'] . " - " . $book['deathyear'] . ")";
+                        }?>
+                    </h5>
                     <h4 class="p-2 text-black">Résumé</h4>
                     <p class="p-4 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])) ?></p>
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€' ?></strong></p>

@@ -12,6 +12,31 @@
     h1, h2, h3, h4, h5, h6 {
         font-weight: 300;
     }
+
+    .author-years {
+        color: #6c757d;
+    }
+
+    .author-birth-year {
+        width: 70px;
+        border: 1px solid #ced4da;
+        border-radius: 3px;
+        margin-right: 10px;
+        color: black;
+    }
+
+    .author-birth-year .input-placeholder {
+        color: black;
+    }
+
+    .author-death-year {
+        width: 70px;
+        border: 1px solid #ced4da;
+        border-radius: 3px;
+        margin-right: 10px;
+        color: black;
+    }
+
 </style>
 <body class="d-flex flex-column h-100">
 
@@ -77,19 +102,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                             /* insert informations with new author */
 
-                            $queryAuthor = 'INSERT INTO author (firstname, lastname) VALUES (:firstname, :lastname)';
+                            $queryAuthor = 'INSERT INTO author (firstname, lastname, birthyear, deathyear) VALUES (:firstname, :lastname, :birthyear, :deathyear)';
                     
                             include_once('functions.php');
                     
                             $lastname = testInput($_POST['authorLastname']);
                             $firstname = testInput($_POST['authorFirstname']);
+                            $birthyear = intval(testInput($_POST['birthyear']));
+                            $deathyear = intval(testInput($_POST['deathyear']));
                             $bookName = testInput($_POST['bookName']);
                             $bookPrice = floatval(testInput($_POST['bookPrice']));
                             $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
+                            $bookYear = intval(testInput($_POST['release_year']));
                     
                             $statementAuthor = $pdo->prepare($queryAuthor);
                             $statementAuthor->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
                             $statementAuthor->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+                            $statementAuthor->bindValue(':birthyear', $birthyear, \PDO::PARAM_STR);
+                            $statementAuthor->bindValue(':deathyear', $deathyear, \PDO::PARAM_STR);
                             $statementAuthor->execute();
                     
                             $queryIdUser = 'SELECT id FROM user WHERE id = ' . $_SESSION['id'];
@@ -102,13 +132,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                             /* insert new author_id in book */
 
-                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup, release_year) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup, :release_year)';
                             $statementBook = $pdo->prepare($queryBook);
                             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookauthorid', $authorId[0], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
                             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+                            $statementBook->bindValue(':release_year', $bookYear, \PDO::PARAM_STR);
+
                             $statementBook->execute();
 
                             /* insert new book_id in likes */
@@ -143,7 +175,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                         
                             /* insert informations with existing author */
 
-                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup)';
+                            $queryBook = 'INSERT INTO book (name, author_id, user_id, price_book, sumup, release_year) VALUES(:bookname, :bookauthorid, :bookuserid, :bookprice, :sumup, :release_year)';
                             
                             include_once('functions.php');
 
@@ -154,6 +186,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $bookName = testInput($_POST['bookName']);
                             $bookPrice = floatval(testInput($_POST['bookPrice']));
                             $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
+                            $bookYear = intval(testInput($_POST['release_year']));
 
                             $statementBook = $pdo->prepare($queryBook);
                             $statementBook->bindValue(':bookname', $bookName, \PDO::PARAM_STR);
@@ -161,6 +194,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                             $statementBook->bindValue(':bookuserid', $userId[0], \PDO::PARAM_STR);
                             $statementBook->bindValue(':bookprice', $bookPrice, \PDO::PARAM_STR);
                             $statementBook->bindValue(':sumup', $bookSumup, \PDO::PARAM_STR);
+                            $statementBook->bindValue(':release_year', $bookYear, \PDO::PARAM_STR);
                             $statementBook->execute();
 
                             /* insert new book_id in likes */ 
@@ -220,6 +254,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <textarea id="bookSumup" name="bookSumup" class="form-control"></textarea>
                 </div>
                 <div class="form-group mb-2">
+                    <label for="release_year" class="text-secondary">Date de parution</label>
+                    <input type="number" id="release_year" name="release_year" class="form-control">
+                </div>
+                <div class="form-group mb-2">
                     <label for="authorLastname"></label>
                     <select name="author_id" class="form-select select-add">
                         <option value="0">Auteur existant</option>
@@ -241,6 +279,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <div class="form-group mb-2">
                     <label for="authorFirstname" class="text-secondary">Prénom du nouvel auteur</label>
                     <input type="text" id="authorFirstname" name="authorFirstname" class="form-control">
+                </div>
+                <div class="author-years">
+                    Année de naissance <input type="number" id="birthyear" name="birthyear" class="author-birth-year"></input>
+                    Année de mort <input type="number" id="deathyear" name="deathyear" class="author-death-year"></input>
                 </div>
                 <div class="mt-2 text-primary">
                     <?php if (!empty($errorMessage)) echo $errorMessage ; ?>
