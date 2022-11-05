@@ -5,62 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe - Info sur le livre</title>
+    <title>MyBooky - Info sur le livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
+    <link href="styles.css" rel="stylesheet">
 </head>
-
-<style>
-    .thumb-in-grey i {
-        color: grey;
-    }
-
-    .thumb-in-grey {
-        color: grey;
-    }
-
-    .legend-italic-right {
-        color: grey;
-        font-size: 0.6rem;
-        text-align: right;
-        padding-right: 15px;
-        padding-left: 15px;
-    }
-
-    .delete-comment {
-        color: grey;
-        font-size: 0.6rem;
-        text-align: left;
-        padding-left: 15px;
-    }
-
-    .comment-options {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-weight: 300;
-    }
-
-    h1 {
-        font-size: 3rem;
-    }
-
-    h5 {
-        font-size: 1.3em;
-    }
-
-    .release-year {
-        font-size: 0.9rem;
-    }
-</style>
 
 <body class="d-flex flex-column h-100">
 
@@ -96,8 +45,8 @@
                     <h5 class="p-2 text-primary">
                         <?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname'] . ' ');
                         if($book['birthyear'] || $book['birthyear']) { 
-                            if(empty($book['birthyear'])){$book['birthyear']='';}
-                            if(empty($book['deathyear'])){$book['deathyear']='';}
+                            if((empty($book['birthyear'])) || ($book['birthyear'] === 0)){$book['birthyear']=' ';}
+                            if((empty($book['deathyear'])) || ($book['deathyear'] === 0)){$book['deathyear']=' ';}
                             echo "(" . $book['birthyear'] . " - " . $book['deathyear'] . ")";
                         }?>
                     </h5>

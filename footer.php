@@ -7,5 +7,5 @@
             <li class="nav-item"><a href="signout.php" class="nav-link px-2 text-muted">Déconnexion</a></li>
         <?php } ?>
     </ul>
-    <p class="text-center text-muted"> BookyMe</p>
+    <p class="text-center text-muted"> MyBooky</p>
 </footer>

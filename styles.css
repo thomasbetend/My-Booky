@@ -1,0 +1,129 @@
+/* general */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.7rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+h5 {
+    font-size: 1.3em;
+}
+
+.errorMessage {
+    color: red;
+}
+
+/* book-add.php */
+
+.form-select {
+    background-color: rgb(245, 245, 245);
+}
+
+/* book-info.php */
+
+.thumb-in-grey i {
+    color: grey;
+}
+
+.thumb-in-grey {
+    color: grey;
+}
+
+.legend-italic-right {
+    color: grey;
+    font-size: 0.6rem;
+    text-align: right;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.delete-comment {
+    color: grey;
+    font-size: 0.6rem;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.comment-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.release-year {
+    font-size: 0.9rem;
+}
+
+/* book-modif.php */
+
+.author-years {
+    color: #6c757d;
+}
+
+.author-birth-year {
+    width: 70px;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    margin-right: 10px;
+    color: black;
+}
+
+.author-birth-year .input-placeholder {
+    color: black;
+}
+
+.author-death-year {
+    width: 70px;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    margin-right: 10px;
+    color: black;
+}
+
+/* book-personal-space.php */
+
+.thumb-in-grey i {
+    color: grey;
+}
+
+.thumb-in-grey {
+    color: grey;
+}
+
+/* index-search */
+
+.thumb-in-black a {
+    text-decoration: none;
+    color: black;
+}
+
+.thumb-in-blue {
+    color: #1263c4;
+}
+
+.small-button {
+    min-width: 80px;
+    font-size: 0.9rem;
+}
+
+/* index.php */
+
+.button-new{
+    margin-right: 10px;
+    min-width : 150px;;
+}

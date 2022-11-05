@@ -4,37 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe - Espace personnel</title>
+    <title>MyBooky - Espace personnel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
+    <link href="styles.css" rel="stylesheet"></head>
 
 </head>
 
-<style>
-    .thumb-in-grey i {
-        color: grey;
-    }
-    .thumb-in-grey {
-        color: grey;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 300;
-    }
-
-    h1 {
-        font-size: 2.7rem;
-    }
-    h5 {
-        font-size: 1.5em;
-    }
-</style>
-
 <body class="d-flex flex-column h-100">
 
-
 <?php include_once('nav-bar.php'); ?>
-
 
 <?php
 
@@ -55,7 +34,7 @@ $userBooks = $statementUserBook->fetchAll();
     <section class="py-5 text-center container">
         <div class="row py-lg-1">
             <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="mt-0">Mon espace</h1>
+                    <h2 class="mt-0">Mon espace</h2>
                     <h5 class="text-center mt-2 mb6 text-secondary">Gérez vos livres</h5>
                     <p class="mt-4 text-center"><a href="book-add.php" class="text-center btn btn-secondary">Vendre un livre</a></p>
                     <a href="index.php" class = "text-secondary small pb-2" id="closeSearch">Retour au catalogue</a>

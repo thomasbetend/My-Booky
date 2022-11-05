@@ -26,7 +26,7 @@ if(isset($_SESSION['login'])){
             </li>
         <?php } else { ?>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.php">BookyMe</a>
+              <a class="nav-link active" aria-current="page" href="index.php">MyBooky</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="book-personal-space.php">Mon espace</a>

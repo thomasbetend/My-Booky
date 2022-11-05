@@ -4,38 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe - Modifier le livre</title>
+    <title>MyBooky - Modifier le livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<style>
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 300;
-    }
+    <link href="styles.css" rel="stylesheet"></head>
 
-    .author-years {
-        color: #6c757d;
-    }
-
-    .author-birth-year {
-        width: 70px;
-        border: 1px solid #ced4da;
-        border-radius: 3px;
-        margin-right: 10px;
-        color: black;
-    }
-
-    .author-birth-year .input-placeholder {
-        color: black;
-    }
-
-    .author-death-year {
-        width: 70px;
-        border: 1px solid #ced4da;
-        border-radius: 3px;
-        margin-right: 10px;
-        color: black;
-    }
-</style>
 <body class="d-flex flex-column h-100">
 
     <?php 
@@ -67,15 +39,53 @@
 
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
+                if($_POST['birthyear'] > $_POST['deathyear']){
+
+                    $errorMessage = "L'année de naissance doit être inférieure à l'année de mort.";
+
+                }
+
+                if(empty($_POST['bookName']) || empty($_POST['bookPrice']) || empty($_POST['authorLastname'])){
+
+                    $errorMessage = "Le nom du livre, le prix et le nom de l'auteur sont obligatoires.";
+
+                }
+
+                if(testInput($_POST['authorLastname']) !== $book['lastname']) {
+
+                $queryAuthorLastname = 'SELECT lastname FROM author WHERE lastname LIKE \'%' . testInput($_POST['authorLastname']) . '%\'';
+                $statementAuthorLastname = $pdo->query($queryAuthorLastname);
+                $authorLastnameMatch = $statementAuthorLastname->fetch();
+
+                    if($authorLastnameMatch) {
+
+                        $errorMessage = 'Livre existant';
+
+                    }
+                }
+
+                if(testInput($_POST['bookName']) !== $book['name']) {
+    
+                    $queryTitleBook = 'SELECT name FROM book WHERE name LIKE \'%' . testInput($_POST['bookName']) . '%\'';
+                    $statementTitleBook = $pdo->query($queryTitleBook);
+                    $titleBookMatch = $statementTitleBook->fetch();
+    
+                    if($titleBookMatch) {
+    
+                        $errorMessage = 'Livre existant';
+    
+                    }
+                }
+
                 /* insertion modifications */
                 $lastname = testInput($_POST['authorLastname']);
                 $firstname = testInput($_POST['authorFirstname']);
-                $birthyear = testInput($_POST['birthyear']);
-                $deathyear = testInput($_POST['deathyear']);
+                $birthyear = intval(testInput($_POST['birthyear']));
+                $deathyear = intval(testInput($_POST['deathyear']));
                 $bookName = testInput($_POST['bookName']);
                 $bookPrice = floatval(testInput($_POST['bookPrice']));
                 $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
-                $bookYear = testInput($_POST['release_year']);
+                $bookYear = intval(testInput($_POST['release_year']));
 
                 $queryUdateAuthor = 'UPDATE author SET firstname = :firstname, lastname = :lastname, birthyear = :birthyear, deathyear = :deathyear WHERE id = ' . $book['a_id'];
 
@@ -95,9 +105,14 @@
                 $stmtUpdateBook->bindValue(':release_year', $bookYear, \PDO::PARAM_STR);
 
                 $stmtUpdateBook->execute();  
-                
+            
+
+                if($errorMessage === ''){
+
                 header('location: book-personal-space.php');
                 exit();
+
+                }   
                                     
             }
 
@@ -140,7 +155,7 @@
                         </div>
                     </form>
                     <div class="pt-2"><a href="book-delete.php?id=<?php echo $book['id'] ?>" >Supprimer le livre</a></div>
-                    <div>
+                    <div class="errorMessage">
                         <?php if (!empty($errorMessage)) echo $errorMessage ; ?>
                     </div>
                 </div>
@@ -163,7 +178,7 @@ echo '<div class="text-center"><h3 class="text-primary mt-5"> Vous n\'avez pas l
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe - Modifier le livre</title>
+    <title>MyBooky - Modifier le livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex flex-column h-100">

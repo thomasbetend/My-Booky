@@ -4,48 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe</title>
+    <title>MyBooky</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
-
+    <link href="styles.css" rel="stylesheet"></head>
 </head>
-
-<style>
-    .thumb-in-black a {
-        text-decoration: none;
-        color: black;
-    }
-
-    .thumb-in-blue {
-        color: #1263c4;
-    }
-
-    .small-button {
-        min-width: 80px;
-        font-size: 0.9rem;
-    }
-
-    .button-new{
-        margin-right: 10px;
-        min-width : 150px;;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 300;
-    }
-
-    h1 {
-        font-size: 3rem;
-    }
-    h4 {
-        font-size: 1.5rem;
-    }
-    h5 {
-        font-size: 1.3em;
-    }
-
-</style>
 
 <body class="d-flex flex-column h-100">
 
@@ -65,7 +29,7 @@
             <!-- with login session -->
 
                     <?php if (isset($_SESSION['login'])) {?>
-                    <h1 class="mt-0">BookyMe</h1>
+                    <h1 class="mt-0">MyBooky</h1>
                     <h4 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h4>
 
                         <div>
@@ -147,7 +111,7 @@
 
             <?php } else { ?>
                 <div class="text-center">
-                    <h1 class="mt-5">BookyMe</h1>
+                    <h1 class="mt-5">MyBooky</h1>
                     <h2>Welcome !!!</h2>
                     <h6 class="mt-3">Pour vendre ou acheter des livres, authentifiez-vous</h6>
                     <a class="btn btn-primary mt-2" href="signin.php" role="button">Connexion</a>

@@ -50,11 +50,13 @@ if($comments){
 
                 <?php  if($_SESSION['id'] === $comment['user_id']){ ?>
                         <a href="comment-delete.php?id=<?php echo $comment['id'];?>" class="delete-comment">Supprimer votre commentaire</a>
+                <?php } else { ?>
+                        <p> </p>
                 <?php } ?>
 
                 <!-- comment user -->
 
-                <p class="legend-italic-right">Posté par <?php echo ucwords($commentUser['firstname'] . ' '. $commentUser['lastname']);?> le <?php echo $comment['post_date']; ?></p>
+                <p class="legend-italic-right">Posté par <?php echo ucwords($commentUser['firstname'] . ' '. $commentUser['lastname']);?> le <?php echo (new DateTime($comment['post_date']))->format("d/m/Y"); ?></p>
 
             </div>
         

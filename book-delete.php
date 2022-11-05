@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe - Validation suppression</title>
+    <title>MyBooky - Validation suppression</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
-<style>
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 300;
-    }
-</style>
+
 <body class="d-flex flex-column h-100">
 
 <?php include_once('nav-bar.php');
 
 if(empty($_SESSION)){
+
     header('location:index.php');
+
 } else {
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){

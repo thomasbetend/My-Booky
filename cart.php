@@ -1,32 +1,15 @@
-<?php
-
-
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookyMe - Panier</title>
+    <title>MyBooky - Panier</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
+    <link href="styles.css" rel="stylesheet"></head>
 </head>
-<style>
-    h1, h2, h3, h4, h5, h6 {
-        font-weight: 300;
-    }
 
-    h1 {
-        font-size: 2.7rem;
-    }
-    h5 {
-        font-size: 1.5em;
-    }
-</style>
 <body class="d-flex flex-column h-100">
 
 <?php 
@@ -60,7 +43,7 @@
 ?>
 
 <div class="container w-50 text-center">
-  <h1 class="text-center mt-5">Mon panier</h1>
+  <h2 class="text-center mt-5">Mon panier</h2>
 </div>
 
 <section class="h-100 h-custom" style="background-color: #eee;">
