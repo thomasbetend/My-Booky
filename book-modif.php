@@ -15,7 +15,9 @@
     include_once('nav-bar.php'); 
     
     if(empty($_SESSION)){
+
         header('location:index.php');
+
     } else {
 
     include_once('functions.php');
@@ -39,7 +41,7 @@
 
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-                if($_POST['birthyear'] > $_POST['deathyear']){
+                if(($_POST['birthyear']) && ($_POST['deathyear']) && ($_POST['birthyear'] > $_POST['deathyear'])){
 
                     $errorMessage = "L'année de naissance doit être inférieure à l'année de mort.";
 
@@ -82,7 +84,7 @@
                 $firstname = testInput($_POST['authorFirstname']);
                 $birthyear = intval(testInput($_POST['birthyear']));
                 $deathyear = intval(testInput($_POST['deathyear']));
-                $bookName = testInput($_POST['bookName']);
+                $bookName = testBookName($_POST['bookName']);
                 $bookPrice = floatval(testInput($_POST['bookPrice']));
                 $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
                 $bookYear = intval(testInput($_POST['release_year']));
@@ -128,7 +130,7 @@
                         </div>
                         <div class="form-group mb-2">
                             <label for="bookPrice" class="text-secondary">Prix (obligatoire)</label>
-                            <input type="text" id="bookPrice" name="bookPrice" class="form-control" value="<?php echo number_format($book['price_book'], 2, ',', ' ') ?>">
+                            <input type="number" step="0.01" id="bookPrice" name="bookPrice" class="form-control" value="<?php echo number_format($book['price_book'], 2, '.', ' ') ?>">
                         </div>
                         <div class="form-group mb-2">
                             <label for="release_year" class="text-secondary">Date de parution</label>

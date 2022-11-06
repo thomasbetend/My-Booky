@@ -18,15 +18,22 @@
     include_once('nav-bar.php');
 
     if (empty($_SESSION)) {
+
         header('location:index.php');
+        
     } else {
 
         include_once('functions.php');
+
         $id = testInput($_GET['id']);
 
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory', 'root', '');
-        $queryBook = 'SELECT firstname, lastname, price_book, user_id, book.id id, name, sumup, release_year, birthyear, deathyear FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id=' . $id;
-        $statementBook = $pdo->query($queryBook);
+        
+        /* binding and securizing id */
+        $queryBook = 'SELECT author_id a_id, user_id, firstname, lastname, price_book, book.id id, sumup, name, birthyear, deathyear, release_year FROM book LEFT JOIN author ON author.id=book.author_id where book.id = :id';
+        $statementBook = $pdo->prepare($queryBook);
+        $statementBook->bindValue(':id', $id, PDO::PARAM_INT);
+        $statementBook->execute();
         $book = $statementBook->fetch();
 
         $queryUser = 'SELECT user.id, firstname, lastname, book.id FROM user LEFT JOIN book ON user.id=book.user_id WHERE book.id=' . $id;
@@ -36,12 +43,12 @@
         if ($book) { ?>
             <div class="container w-50">
                 <div class="card text-center mt-4">
-                    <h3 class="p-2 mb-2 bg-primary text-white">
-                        <?php echo ucwords(stripslashes(($book['name']))) ?>
+                    <h4 class="p-2 mb-2 bg-primary text-white">
+                        <span class="title-book-info"><?php echo ucwords(stripslashes(($book['name']))) ?></span>
                         <?php if($book['release_year']) { 
-                            echo '<br><span class="release-year">paru en ' . $book['release_year']; ?></span>
+                            echo '<br><span class="release-year">Paru en ' . $book['release_year']; ?></span>
                         <?php } ?>
-                    </h3>
+                    </h4>
                     <h5 class="p-2 text-primary">
                         <?php echo ucwords($book['firstname']) . ' ' . ucwords($book['lastname'] . ' ');
                         if($book['birthyear'] || $book['birthyear']) { 
@@ -50,8 +57,9 @@
                             echo "(" . $book['birthyear'] . " - " . $book['deathyear'] . ")";
                         }?>
                     </h5>
-                    <h4 class="p-2 text-black">Résumé</h4>
-                    <p class="p-4 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])) ?></p>
+                    <h4 class="p-2 text-black title-sumup"><?php if($book['sumup'] !== ''){ echo "Résumé" ;} ?></h4>
+                    
+                    <p class="p-4 pt-0 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])); ?></p>
                     <p class="p-1 mb-0 text-black"><strong><?php echo 'Prix : ' . number_format($book['price_book'], 2, ',', ' ') . '€' ?></strong></p>
                     <?php if ($book['user_id'] !== $_SESSION['id']) { ?>
                         <form name="<?php echo $book['id'] ?>" method="post" action="cart.php"><button type="submit" name="buttonCart" value='<?php echo $book['id']; ?>' class='btn btn-dark mt-2 mb-3'>Ajouter au panier</button></form>
@@ -66,7 +74,7 @@
 
                         echo $thumbup['total'] ?><i class="fa fa-thumbs-up" style="margin-left: 5px;" aria-hidden="true"></i>
                     </p>
-                    <p class="legend-italic-right small text-right">Proposé par <?php echo ucwords($user['firstname'] . ' ' . $user['lastname']); ?> </p>
+                    <p class="legend-italic-right small text-right">Vendeur : <?php echo ucwords($user['firstname'] . ' ' . $user['lastname']); ?> </p>
                 </div>
                 
                 <!-- comments -->

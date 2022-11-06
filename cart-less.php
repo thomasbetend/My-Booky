@@ -14,8 +14,10 @@ $id= testInput($_GET['id']);
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
-$queryBook = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE book.id = ' .$id;
-$statementBook = $pdo->query($queryBook);
+$queryBook = 'SELECT price_book, book.id id, firstname, lastname, name FROM book LEFT JOIN author ON author.id=book.author_id where book.id = :id';
+$statementBook = $pdo->prepare($queryBook);
+$statementBook->bindValue(':id', $id, PDO::PARAM_INT);
+$statementBook->execute();
 $book = $statementBook->fetch();
 
 if($_SESSION['cart']['quantity'][$id] > 0){$_SESSION['cart']['quantity'][$_GET['id']]-=1;};

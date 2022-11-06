@@ -31,8 +31,10 @@ if(empty($_SESSION)){
 
     /* verifying if comment exists */
 
-    $queryExistingComment = 'SELECT id, book_id FROM comment WHERE id = ' . $id;
-    $statementExistingComment = $pdo->query($queryExistingComment);
+    $queryExistingComment = 'SELECT id, book_id FROM comment WHERE id = :id';
+    $statementExistingComment = $pdo->prepare($queryExistingComment);
+    $statementExistingComment->bindValue(':id', $id, PDO::PARAM_INT);
+    $statementExistingComment->execute();
     $existingComment = $statementExistingComment->fetch();
 
     if($existingComment){

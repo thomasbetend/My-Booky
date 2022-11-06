@@ -3,8 +3,11 @@
 session_start();
 
 if(isset($_SESSION['login'])){
+
   $nameUser = $_SESSION['login'];
+
 } else {
+  
   $nameUser = '';
 
 }

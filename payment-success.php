@@ -27,6 +27,8 @@
 
                             
                             $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+
+                            require_once('functions.php');
                         
                             /* insert infos into orders */
 
@@ -50,6 +52,7 @@
                             foreach ($_SESSION['cart']['book'] as $key=>$book){
 
                                 /* get info from book */
+
 
                                 $getBook = 'SELECT id, price_book FROM book WHERE name = \'' . $_SESSION['cart']['book'][$key] . '\' ORDER by id DESC';
                                 $statementGetBook = $pdo->query($getBook);

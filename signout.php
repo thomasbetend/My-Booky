@@ -20,7 +20,7 @@
 
     <div class="container w-50 text-center">
         <form method="post" class="mt-5">
-                <h3>Merci <?php echo(ucwords($_SESSION['login']));?> de votre visite !</h3>
+                <h3>Merci de votre visite, <?php echo(ucwords($_SESSION['login']));?> !</h3>
                 <h4>A bientôt</h4>
                 <button name='button1' class="btn btn-primary mt-2">Déconnexion</button>
             </div>

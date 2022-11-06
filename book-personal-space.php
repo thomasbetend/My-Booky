@@ -18,7 +18,9 @@
 <?php
 
 if(empty($_SESSION)) { 
+
     header('location: index.php');
+    
 } else {
 
 $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');

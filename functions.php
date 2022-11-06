@@ -8,6 +8,13 @@ function testInput($data){
     return $data;
 }
 
+function testBookName($data){
+    $data= strip_tags($data);
+    $data= trim($data);
+    $data= strtolower($data);
+    return $data;
+}
+
 function testInputNotLowerCase($data){
     $data= trim($data);
     $data= stripslashes($data);
