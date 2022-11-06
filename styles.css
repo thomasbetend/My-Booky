@@ -146,6 +146,11 @@ h5 {
     font-size: 0.9rem;
 }
 
+#select-search{
+    height: 27px;
+    color: grey;
+}
+
 /* index.php */
 
 .button-new{

@@ -43,7 +43,7 @@
                     <input type="number" id="maxPrice" name="maxPrice" class="form-group" placeholder="Prix Max" value="<?php if($_SERVER['REQUEST_METHOD'] === 'POST'){echo $_POST['maxPrice'];}?>">€    
                     <select name="author_id" id="select-search">
 
-                        <!-- keep author value in select while searching -->
+                    <!-- keep author value in select while searching -->
                         <?php if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['author_id'])){
                             $queryAuthorChoice = 'SELECT id, firstname, lastname FROM author WHERE id = ' . $_POST['author_id'];
                             $statementAuthorChoice = $pdo->query($queryAuthorChoice);
@@ -62,20 +62,21 @@
                             $authors = $statementAuthor->fetchAll();
 
                             foreach($authors as $author) { ?>
-                            <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
+                                <option value="">Auteur</option>
+                                <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
                             <?php } ?>
 
                             <?php } else { ?>
 
-                            <option value="">Nom de l'auteur</option>
-                            <?php 
-                            $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
-                            $statementAuthor = $pdo->query($queryAuthor);
-                            $authors = $statementAuthor->fetchAll();
+                                <option value="">Auteur</option>
+                                <?php 
+                                $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
+                                $statementAuthor = $pdo->query($queryAuthor);
+                                $authors = $statementAuthor->fetchAll();
 
                             foreach($authors as $author) { ?>
-                            <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
-                            <?php }} ?>
+                                <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
+                        <?php }} ?>
                     </select>
                 </div> 
                 <div class="button-search-hidden">
