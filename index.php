@@ -29,13 +29,13 @@
             <!-- with login session -->
 
                     <?php if (isset($_SESSION['login'])) {?>
-                    <h1 class="mt-0">MyBooky</h1>
-                    <h4 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h4>
+                        <h1 class="mt-0">MyBooky</h1>
+                        <h4 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h4>
 
-                        <div>
-                            <a href="index-search.php"><button type="submit" class="text-center btn btn-outline-primary small mt-2 mb-2 pl-4 button-new">Rechercher un livre</button></a>
-                            <a href="book-add.php"><button type="submit" class="text-center btn btn-outline-primary small mt-2 ml-4 mb-2 pl-4 button-new">Vendre un livre</button></a>
-                        </div>
+                            <div>
+                                <a href="index-search.php"><button type="submit" class="text-center btn btn-outline-primary small mt-2 mb-2 pl-4 button-new">Rechercher un livre</button></a>
+                                <a href="book-add.php"><button type="submit" class="text-center btn btn-outline-primary small mt-2 ml-4 mb-2 pl-4 button-new">Vendre un livre</button></a>
+                            </div>
                 </div>
             </div>
         </section>
@@ -112,7 +112,7 @@
             <?php } else { ?>
                 <div class="text-center">
                     <h1 class="mt-5">MyBooky</h1>
-                    <h2>Welcome !!!</h2>
+                    <p class="subtitle-welcome">Welcome !!!</p>
                     <h6 class="mt-3">Pour vendre ou acheter des livres, authentifiez-vous</h6>
                     <a class="btn btn-primary mt-2" href="signin.php" role="button">Connexion</a>
                 </div>
