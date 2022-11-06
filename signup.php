@@ -8,70 +8,94 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $query = 'INSERT INTO user (lastname, firstname, pass_user, email_user) VALUES (:lastname, :firstname, :pass_user, :email_user)';
     
-    
-    if(!empty($_POST['user_lastname']) && !empty($_POST['user_firstname']) && filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)){
-                
-                $queryUserExisting = 'SELECT * FROM user WHERE email_user = \'' . $_POST['user_email'] . '\'';
-                $statementUserExisting = $pdo->query($queryUserExisting);
-                $userExisting = $statementUserExisting->fetch();
+    /* Errors */
 
-                if ($userExisting) {
-                    $errorMessage = 'Mail déjà utilisé';
-                } else {
+    /* Mail existing already */
 
-                if (preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@&\"\'(§è!çà)-_?,.;\/:+=ù%£`$*#°]{8,50}$/", ($_POST['user_password']))) {
+    $queryUserExisting = 'SELECT * FROM user WHERE email_user = \'' . $_POST['user_email'] . '\'';
+    $statementUserExisting = $pdo->query($queryUserExisting);
+    $userExisting = $statementUserExisting->fetch();
 
-                    include_once('functions.php');
+    if ($userExisting) {
 
-                    $lastname = testInput($_POST['user_lastname']);
-                    $firstname = testInput($_POST['user_firstname']);
-                    $email = testInput($_POST['user_email']);
-                    $passUser = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+        $errorMessage = 'Mail déjà utilisé';
 
-                    
-                    $statement = $pdo->prepare($query);
-                
-                    $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-                    $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-                    $statement->bindValue(':pass_user', $passUser, \PDO::PARAM_STR);
-                    $statement->bindValue(':email_user', $email, \PDO::PARAM_STR);
+    }
 
-                    $statement->execute();
+    /* mail security */
 
-                    session_start();
-                    $_SESSION['login'] = $firstname . ' ' . $lastname;
+    if(filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL) === false){
 
-                    /* creating variable session id */                
+        $errorMessage = 'Mail incorrect';
 
-                    $queryUserId = 'SELECT id FROM user WHERE email_user = \'' . $_POST['user_email'] . '\'';
-                    $statementUserId = $pdo->query($queryUserId);
-                    $userId = $statementUserId->fetch();
+    }
 
-                    $_SESSION['id']= $userId['id'];
+    /* Password pattern */
 
-                    /* initializing cart */ 
-                    
-                    $_SESSION['cart']=array();
-                    $_SESSION['cart']['book']=array();
-                    $_SESSION['cart']['author']=array();
-                    $_SESSION['cart']['quantity']=array();
-                    $_SESSION['cart']['price']=array();
+    if (!preg_match("/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@&\"\'(§è!çà)-_?,.;\/:+=ù%£`$*#°]{8,50}$/", ($_POST['user_password']))){
 
-                    for($i=0; $i<10000; $i++){
-                        $_SESSION['cart']['quantity'][$i]=0;
-                        $_SESSION['cart']['price'][$i]=0;
-                        $_SESSION['thumbup']['book'][$i]=0;
-                    }
+        $errorMessage = 'Mot de passe incorrect';
 
-                    header('location: index.php');
-                    exit();
-                } else {
-                    $errorMessage = 'Mot de passe incorrect';
-                }}
-            
-    } else {
+    }
+
+    /* Empty fields */
+
+    if(empty($_POST['user_lastname']) || empty($_POST['user_firstname'])){
+
         $errorMessage = 'Remplissez tous les champs';
-} 
+
+    }
+
+
+    if($errorMessage === '') {
+
+        /* creating profile */
+
+        include_once('functions.php');
+
+        $lastname = testInput($_POST['user_lastname']);
+        $firstname = testInput($_POST['user_firstname']);
+        $email = testInput($_POST['user_email']);
+        $passUser = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+
+        
+        $statement = $pdo->prepare($query);
+
+        $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+        $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $statement->bindValue(':pass_user', $passUser, \PDO::PARAM_STR);
+        $statement->bindValue(':email_user', $email, \PDO::PARAM_STR);
+
+        $statement->execute();
+
+        session_start();
+        $_SESSION['login'] = $firstname . ' ' . $lastname;
+
+        /* creating variable session id */                
+
+        $queryUserId = 'SELECT id FROM user WHERE email_user = \'' . $_POST['user_email'] . '\'';
+        $statementUserId = $pdo->query($queryUserId);
+        $userId = $statementUserId->fetch();
+
+        $_SESSION['id']= $userId['id'];
+
+        /* initializing cart */ 
+        
+        $_SESSION['cart']=array();
+        $_SESSION['cart']['book']=array();
+        $_SESSION['cart']['author']=array();
+        $_SESSION['cart']['quantity']=array();
+        $_SESSION['cart']['price']=array();
+
+        for($i=0; $i<10000; $i++){
+            $_SESSION['cart']['quantity'][$i]=0;
+            $_SESSION['cart']['price'][$i]=0;
+            $_SESSION['thumbup']['book'][$i]=0;
+        }
+        header('location: index.php');
+        exit();
+
+    }
 }
 
 ?>
@@ -127,4 +151,3 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 </body>
 </html>
-

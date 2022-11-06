@@ -2,12 +2,24 @@
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
+    /* Errors */
+
+    /* fields empty */
+
     $errorMessage = '';
     
-    if(!empty($_POST['user_password']) && !empty($_POST['user_lastname']) && !empty($_POST['user_firstname']) && !empty($_POST['user_email'])){
+    if(empty($_POST['user_password']) || empty($_POST['user_lastname']) || empty($_POST['user_firstname']) || empty($_POST['user_email'])){
+
+        $errorMessage = 'Remplissez tous les champs';
+        
+    }
+
+    /* verifying profile */
+
+    if($errorMessage === ''){
 
         include_once('functions.php');
-    
+
         $lastname = testInput($_POST['user_lastname']);
         $firstname = testInput($_POST['user_firstname']);
         $email = testInput($_POST['user_email']);
@@ -49,17 +61,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 
                 header('location: index.php');
                 exit();
-    
+
             } else {
+
                 $errorMessage = 'Renseignements incorrects';
+
             }
         }
-
-
-    } else {
-        $errorMessage = 'Remplissez tous les champs';
-    }
-} 
+    } 
+}
 
 ?>
 
@@ -113,3 +123,4 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 </body>
 </html>
+

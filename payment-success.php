@@ -54,7 +54,7 @@
                                 /* get info from book */
 
 
-                                $getBook = 'SELECT id, price_book FROM book WHERE name = \'' . $_SESSION['cart']['book'][$key] . '\' ORDER by id DESC';
+                                $getBook = 'SELECT id, price_book FROM book WHERE name = "' . testBookName($_SESSION['cart']['book'][$key]) . '" ORDER by id DESC';
                                 $statementGetBook = $pdo->query($getBook);
                                 $lastBook = $statementGetBook->fetch();
 

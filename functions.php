@@ -9,8 +9,8 @@ function testInput($data){
 }
 
 function testBookName($data){
-    $data= strip_tags($data);
     $data= trim($data);
+    $data= stripslashes($data);
     $data= strtolower($data);
     return $data;
 }

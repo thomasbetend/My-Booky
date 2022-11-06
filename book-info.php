@@ -44,7 +44,7 @@
             <div class="container w-50">
                 <div class="card text-center mt-4">
                     <h4 class="p-2 mb-2 bg-primary text-white">
-                        <span class="title-book-info"><?php echo ucwords(stripslashes(($book['name']))) ?></span>
+                        <span class="title-book-info"><?php echo ucfirst(stripslashes(($book['name']))) ?></span>
                         <?php if($book['release_year']) { 
                             echo '<br><span class="release-year">Paru en ' . $book['release_year']; ?></span>
                         <?php } ?>

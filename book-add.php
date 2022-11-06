@@ -106,7 +106,7 @@ if(empty($_SESSION)){
                 $firstname = testInput($_POST['authorFirstname']);
                 $birthyear = intval(testInput($_POST['birthyear']));
                 $deathyear = intval(testInput($_POST['deathyear']));
-                $bookName = testInput($_POST['bookName']);
+                $bookName = testBookName($_POST['bookName']);
                 $bookPrice = floatval(testInput($_POST['bookPrice']));
                 $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
                 $bookYear = intval(testInput($_POST['release_year']));
@@ -152,7 +152,7 @@ if(empty($_SESSION)){
                 $statementIdUser = $pdo->query($queryIdUser);
                 $userId = $statementIdUser->fetch();
 
-                $bookName = testInput($_POST['bookName']);
+                $bookName = testBookName($_POST['bookName']);
                 $bookPrice = floatval(testInput($_POST['bookPrice']));
                 $bookSumup = testInputNotLowerCase($_POST['bookSumup']);
                 $bookYear = intval(testInput($_POST['release_year']));
