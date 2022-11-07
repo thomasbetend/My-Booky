@@ -38,14 +38,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         /* delete books */
 
-        $queryDeleteBookId = 'SELECT  SET book_id = NULL WHERE book_id =' . $id;
-        $queryDeleteBookId = 'UPDATE likes SET book_id = NULL WHERE book_id =' . $id;
-        $stmtDeleteBookId= $pdo->prepare($queryDeleteBookId);
-        $stmtDeleteBookId->execute();
+        /* book_id must be null in likes table */
 
-        $querySuppBook = 'DELETE FROM book WHERE id= ' . $id;
-        $stmt= $pdo->prepare($querySuppBook);
-        $stmt->execute();
+        $queryDeleteBookIdInLikes = 'UPDATE likes SET book_id = NULL WHERE book_id = :id';
+        $stmtDeleteBookIdInLikes= $pdo->prepare($queryDeleteBookIdInLikes);
+        $stmtDeleteBookIdInLikes->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmtDeleteBookIdInLikes->execute();
+
+        /* book_id must be null in comment table */
+
+        $queryDeleteBookIdInComment = 'UPDATE comment SET book_id = NULL WHERE book_id = :id';
+        $stmtDeleteBookIdInComment= $pdo->prepare($queryDeleteBookIdInComment);
+        $stmtDeleteBookIdInComment->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmtDeleteBookIdInComment->execute();
+
+        /* delete books */
+
+        $queryDeleteBook = 'DELETE FROM book WHERE id= :id';
+        $stmtDeleteBook= $pdo->prepare($queryDeleteBook);
+        $stmtDeleteBook->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmtDeleteBook->execute();
 
         /* delete authors without books */
 
@@ -58,6 +70,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $stmt= $pdo->prepare($querySuppAuthor);
             $stmt->execute();
         }
+
+
 
         header('location: book-personal-space.php');
         exit(); ?>

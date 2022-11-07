@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyBooky - Ajouter un livre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="book-add.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet"></head>
 </head>
 
@@ -233,7 +232,11 @@ if(empty($_SESSION)){
                             $authors = $statementAuthor->fetchAll();
                                                     
                             foreach($authors as $author){ ?> 
-                            <option value="<?php echo $author['id'] ;?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname']) ;?></option> 
+                            <option value="<?php echo $author['id'] ;?>" 
+                                <?php 
+                                if(!empty($_POST['author_id']) && $_POST['author_id'] == $author['id']){
+                                  echo "selected";
+                                } ?> ><?php echo ucwords($author['lastname'] . ' ' . $author['firstname']) ;?></option> 
                          <?php } ?>
                     </select>
                 </div>

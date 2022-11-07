@@ -5,7 +5,12 @@
 :root {
     --blue1: #0d6efd;
     --blue2: #133963;
-  }
+}
+
+.logo-mybooky {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.2rem;
+}
 
 .bg-primary {
     background-color: var(--blue2) !important;
@@ -130,6 +135,35 @@ h5 {
     color: grey;
 }
 
+/* chat-booky.php */
+
+.chat-booky-form {
+    display: flex;
+}
+
+.chat-select-user {
+    margin-right: 50px;
+}
+
+.chat-option-button {
+    text-decoration: none;
+    color: var(--blue2);
+}
+
+.notif-invitations {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-count-invitations {
+    display: flex;
+    width: 40px;
+    background-color: rgb(230, 9, 9);
+    color: white;
+    border-radius: 100px;
+    justify-content: center;
+    align-items: center;
+}
 /* index-search */
 
 .thumb-in-black a {
@@ -149,6 +183,15 @@ h5 {
 #select-search{
     height: 27px;
     color: grey;
+    margin-left: 10px;
+}
+
+.bookNameSearch {
+    margin-left: 10px;
+}
+
+.maxPrice {
+    margin-left: 10px;
 }
 
 /* index.php */

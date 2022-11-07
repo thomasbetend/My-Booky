@@ -16,22 +16,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     /* verifying profile */
 
-    if($errorMessage === ''){
+    include_once('functions.php');
 
-        include_once('functions.php');
+    $lastname = testInput($_POST['user_lastname']);
+    $firstname = testInput($_POST['user_firstname']);
+    $email = testInput($_POST['user_email']);
+    $passUser = $_POST['user_password'];
 
-        $lastname = testInput($_POST['user_lastname']);
-        $firstname = testInput($_POST['user_firstname']);
-        $email = testInput($_POST['user_email']);
-        $passUser = $_POST['user_password'];
+    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
+    $query = 'SELECT * FROM user';
+    $statement = $pdo->query($query);
+    $users = $statement->fetchAll();
 
-        $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-        $query = 'SELECT * FROM user';
-        $statement = $pdo->query($query);
-        $users = $statement->fetchAll();
-
+    if($users){
         foreach ($users as $user) {
-            if (($user['lastname'] == $lastname) && ($user['firstname'] == $firstname) && ($user['email_user'] == $email) && (password_verify($passUser, $user['pass_user']))){
+            if (($user['lastname'] === $lastname) && ($user['firstname'] === $firstname) && ($user['email_user'] === $email) && (password_verify($passUser, $user['pass_user']))){
 
                 session_start();
                 
@@ -61,15 +60,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 
                 header('location: index.php');
                 exit();
-
-            } else {
-
-                $errorMessage = 'Renseignements incorrects';
-
             }
         }
-    } 
+    } else {
+
+        $errorMessage = 'Renseignements incorrects';
+
+    }    
+
 }
+
+
 
 ?>
 

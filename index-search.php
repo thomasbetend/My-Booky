@@ -30,53 +30,34 @@
 
             <!-- with login session -->
 
-                    <?php if (isset($_SESSION['login'])) {?>
-                        <h1 class="mt-0">MyBooky</h1>
-                        <h5 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
+            <?php if (isset($_SESSION['login'])) {?>
+                    <h1 class="mt-0">MyBooky</h1>
+                    <h5 class="text-center mt-2 mb6 text-secondary">Vendez et achetez vos livres au meilleur prix</h5>
                 </div>
             </div>
 
             <!-- search -->
             <form method="POST" action="index-search.php" class="text-center mt-2 small" id="formSearch">
-                <div class="form-group">  
-                    <input type="number" id="minPrice" name="minPrice" class="form-line" placeholder="Prix Min" value="<?php if($_SERVER['REQUEST_METHOD'] === 'POST'){echo $_POST['minPrice'];}?>">€    
-                    <input type="number" id="maxPrice" name="maxPrice" class="form-group" placeholder="Prix Max" value="<?php if($_SERVER['REQUEST_METHOD'] === 'POST'){echo $_POST['maxPrice'];}?>">€    
+                <div class="form-group index-search-form">  
+                    <input type="number" id="minPrice" name="minPrice" class="minPrice" placeholder="Prix Min" value="<?php if($_SERVER['REQUEST_METHOD'] === 'POST'){echo $_POST['minPrice'];}?>">€</input>
+                    <input type="number" id="maxPrice" name="maxPrice" class="maxPrice" placeholder="Prix Max" value="<?php if($_SERVER['REQUEST_METHOD'] === 'POST'){echo $_POST['maxPrice'];}?>">€</input>
+                    <input type="text" id="bookNameSearch" name="bookNameSearch" class="bookNameSearch" placeholder="Nom du livre" value="<?php if($_SERVER['REQUEST_METHOD'] === 'POST'){echo $_POST['bookNameSearch'];}?>" > 
                     <select name="author_id" id="select-search">
-
-                    <!-- keep author value in select while searching -->
-                        <?php if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['author_id'])){
-                            $queryAuthorChoice = 'SELECT id, firstname, lastname FROM author WHERE id = ' . $_POST['author_id'];
-                            $statementAuthorChoice = $pdo->query($queryAuthorChoice);
-                            $authorChoice = $statementAuthorChoice->fetch();?>
-
-                            <!-- author of search -->
-
-                            <option value="<?php echo $authorChoice['id']; ?>"><?php echo ucwords($authorChoice['lastname'] . ' ' . $authorChoice['firstname'])?></option>
                             
-                            <?php
+                        <option value="">Auteur</option>
+                        <?php 
+                        $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
+                        $statementAuthor = $pdo->query($queryAuthor);
+                        $authors = $statementAuthor->fetchAll();
 
-                            /* rest of authors */
+                        foreach($authors as $author) { ?>
+                            <option value="<?php echo $author['id']?>"
+                            <?php 
+                            if(!empty($_POST['author_id']) && $_POST['author_id'] == $author['id']){
+                                echo "selected";
+                            } ?> ><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
+                        <?php } ?>
 
-                            $queryAuthor = 'SELECT id, firstname, lastname FROM author WHERE lastname NOT LIKE \'%' . $authorChoice['lastname'] . '%\' ORDER BY lastname';
-                            $statementAuthor = $pdo->query($queryAuthor);
-                            $authors = $statementAuthor->fetchAll();
-
-                            foreach($authors as $author) { ?>
-                                <option value="">Auteur</option>
-                                <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
-                            <?php } ?>
-
-                            <?php } else { ?>
-
-                                <option value="">Auteur</option>
-                                <?php 
-                                $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
-                                $statementAuthor = $pdo->query($queryAuthor);
-                                $authors = $statementAuthor->fetchAll();
-
-                            foreach($authors as $author) { ?>
-                                <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
-                        <?php }} ?>
                     </select>
                 </div> 
                 <div class="button-search-hidden">
@@ -86,7 +67,7 @@
             <a href="index-search.php" id="initSearch">Réinitialiser la recherche</a><br/>
             <a href="index.php" class = "text-secondary small" id="closeSearch">Fermer la recherche</a>
 
-            </section>
+        </section>
 
             <!-- conditions for search -->
 
@@ -99,16 +80,34 @@
                     include_once('functions.php');
                     $minPrice = intval(testInput($_POST['minPrice']));
                     $maxPrice = intval(testInput($_POST['maxPrice']));
-                    $authorId = testInput($_POST['author_id']); 
+                    $authorId = testInput($_POST['author_id']);
+                    $bookName = testInput($_POST['bookNameSearch']);
 
-                    if(empty($minPrice)){$minPrice = 0;};
-                    if(empty($maxPrice)){$maxPrice = 100000000;};
+                    
+                    $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id';
 
-                    if(!empty($_POST['author_id'])){
-                        $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $minPrice . ' AND price_book <= ' . $maxPrice . ' AND author_id = '. $authorId . ' ORDER BY price_book';
-                    } else {
-                        $querySearchBook = 'SELECT author_id, firstname, lastname, user_id, price_book, book.id id, name FROM book LEFT JOIN author ON author.id=book.author_id WHERE price_book >= ' . $minPrice . ' AND price_book <= ' . $maxPrice . ' ORDER BY price_book';
+                    if(!empty($minPrice)){
+                        $condition[] = "price_book >= " . $minPrice;
                     }
+
+                    if(!empty($maxPrice)){
+                        $condition[] = "price_book <= " . $maxPrice;
+                    }
+
+                    if(!empty($authorId)){
+                        $condition[] = "author_id = " . $authorId ;
+                    }
+
+                    if(!empty($bookName)){
+                        $condition[] = "name LIKE '%" . $bookName . "%'" ;
+                    }
+
+                    if(!empty($condition)){
+
+                        $querySearchBook .=  ' WHERE ' . implode( ' AND ', $condition);
+
+                    }
+
                     $statementSearchBook = $pdo->query($querySearchBook);
                     $searchBooks = $statementSearchBook->fetchAll();
 

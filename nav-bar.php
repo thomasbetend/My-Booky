@@ -29,13 +29,16 @@ if(isset($_SESSION['login'])){
             </li>
         <?php } else { ?>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.php">MyBooky</a>
+              <a class="nav-link active logo-mybooky" aria-current="page" href="index.php">MyBooky</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="book-personal-space.php">Mon espace</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="orders.php">Mes commandes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="chat-booky.php">ChatBooky</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="cart.php">Mon panier</span></a>

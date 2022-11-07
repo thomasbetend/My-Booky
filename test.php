@@ -250,3 +250,39 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 </body>
 </html>
+
+
+
+<?php if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['author_id'])){
+                            $queryAuthorChoice = 'SELECT id, firstname, lastname FROM author WHERE id = ' . $_POST['author_id'];
+                            $statementAuthorChoice = $pdo->query($queryAuthorChoice);
+                            $authorChoice = $statementAuthorChoice->fetch();?>
+
+                            <!-- author of search -->
+
+                            <option value="<?php echo $authorChoice['id']; ?>"><?php echo ucwords($authorChoice['lastname'] . ' ' . $authorChoice['firstname'])?></option>
+                            <option value="">Auteur</option>
+
+                            <?php
+
+                            /* rest of authors */
+
+                            $queryAuthor = 'SELECT id, firstname, lastname FROM author WHERE lastname NOT LIKE \'%' . $authorChoice['lastname'] . '%\' ORDER BY lastname';
+                            $statementAuthor = $pdo->query($queryAuthor);
+                            $authors = $statementAuthor->fetchAll();
+
+                            foreach($authors as $author) { ?>
+                                <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
+                            <?php } ?>
+
+                            <?php } else { ?>
+
+                                <option value="">Auteur</option>
+                                <?php 
+                                $queryAuthor = 'SELECT id, firstname, lastname FROM author ORDER BY lastname';
+                                $statementAuthor = $pdo->query($queryAuthor);
+                                $authors = $statementAuthor->fetchAll();
+
+                            foreach($authors as $author) { ?>
+                                <option value="<?php echo $author['id']?>"><?php echo ucwords($author['lastname'] . ' ' . $author['firstname'])?></option>
+                        <?php }}
