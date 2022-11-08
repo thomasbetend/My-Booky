@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBooky - Espace personnel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
-    <link href="styles.css" rel="stylesheet"></head>
+<?php 
 
-</head>
+$title="MyBooky - Espace personnel";
 
-<body class="d-flex flex-column h-100">
+require('head.php');
 
-<?php include_once('nav-bar.php'); ?>
+?>
 
 <?php
 
@@ -22,8 +13,6 @@ if(empty($_SESSION)) {
     header('location: index.php');
     
 } else {
-
-$pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
 $queryUserBook = 'SELECT name, author.firstname, author.lastname, book.id as b_id, price_book, user.id as u_id FROM book JOIN author ON author.id=book.author_id JOIN user ON user.id= book.user_id WHERE user_id = ' . $_SESSION['id'] . ' ORDER BY book.id DESC'; 
 $statementUserBook = $pdo->query($queryUserBook);
@@ -75,10 +64,12 @@ $userBooks = $statementUserBook->fetchAll();
         </div>                               
     </section>
 
-    <?php include_once('footer.php'); ?>
+    <?php } ?>
+
 </main>
+
+<?php include_once('footer.php'); ?>
 
 <body>
 </html>
 
-<?php } ?>

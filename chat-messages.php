@@ -27,26 +27,70 @@
 
         $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
-        $queryUser = 'SELECT user.id, firstname, lastname, book.id FROM user LEFT JOIN book ON user.id=book.user_id';
-        $statementUser = $pdo->query($queryUser);
-        $user = $statementUser->fetch();
+        $queryConversations = 'SELECT source_user_id sud, user_id ud FROM notification JOIN user ON user.id=notification.user_id WHERE accepted_by_user_id = true AND accepted_by_source_user_id=true AND (user.id = ' . $_SESSION['id'] . ' OR source_user_id = ' . $_SESSION['id'] . ') ';
+        $statementConversations = $pdo->query($queryConversations);
+        $conversations = $statementConversations->fetchAll();
+
+        
         ?>
         
             <div class="container w-50">
                 <h2 class="text-center mt-5">Mes messages</h2>
+                <?php foreach($conversations as $conversation){
 
-                <div class="card text-center mt-4">
-                    <h5 class="p-2 text-primary"></h5>
-                    <h4 class="p-2 text-black title-sumup"><?php if($book['sumup'] !== ''){ echo "Résumé" ;} ?></h4>
-                    
-                    <p class="p-4 pt-0 mb-0 text-black"><?php echo ucfirst(stripslashes($book['sumup'])); ?></p>
-                    
-                </div>
-                
-                <!-- comments -->
-                <?php
-                    require_once('comment.php')
-                ?>
+                    if($conversation['sud'] === $_SESSION['id']){
+
+                        $queryConverser = 'SELECT id, firstname, lastname FROM user WHERE id = ' . $conversation['ud'];
+                        $statementConverser = $pdo->query($queryConverser);
+                        $converser = $statementConverser->fetch();
+
+                        ?>
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <div class="notif-invitations">
+                                    <a href="chat-conversation.php?id=<?php echo $converser['id'];?>">
+                                        <div class="card text-center mt-4">
+                                            <h5 class="p-2 text-black title-sumup"><?php echo ucwords($converser['firstname'] . ' ' . $converser['lastname']) ; ?></h5>
+                                        </div>
+                                    </a>
+                                    <p class="chat-count-invitations">
+                                    <?php
+                                    /* all notifications */
+                                    $queryNotifMessages = 'SELECT * FROM message WHERE user_destination_id = ' . $_SESSION['id'] . ' AND user_id = ' . $converser['id'] . ' AND  seen_by_user_destination=false';
+                                    $statementNotifMessages = $pdo->query($queryNotifMessages);
+                                    $notifMessages = $statementNotifMessages->fetchAll();
+                                    echo count($notifMessages);?>
+                                    </p>   
+                                </div> 
+                            </div>
+                        </div>
+                <?php } else { 
+
+                        $queryConverser = 'SELECT id, firstname, lastname FROM user WHERE id = ' . $conversation['sud'];
+                        $statementConverser = $pdo->query($queryConverser);
+                        $converser = $statementConverser->fetch();
+
+                        ?>
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <div class="notif-invitations">
+                                    <a href="chat-conversation.php?id=<?php echo $converser['id'];?>">
+                                        <div class="card text-center mt-4">
+                                            <h5 class="p-2 text-black title-sumup"><?php echo ucwords($converser['firstname'] . ' ' . $converser['lastname']) ; ?></h5>
+                                        </div>
+                                    </a>
+                                    <p class="chat-count-invitations">
+                                    <?php
+                                    /* all notifications */
+                                    $queryNotifMessages = 'SELECT * FROM message WHERE user_destination_id = ' . $_SESSION['id'] . ' AND user_id = ' . $converser['id'] . ' AND  seen_by_user_destination=false';
+                                    $statementNotifMessages = $pdo->query($queryNotifMessages);
+                                    $notifMessages = $statementNotifMessages->fetchAll();
+                                    echo count($notifMessages);?>
+                                    </p>   
+                                </div>
+                            </div>
+                        </div>
+                <?php }} ?>
 
             </div>
 

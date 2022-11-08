@@ -164,6 +164,18 @@ h5 {
     justify-content: center;
     align-items: center;
 }
+
+/* chat-invitations.php */
+
+.accept-invitation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+
 /* index-search */
 
 .thumb-in-black a {

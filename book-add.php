@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBooky - Ajouter un livre</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet"></head>
-</head>
+<?php 
 
-<body class="d-flex flex-column h-100">
+$title="MyBooky - Vendre un livre";
 
-<?php include_once('nav-bar.php'); 
+require('head.php');
+
+?>
+
+<?php 
 
 if(empty($_SESSION)){
 
@@ -19,11 +14,7 @@ if(empty($_SESSION)){
 
 } else {
 
-    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
-
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
-        $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
 
         include_once('functions.php');
 
@@ -207,11 +198,11 @@ if(empty($_SESSION)){
             <h5 class="text-center text-secondary">Ajoutez-le au catalogue</h5>
             <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="mt-3">
                 <div class="form-group mb-2">
-                    <label for="bookName" class="text-secondary">Titre du livre (obligatoire)</label>
+                    <label for="bookName" class="text-secondary">Titre du livre *</label>
                     <input type="text" id="bookName" name="bookName" class="form-control" value="<?php if(!empty($_POST['bookName'])){echo $_POST['bookName'];}?>">
                 </div>
                 <div class="form-group mb-2">
-                    <label for="bookPrice" class="text-secondary">Prix (obligatoire)</label>
+                    <label for="bookPrice" class="text-secondary">Prix *</label>
                     <input type="number" step="0.01" id="bookPrice" name="bookPrice" class="form-control" value="<?php if(!empty($_POST['bookPrice'])){echo $_POST['bookPrice'];}?>">
                 </div>
                 <div class="form-group mb-2">
@@ -242,7 +233,7 @@ if(empty($_SESSION)){
                 </div>
                 <p class="text-primary mt-2">ou</p>
                 <div class="form-group mb-2">
-                    <label for="authorLastname" class="text-secondary">Nom du nouvel auteur (obligatoire)</label>
+                    <label for="authorLastname" class="text-secondary">Nom du nouvel auteur *</label>
                     <input type="text" id="authorLastname" name="authorLastname" class="form-control" value="<?php if(!empty($_POST['authorLastname'])){echo $_POST['authorLastname'];}?>">
                 </div>
                 <div class="form-group mb-2">

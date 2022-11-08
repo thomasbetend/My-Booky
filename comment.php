@@ -8,12 +8,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     /* insert comment in database */
 
+    include_once('functions.php');
+
     $queryInsertComment = 'INSERT INTO comment (user_id, book_id, content, post_date) VALUES (:user_id, :book_id, :content, :post_date)';
     $statementInsertComment = $pdo->prepare($queryInsertComment);
     $statementInsertComment->bindValue(':user_id', $_SESSION['id'], \PDO::PARAM_INT);
     $statementInsertComment->bindValue(':book_id', $book['id'], \PDO::PARAM_INT);
-    $statementInsertComment->bindValue(':content', $_POST['comment'], \PDO::PARAM_STR);
-    $statementInsertComment->bindValue(':post_date', date( "Y-m-d", time()), \PDO::PARAM_STR);
+    $statementInsertComment->bindValue(':content', testInputNotLowerCase($_POST['comment']), \PDO::PARAM_STR);
+    $statementInsertComment->bindValue(':post_date', date( "Y-m-d h:i:s", time()), \PDO::PARAM_STR);
     $statementInsertComment->execute();
 
 
@@ -35,7 +37,7 @@ $comments = $statementComments->fetchAll();
 if($comments){
     foreach($comments as $comment){?>
         <div class="card text-center mt-4 pt-2 pb-0">
-            <p><?php echo $comment['content'] ?></p>
+            <p><?php echo ucfirst($comment['content']) ?></p>
 
             <!-- get comment user -->
 

@@ -1,33 +1,26 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
+<?php 
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBooky - Info sur le livre</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/5474cfcdca.js" crossorigin="anonymous"></script>
-    <link href="styles.css" rel="stylesheet">
-</head>
+$title="MyBooky - Info sur le livre";
 
-<body class="d-flex flex-column h-100">
+require('head.php');
 
-    <?php
+?>
 
-    include_once('nav-bar.php');
+<?php
 
-    if (empty($_SESSION)) {
+include_once('nav-bar.php');
 
-        header('location:index.php');
-        
-    } else {
+if (empty($_SESSION)) {
 
-        include_once('functions.php');
+    header('location:index.php');
+    
+} else {
+
+    include_once('functions.php');
+
+    if(!empty($_GET['id'])){
 
         $id = testInput($_GET['id']);
-
-        $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory', 'root', '');
         
         /* binding and securizing id */
         $queryBook = 'SELECT author_id a_id, user_id, firstname, lastname, price_book, book.id id, sumup, name, birthyear, deathyear, release_year FROM book LEFT JOIN author ON author.id=book.author_id where book.id = :id';
@@ -88,11 +81,18 @@
                 <h3 class="text-center text-primary mt-5">Page inexistante</h3>
                 <a href="index.php" class="text-center">Retour au catalogue</a>
             </div>
-        <?php } ?>
+        <?php } 
+    } else { ?>
+        <div class="container w-50 text-center">
+            <h3 class="text-center text-primary mt-5">Page inexistante</h3>
+            <a href="index.php" class="text-center">Retour au catalogue</a>
+        </div>
+    <?php }?>
+    
+ <?php } ?>
 
-        <?php include_once('footer.php'); ?>
+<?php include_once('footer.php'); ?>
 
 </body>
 </html>
 
-<?php } ?>
