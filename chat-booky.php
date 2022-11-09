@@ -60,14 +60,21 @@ $allUsers = $statementAllUsers->fetchAll();
             <div class="card-body p-4">
               <div class="notif-invitations">
                 <h3><a href="chat-messages.php" class="chat-option-button">Messages</a></h3> 
-                <p class="chat-count-invitations">
+
                 <?php
-                /* all notifications */
+
+                /* messages notifications */
+
                 $queryNotifMessages = 'SELECT * FROM message WHERE user_destination_id = ' . $_SESSION['id'] . ' AND  seen_by_user_destination=false';
                 $statementNotifMessages = $pdo->query($queryNotifMessages);
                 $notifMessages = $statementNotifMessages->fetchAll();
-                echo count($notifMessages);?>
-                </p>   
+
+                
+                if(!empty($notifMessages)) { ?>
+                  <p class="chat-count-notif-2">
+                    <?php echo count($notifMessages);?>
+                  </p>
+                <?php } ?>
               </div>              
             </div>
           </div>
@@ -75,16 +82,21 @@ $allUsers = $statementAllUsers->fetchAll();
             <div class="card-body p-4">
               <div class="notif-invitations">
                 <h3><a href="chat-invitations.php" class="chat-option-button">Invitations reçues</a></h3> 
-                <p class="chat-count-invitations">
+
                 <?php
-                /* all notifications */
-                $queryNotif = 'SELECT * FROM notification WHERE user_id = ' . $_SESSION['id'] . ' AND accepted_by_source_user_id=true AND accepted_by_user_id=false AND type = \'invitation\'';
-                $statementNotif = $pdo->query($queryNotif);
-                $notifs = $statementNotif->fetchAll();
-                echo count($notifs);?>
-                </p>
-              </div>
-                                
+
+                /* invitations notifications */
+                
+                $queryNotifInvitations = 'SELECT * FROM notification WHERE user_id = ' . $_SESSION['id'] . ' AND accepted_by_source_user_id=true AND accepted_by_user_id=false AND type = \'invitation\'';
+                $statementNotifInvitations = $pdo->query($queryNotifInvitations);
+                $notifInvitations = $statementNotifInvitations->fetchAll();
+
+                if(!empty($notifInvitations)) { ?>
+                  <p class="chat-count-notif-2">
+                    <?php echo count($notifInvitations);?>
+                  </p>
+                <?php } ?>
+              </div>             
             </div>
           </div>
       </div>

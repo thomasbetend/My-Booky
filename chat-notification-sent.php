@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBooky - Suppression interdite</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet"></head>
+<?php 
 
-</head>
-<body class="d-flex flex-column h-100">
+$title="ChatBooky";
 
-<?php include_once('nav-bar.php'); 
+require('head.php');
+
+?>
+
+<?php 
 
 if(empty($_SESSION)){
 
@@ -78,10 +73,10 @@ if(empty($_SESSION)){
 
     ?>
 
-    <?php include_once('footer.php'); ?>
+<?php } ?>
 
+<?php include_once('footer.php'); ?>
 
 </body>
 </html>
 
-<?php } ?>

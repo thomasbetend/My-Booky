@@ -1,6 +1,6 @@
 <?php 
 
-$title="ChatBooky";
+$title="ChatBooky - Invitations";
 
 require('head.php');
 
@@ -45,16 +45,15 @@ if (empty($_SESSION)) {
                         </div>
                     </div>
                 </div>
-        <?php }}} else {
-            echo "pas d'invitations.";
-        } ?>
+        <?php }}} else { ?>
+            <p class="text-center"><?php echo "Vous n'avez pas d'invitations"; ?></p>
+        <?php } ?>
 
     </div>
 
-<?php include_once('footer.php'); ?>
-
-
 <?php } ?>
+
+<?php include_once('footer.php'); ?>
 
 </body>
 </html>

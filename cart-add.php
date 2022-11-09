@@ -50,5 +50,5 @@ if(empty($_SESSION)){
 <?php include_once('footer.php'); ?>
 
 </body>
-</html>
+</html> 
 
