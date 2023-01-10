@@ -1,61 +1,139 @@
 <?php
-function printLines(): void {
 
-for($i=5; $i<=25; $i++) {
-    echo "c'est la ligne " . $i . "<br>";
-}
-}
+declare(strict_types=1);
 
-printLines();
+echo time() . "<br>";
 
-function multiply(int $a): void {
+echo date("Y-m-d H-i-s", time()) . "<br>";
 
-    for($i=1; $i<=10; $i++) {
-        echo $a . 'x' . $i . ' = '. $a * $i . "<br>";
+
+class Dog 
+{
+    private string $name;
+    private DateTime $birthDate;
+    private string $type;
+    
+    public function __construct(string $name, DateTime $birthDate, string $type)
+    {
+        $this->name = $name;
+        $this->birthDate = $birthDate;
+        $this->type = $type;
+    }
+
+    private function getAge() : string 
+    {
+        $diff = $this->birthDate->diff(new DateTime());
+
+        return $diff->format('%y');
+    }
+
+    public function getInfo() : string 
+    {
+        return "Nom : " . $this->name . ", Age : " . $this->getAge() . ", Race : " . $this->type;
     }
 }
 
-multiply(5);
+$dog1 = new Dog('milou', DateTime::createFromFormat("Y-m-d", "2020-01-01"), 'terrier');
+$dog2 = new Dog('bill', DateTime::createFromFormat("Y-m-d", "2017-08-01"), 'cocker');
+$dog3 = new Dog('bibi', DateTime::createFromFormat("Y-m-d", "2015-05-11"), 'dalmatien');
 
-$numbers = [
-    1,
-    9,
-    6,
-    7,
-    5
+$dogs = [
+    $dog1, $dog2, $dog3,
 ];
 
-function isPairImpair($array1) {
-    
-    $i=0;
-    while($i < count($array1)){
-        
-        if($array1[$i]%2 === 0){
-            echo $i . " est pair <br>";
-        } else {
-            echo $i . " est impair <br>";
+function infoDogs(array $array) : void {
+    foreach($array as $value){
+        echo $value->getInfo() . "<br>";
+    }
+}
+
+
+infoDogs($dogs);
+
+
+class Rect 
+{
+    protected float $side1;
+    protected float $side2;
+
+    public function __construct(float $side1, float $side2)
+    {
+        $this->side1 = $side1;
+        $this->side2 = $side2;
+    }
+
+    public function getPerimeter() : float 
+    {
+        return 2*($this->side1 + $this->side2);
+    }
+
+    public function getArea() : float 
+    {
+        return $this->side1 * $this->side2;
+    }
+}
+
+class Square extends Rect
+{
+    public function __construct(float $side)
+    {
+        parent::__construct($side, $side);
+    }
+
+}
+
+$carre1 = new Square(2);
+$carre2 = new Square(1.8);
+
+echo $carre1->getPerimeter() . "<br>";
+echo $carre2->getArea();
+
+
+class Stock 
+{
+    private array $articles;
+
+    public function __construct(int $nbArticles)
+    {
+        $this->nbArticles = $nbArticles;
+    }
+
+    public function addArticle($newArticle) 
+    {
+        if(in_array($newArticle->getReference(), $articles)){
+            $articles[
+                $newArticle->getReference();
+            ] = $newArticle;
         }
+    }
 
-        $i++;
+    public function getArticleByReference($ref) 
+    {
+        foreach($articles as $article){
+            if ($article->getReference() === $ref) {
+                return $article;
+            } else {
+                throw (new Exception $e)
+            }
     }
 }
 
-isPairImpair($numbers);
+class Article
+{
+    private int $reference;
+    private string $name;
+    private float $price;
 
-function maxArray($array1) {
-
-    $max = $array1[0];
-
-    for($i = 0; $i < count($array1); $i++){
-        
-        if($max<$array1[$i]) $max=$array1[$i];
+    public function __construct(int $reference, string $name, float $price)
+    {
+        $this->reference = $reference;
+        $this->name = $name;
+        $this->price = $price;
     }
 
-    return $max;
+    public function getReference()
+    {
+
+    }
 
 }
-
-echo maxArray($numbers);
-
-
-

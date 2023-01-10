@@ -16,6 +16,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $errorMessage = '';
 
+    if(empty($_POST['user_password']) || empty($_POST['user_lastname']) || empty($_POST['user_firstname']) || empty($_POST['user_email'])){
+
+        $errorMessage = 'Remplissez tous les champs';
+        
+    }
+
     /* verifying profile */
 
     include_once('functions.php');
@@ -25,10 +31,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = testInput($_POST['user_email']);
     $passUser = $_POST['user_password'];
 
-    $pdo = new \PDO('mysql:host=localhost;dbname=the_library_factory','root','');
     $query = 'SELECT * FROM user';
     $statement = $pdo->query($query);
     $users = $statement->fetchAll();
+
 
     if($users){
         foreach ($users as $user) {
@@ -36,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                 session_start();
                 
-                $_SESSION['login'] = $firstname . ' ' . $lastname;
+                $_SESSION['login'] = $user['pseudo'];
 
                 /* creating variable session id */                
 
@@ -44,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $statementUserId = $pdo->query($queryUserId);
                 $userId = $statementUserId->fetch();
 
-                $_SESSION['id']= $userId['id'];
+                $_SESSION['id'] = $userId['id'];
 
                 /* initializing cart */ 
                 
@@ -62,21 +68,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 
                 header('location: index.php');
                 exit();
+            } else {
+                $errorMessage = 'Renseignements incorrects';
             }
         }
-
-    } else {
-
-        $errorMessage = 'Renseignements incorrects';
-
     }  
-    
-    if(empty($_POST['user_password']) || empty($_POST['user_lastname']) || empty($_POST['user_firstname']) || empty($_POST['user_email'])){
-
-        $errorMessage = 'Remplissez tous les champs';
-        
-    }
-
 } ?>
 
 <div class="container w-50">
@@ -115,4 +111,3 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 </body>
 </html>
-

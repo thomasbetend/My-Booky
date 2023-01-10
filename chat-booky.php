@@ -14,13 +14,14 @@ if(empty($_SESSION)){
 
 } else {
 
+
 ?>
 
 <?php 
 
-$queryAllUsers = 'SELECT id, firstname, lastname FROM user WHERE id != ' . $_SESSION['id'] . ' ORDER BY lastname ';
+$queryAllUsers = 'SELECT id, firstname, lastname, pseudo FROM user WHERE id != ' . $_SESSION['id'] . ' ORDER BY lastname ';
 $statementAllUsers = $pdo->query($queryAllUsers);
-$allUsers = $statementAllUsers->fetchAll(); 
+$allUsers = $statementAllUsers->fetchAll();
 
 ?>
 
@@ -41,14 +42,17 @@ $allUsers = $statementAllUsers->fetchAll();
                   <select name="select-chat-user-id" id="select-user-chat" class="form-select chat-select-user">
                     <option value="">Choisissez utilisateur</option>
                     <?php 
-                    /* all users */
+
+                        /* all users without notification already sent */
+
                         foreach($allUsers as $user){ ?>
                           <option value="<?php echo $user['id'] ?> " 
                                 <?php 
-                                if(!empty($_POST['select-chat-user-id']) && $_POST['select-chat-user-id'] == $user['id']){
+
+                                if(!empty($_POST['select-chat-user-id']) && $_POST['select-chat-user-id'] === $user['id']){
                                   echo "selected";
                                 } ?> >
-                                <?php echo ucwords($user['firstname'] . ' ' . $user['lastname']) ;?></option>
+                                <?php echo ucwords($user['pseudo']);?></option>
                     <?php } ?>
                   </select>
                   <button type="submit" class="btn btn-primary">Envoyez une invitation</button>
@@ -106,6 +110,23 @@ $allUsers = $statementAllUsers->fetchAll();
 <?php } ?>
 
 <?php include_once('footer.php'); ?>
+
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+
+$(document).ready(function domReady() {
+    setInterval(function refreshPage() {
+        $.ajax({
+            method: 'GET',
+            url: "chat-booky.php",
+            success: function() {
+                location.reload();
+            }
+        });
+    }, 5000) 
+});
+
+</script>
 
 </body>
 </html>

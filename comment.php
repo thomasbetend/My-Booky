@@ -18,11 +18,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $statementInsertComment->bindValue(':post_date', date( "Y-m-d h:i:s", time()), \PDO::PARAM_STR);
     $statementInsertComment->execute();
 
-
+    header('location:book-info.php?id=' . $_GET['id']);
 
 } ?>
 
-<div class="card text-center mt-4">
+<div class=" text-center mt-4">
     <form action="#" method="post">
         <input type="text" placeholder="Laisser un commentaire" name="comment" class="form-control">
     </form>

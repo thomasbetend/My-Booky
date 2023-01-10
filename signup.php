@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $errorMessage = '';
     
-    $query = 'INSERT INTO user (lastname, firstname, pass_user, email_user) VALUES (:lastname, :firstname, :pass_user, :email_user)';
+    $query = 'INSERT INTO user (lastname, firstname, pseudo, pass_user, email_user) VALUES (:lastname, :firstname, :pseudo, :pass_user, :email_user)';
     
     /* Errors */
 
@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     /* Empty fields */
 
-    if(empty($_POST['user_lastname']) || empty($_POST['user_firstname'])){
+    if(empty($_POST['user_lastname']) || empty($_POST['user_firstname'] || empty($_POST['pseudo']))){
 
         $errorMessage = 'Remplissez tous les champs';
 
@@ -59,6 +59,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         include_once('functions.php');
 
+        $pseudo = testInput($_POST['pseudo']);
         $lastname = testInput($_POST['user_lastname']);
         $firstname = testInput($_POST['user_firstname']);
         $email = testInput($_POST['user_email']);
@@ -69,13 +70,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
         $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
         $statement->bindValue(':pass_user', $passUser, \PDO::PARAM_STR);
         $statement->bindValue(':email_user', $email, \PDO::PARAM_STR);
 
         $statement->execute();
 
         session_start();
-        $_SESSION['login'] = $firstname . ' ' . $lastname;
+        $_SESSION['login'] = $pseudo;
 
         /* creating variable session id */                
 
@@ -111,6 +113,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <h5 class="text-secondary">MyBooky</h5>
         <h3>Créez votre compte</h3>
         <form method="post" class="mt-3">
+            <div class="form-group2">
+                <label for="pseudo"></label> 
+                <input type="text" id="pseudo" name="pseudo" class="form-control" placeholder="Pseudo *" value="<?php if($_POST){echo $_POST['pseudo'];} ?>">
+            </div>
             <div class="form-group2">
                 <label for="user_firstname"></label> 
                 <input type="text" id="firstname" name="user_firstname" class="form-control" placeholder="Prénom *" value="<?php if($_POST){echo $_POST['user_firstname'];} ?>">

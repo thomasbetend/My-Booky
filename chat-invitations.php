@@ -40,7 +40,7 @@ if (empty($_SESSION)) {
                             <?php if(!empty($sender)){ echo ucwords($sender['firstname'] . ' ' . $sender['lastname']); } ?>
                         </h5>            
                         <div class="button-invitation">
-                            <a href="chat-conversation.php?id=<?php echo $sender['id'];?>"><button type="submit" class="btn btn-primary">Accepter</button></a>
+                            <a href="chat-message-conversation.php?id=<?php echo $sender['id'];?>"><button type="submit" class="btn btn-primary">Accepter</button></a>
                             <button type="submit" class="btn btn-secondary">Refuser</button>
                         </div>
                     </div>
