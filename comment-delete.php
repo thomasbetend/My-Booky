@@ -38,7 +38,7 @@ if(empty($_SESSION)){
         exit();
 
     } else { ?>     
-     
+    
         <div class="container w-50 text-center">
             <h3 class="text-center text-primary mt-5">Vous n'avez pas le droit de mofifier ce commentaire</h3>
             <a href="index.php" class="text-center">Retour au catalogue</a>
