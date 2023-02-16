@@ -75,7 +75,7 @@ require('head.php');
                       </div>
                       <?php 
                     }} else { ?>
-                    <p> pas de commandes </p>
+                    <p> Vous n'avez pas de commandes </p>
                     <?php } ?>
 
                   </div>

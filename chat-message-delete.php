@@ -35,7 +35,7 @@ if(empty($_SESSION)){
             $statementDeleteMessage = $pdo->prepare($queryDeleteMessage);
             $statementDeleteMessage->execute();
         
-            header('location:chat-conversation.php?id=' . $existingMessage['user_destination_id']);
+            header('location:chat-message-conversation.php?id=' . $existingMessage['user_destination_id']);
             exit();
 
         } else { ?>     

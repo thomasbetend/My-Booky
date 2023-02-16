@@ -28,6 +28,8 @@ if(empty($_SESSION)){
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
         $book = $statement->fetch();
+
+
     
         if($book){
     
@@ -109,12 +111,15 @@ if(empty($_SESSION)){
 
                 header('location: book-personal-space.php');
                 exit();
-
+                
+                var_dump($errorMessage); die;
                 }   
     
         }
-    }
+    } else {
+        header('location: book-modif-forbidden.php');
 
+    }
     ?>
 
         <div class="container w-50 ">

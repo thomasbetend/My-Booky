@@ -8,8 +8,6 @@ require('head.php');
 
 <?php
 
-session_start();
-
 if(empty($_SESSION)){
 
     header('location: index.php');
@@ -24,13 +22,13 @@ if(empty($_SESSION)){
 
     /* verifying if comment exists */
 
-    $queryExistingComment = 'SELECT id, book_id FROM comment WHERE id = :id';
+    $queryExistingComment = 'SELECT id, book_id, user_id FROM comment WHERE id = :id';
     $statementExistingComment = $pdo->prepare($queryExistingComment);
     $statementExistingComment->bindValue(':id', $id, PDO::PARAM_INT);
     $statementExistingComment->execute();
     $existingComment = $statementExistingComment->fetch();
 
-    if($existingComment){
+    if($existingComment && $existingComment['user_id'] === $_SESSION['id'] ){
 
         $queryDeleteComment = 'DELETE FROM comment WHERE id = ' . $existingComment['id'];
         $statementDeleteComment = $pdo->prepare($queryDeleteComment);
@@ -40,9 +38,9 @@ if(empty($_SESSION)){
         exit();
 
     } else { ?>     
-     
+    
         <div class="container w-50 text-center">
-            <h3 class="text-center text-primary mt-5">Page inexistante</h3>
+            <h3 class="text-center text-primary mt-5">Vous n'avez pas le droit de mofifier ce commentaire</h3>
             <a href="index.php" class="text-center">Retour au catalogue</a>
         </div>
 
